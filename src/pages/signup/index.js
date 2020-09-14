@@ -1,10 +1,13 @@
 import React from 'react';
-import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
 
+import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
 
 import { Container } from './styles';
 import logo from '../../assets/logo.png';
+
+import { signUpRequest } from '../../store/modules/auth/actions';
 
 const schema = Yup.object().shape({
   name: Yup.string().required('Insira um nome'),
@@ -18,12 +21,16 @@ const schema = Yup.object().shape({
     .required('Confirme sua senha')
     .oneOf([Yup.ref('password'), null], 'As senhas não conferem'),
 });
-
 function Signup() {
+  const dispatch = useDispatch();
+
+  function submitHandle({ name, email, password }) {
+    dispatch(signUpRequest({ name, email, password }));
+  }
   return (
     <Container>
       <img src={logo} alt="e-ncarte logo" />
-      <Form schema={schema}>
+      <Form schema={schema} onSubmit={submitHandle}>
         <Input name="name" placeholder="Nome" />
         <Input type="email" name="email" placeholder="E-mail" />
         <Input type="password" name="password" placeholder="Senha" />
