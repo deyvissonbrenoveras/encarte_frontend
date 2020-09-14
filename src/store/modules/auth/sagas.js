@@ -7,12 +7,7 @@ import history from '../../../services/history';
 export function* signUp({ payload }) {
   try {
     const { name, email, password } = payload;
-    const response = yield call(api.post, 'users', {
-      name,
-      email,
-      password,
-    });
-    console.log(response.data);
+    yield call(api.post, 'users', { name, email, password });
     history.push('/login');
   } catch (err) {
     toast.error(
@@ -23,4 +18,20 @@ export function* signUp({ payload }) {
   }
 }
 
-export default all([takeLatest('@auth/SIGN_UP_REQUEST', signUp)]);
+export function* signIn({ payload }) {
+  try {
+    const { email, password } = payload;
+    yield call(api.post, 'sessions', { email, password });
+  } catch (err) {
+    toast.error(
+      err.response.data
+        ? err.response.data.error
+        : 'Erro ao fazer login, por favor entre em contato com nossa equipe'
+    );
+  }
+}
+
+export default all([
+  takeLatest('@auth/SIGN_UP_REQUEST', signUp),
+  takeLatest('@auth/SIGN_IN_REQUEST', signIn),
+]);

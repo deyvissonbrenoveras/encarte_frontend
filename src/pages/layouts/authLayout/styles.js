@@ -40,4 +40,8 @@ export const Container = styled.div`
       border-radius: 15px;
     }
   }
+  a {
+    align-self: center;
+    margin-top: 10px;
+  }
 `;
