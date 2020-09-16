@@ -63,4 +63,18 @@ export const Content = styled.div`
   margin: 0 5px;
   border: 1px solid #e3e3e3;
   border-radius: 5px;
+  padding: 10px;
+  form {
+    display: flex;
+    flex-direction: column;
+    input {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 10px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 0;
+      background: rgba(0, 0, 0, 0.06);
+    }
+  }
 `;

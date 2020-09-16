@@ -41,6 +41,12 @@ function DashboardLayout({ children }) {
         <Drawer>
           <ul>
             <li>
+              <Link to="/novaloja">
+                <FaStore />
+                Nova loja
+              </Link>
+            </li>
+            <li>
               <Link to="/lojas">
                 <FaStore />
                 Lojas

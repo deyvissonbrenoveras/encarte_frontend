@@ -9,6 +9,7 @@ import Login from '../pages/login';
 import Dashboard from '../pages/dashboard/dashboardIndex';
 import Signup from '../pages/signup';
 import Stores from '../pages/dashboard/stores';
+import NewStore from '../pages/dashboard/newstore';
 
 function Routes() {
   return (
@@ -21,6 +22,13 @@ function Routes() {
         isPrivate
         path="/dashboard"
         component={Dashboard}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/novaloja"
+        component={NewStore}
         layout={DashboardLayout}
       />
       <Route

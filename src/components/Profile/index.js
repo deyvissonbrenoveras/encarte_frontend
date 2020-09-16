@@ -21,14 +21,14 @@ function Profile() {
     <Container>
       <FaRegUserCircle onClick={toggleVisibility} />
       <ProfileMenu visibility={visibility}>
-        <li>
+        <button type="button">
           <FaUserEdit />
           Perfil
-        </li>
-        <li onClick={handleSignOut}>
+        </button>
+        <button type="button" onClick={() => handleSignOut()}>
           <BiLogOut />
           Sair
-        </li>
+        </button>
       </ProfileMenu>
     </Container>
   );

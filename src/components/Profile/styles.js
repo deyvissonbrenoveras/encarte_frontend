@@ -4,7 +4,7 @@ import { darken } from 'polished';
 export const Container = styled.div`
   position: relative;
 `;
-export const ProfileMenu = styled.ul`
+export const ProfileMenu = styled.div`
   display: ${(props) => (props.visibility ? 'block' : 'none')};
   position: absolute;
   top: 41px;
@@ -25,12 +25,15 @@ export const ProfileMenu = styled.ul`
     border-right: 12px solid transparent;
     border-bottom: 12px solid rgba(0, 0, 0, 0.09);
   }
-  li {
+  button {
     cursor: pointer;
+    width: 100%;
     display: flex;
     align-items: center;
     padding: 10px;
     font-size: 15px;
+    background: #fcfcfc;
+    border: 0;
     &:hover {
       background: ${darken(0.03, '#fcfcfc')};
     }
