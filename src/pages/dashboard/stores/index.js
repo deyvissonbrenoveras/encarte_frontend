@@ -18,7 +18,7 @@ function Stores() {
       <StoreList>
         {stores.map((store) => (
           <li>
-            <img src={store.logo && store.logo.url} alt={store.name} />
+            {store.logo && <img src={store.logo.url} alt={store.name} />}
             {store.name}
           </li>
         ))}

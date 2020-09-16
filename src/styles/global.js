@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { darken } from 'polished';
 
 export default createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -16,7 +17,7 @@ export default createGlobalStyle`
     }
     html, body, #root {
         background: #fff;
-        height: 100%;
+        height: 100vh
     }
     body{
         -webkit-font-smoothing: antialiased;
@@ -32,5 +33,20 @@ export default createGlobalStyle`
     }
     li {
         list-style: none;
+    }
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        margin: 20px 0;
+        background: #fff;
+    }
+    ::-webkit-scrollbar-thumb {      
+        height: 10px;  
+        background: var(--primary-color);
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: ${darken(0.1, 'rgb(237, 47, 87)')};
     }
 `;
