@@ -11,10 +11,17 @@ export const Container = styled.div`
 
 export const StoreList = styled.ul`
   margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   li {
+    flex-grow: 1;
+    width: 250px;
+    margin: 5px;
     padding: 10px;
     display: flex;
     align-items: center;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     &:hover {
       cursor: pointer;
       background: ${darken(0.03, '#fff')};
@@ -25,7 +32,7 @@ export const StoreList = styled.ul`
       border-radius: 50%;
       margin: 0 10px;
     }
-    font-size: 25px;
+    font-size: 16px;
     height: 72px;
   }
 `;

@@ -67,10 +67,14 @@ export const Content = styled.div`
   form {
     display: flex;
     flex-direction: column;
+    label {
+      font-size: 15px;
+      margin-top: 10px;
+    }
     input {
       width: 100%;
       max-width: 600px;
-      margin-top: 10px;
+      margin-top: 3px;
       padding: 5px 10px;
       border-radius: 5px;
       border: 0;

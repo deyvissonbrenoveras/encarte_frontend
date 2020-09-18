@@ -5,8 +5,7 @@ import { storeFailure } from './actions';
 
 function* addStoreRequest({ payload }) {
   try {
-    const { store } = payload;
-    const response = yield call(api.post, 'stores', store);
+    const response = yield call(api.post, 'stores', payload);
     console.tron.log(response.data);
     toast.success('A loja foi cadastrada com sucesso');
   } catch (err) {
