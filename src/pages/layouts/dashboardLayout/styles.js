@@ -65,6 +65,8 @@ export const Content = styled.div`
   border-radius: 5px;
   padding: 10px;
   form {
+    width: 100%;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     label {
@@ -72,8 +74,6 @@ export const Content = styled.div`
       margin-top: 10px;
     }
     input {
-      width: 100%;
-      max-width: 600px;
       margin-top: 3px;
       padding: 5px 10px;
       border-radius: 5px;

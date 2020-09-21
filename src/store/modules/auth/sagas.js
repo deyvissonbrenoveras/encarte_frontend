@@ -12,6 +12,7 @@ export function* signUp({ payload }) {
     yield call(api.post, 'users', { name, email, password });
     history.push('/login');
   } catch (err) {
+    yield put(signFailure());
     toast.error(
       err.response.data
         ? err.response.data.error

@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import api from '../../../services/api';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { loadStoresRequest } from '../../../store/modules/store/actions';
+import LoadingIcon from '../../../components/LoadingIcon';
 import { Container, StoreList } from './styles';
 
 function Stores() {
-  const [stores, setStores] = useState([]);
+  const dispatch = useDispatch();
+  const stores = useSelector((state) => state.store.stores);
+  const loading = useSelector((state) => state.store.loading);
   useEffect(() => {
     async function getStores() {
-      const response = await api.get('stores');
-      setStores(response.data);
+      dispatch(loadStoresRequest());
     }
     getStores();
   }, []);
@@ -16,12 +19,17 @@ function Stores() {
     <Container>
       <h2>Lojas</h2>
       <StoreList>
-        {stores.map((store) => (
-          <li>
-            {store.logo && <img src={store.logo.url} alt={store.name} />}
-            {store.name}
-          </li>
-        ))}
+        {loading ? (
+          <LoadingIcon />
+        ) : (
+          stores &&
+          stores.map((store) => (
+            <li>
+              {store.logo && <img src={store.logo.url} alt={store.name} />}
+              {store.name}
+            </li>
+          ))
+        )}
       </StoreList>
     </Container>
   );

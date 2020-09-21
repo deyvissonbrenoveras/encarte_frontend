@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import * as Yup from 'yup';
@@ -8,6 +8,7 @@ import { Form, Input } from '@rocketseat/unform';
 import { signInRequest } from '../../store/modules/auth/actions';
 
 import logo from '../../assets/logo.png';
+import LoadingIcon from '../../components/LoadingIcon';
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -19,6 +20,7 @@ const schema = Yup.object().shape({
 });
 
 function Login() {
+  const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
 
   function submitHandle({ email, password }) {
@@ -33,6 +35,7 @@ function Login() {
         <button type="submit">Login</button>
       </Form>
       <Link to="/signup">Criar conta</Link>
+      {loading ? <LoadingIcon /> : null}
     </>
   );
 }
