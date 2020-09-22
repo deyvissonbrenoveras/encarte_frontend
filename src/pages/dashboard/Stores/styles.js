@@ -24,6 +24,7 @@ export const StoreList = styled.ul`
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     font-size: 16px;
     height: 72px;
+
     &:hover {
       background: ${darken(0.03, '#fff')};
     }
@@ -35,6 +36,10 @@ export const StoreList = styled.ul`
     }
     a {
       color: #000;
+      text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 `;

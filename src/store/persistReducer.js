@@ -6,7 +6,7 @@ export default (reducers) => {
     {
       key: 'e-ncarte',
       storage,
-      whitelist: ['auth', 'user'],
+      whitelist: ['auth', 'profile'],
     },
     reducers
   );

@@ -10,7 +10,8 @@ import {
 } from '../../../store/modules/store/actions';
 import ImageInput from '../../../components/ImageInput';
 
-import { Container, ImageInputs } from './styles';
+import { ImageInputs } from './styles';
+import { SaveButton } from '../../../components/Buttons';
 
 const schema = Yup.object().shape({
   name: Yup.string()
@@ -43,7 +44,7 @@ function UpdateStore({ match }) {
     dispatch(updateStoreRequest(id, data));
   }
   return (
-    <Container>
+    <>
       <h2>Nova loja</h2>
       <Form initialData={store} onSubmit={submitHandle} schema={schema}>
         <ImageInputs>
@@ -79,9 +80,9 @@ function UpdateStore({ match }) {
         <label htmlFor="facebook">Facebook:</label>
         <Input name="facebook" placeholder="Insira o Facebook" />
 
-        <button type="submit">Salvar</button>
+        <SaveButton type="submit">Salvar</SaveButton>
       </Form>
-    </Container>
+    </>
   );
 }
 

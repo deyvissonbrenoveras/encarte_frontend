@@ -12,6 +12,7 @@ import Stores from '../pages/dashboard/Stores';
 import NewStore from '../pages/dashboard/NewStore';
 import UpdateStore from '../pages/dashboard/UpdateStore';
 import Users from '../pages/dashboard/Users';
+import UpdateUser from '../pages/dashboard/UpdateUser';
 
 function Routes() {
   return (
@@ -51,6 +52,13 @@ function Routes() {
         isPrivate
         path="/users"
         component={Users}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/updateuser/:id"
+        component={UpdateUser}
         layout={DashboardLayout}
       />
     </Switch>
