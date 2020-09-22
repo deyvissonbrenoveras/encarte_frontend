@@ -21,7 +21,12 @@ export function addStoreSuccess(store) {
     payload: store,
   };
 }
-
+export function updateStoreRequest(id, store) {
+  return {
+    type: '@store/UPDATE_REQUEST',
+    payload: { id, store },
+  };
+}
 export function storeFailure() {
   return {
     type: '@store/FAILURE',

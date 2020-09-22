@@ -1,11 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
 
 import logo from '../../assets/logo.png';
+import LoadingIcon from '../../components/LoadingIcon';
 
 import { signUpRequest } from '../../store/modules/auth/actions';
 
@@ -22,6 +23,7 @@ const schema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'As senhas não conferem'),
 });
 function Signup() {
+  const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
 
   function submitHandle({ name, email, password }) {
@@ -41,8 +43,8 @@ function Signup() {
         />
         <button type="submit">Criar conta</button>
       </Form>
-
       <Link to="/login">Fazer login</Link>
+      {loading ? <LoadingIcon /> : null}
     </>
   );
 }

@@ -80,5 +80,11 @@ export const Content = styled.div`
       border: 0;
       background: rgba(0, 0, 0, 0.06);
     }
+    span {
+      color: #e63630;
+      font-size: 14px;
+      margin: 5px 0 0;
+      align-self: flex-start;
+    }
   }
 `;

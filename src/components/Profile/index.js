@@ -20,7 +20,7 @@ function Profile() {
   return (
     <Container>
       <FaRegUserCircle onClick={toggleVisibility} />
-      <ProfileMenu visibility={visibility}>
+      <ProfileMenu visibility={visibility ? 1 : 0}>
         <button type="button">
           <FaUserEdit />
           Perfil

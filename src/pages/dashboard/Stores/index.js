@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { Link } from 'react-router-dom';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { Container, StoreList } from './styles';
@@ -24,9 +25,9 @@ function Stores() {
         ) : (
           stores &&
           stores.map((store) => (
-            <li>
+            <li key={store.id}>
               {store.logo && <img src={store.logo.url} alt={store.name} />}
-              {store.name}
+              <Link to={`/updatestore/${store.id}`}>{store.name}</Link>
             </li>
           ))
         )}

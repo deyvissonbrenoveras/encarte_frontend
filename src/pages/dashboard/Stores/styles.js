@@ -22,8 +22,9 @@ export const StoreList = styled.ul`
     display: flex;
     align-items: center;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    height: 72px;
     &:hover {
-      cursor: pointer;
       background: ${darken(0.03, '#fff')};
     }
     img {
@@ -32,7 +33,8 @@ export const StoreList = styled.ul`
       border-radius: 50%;
       margin: 0 10px;
     }
-    font-size: 16px;
-    height: 72px;
+    a {
+      color: #000;
+    }
   }
 `;

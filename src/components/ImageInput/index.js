@@ -6,7 +6,7 @@ import { Container } from './styles';
 import api from '../../services/api';
 
 function LogoInput({ inputName, inputId, inputLabel }) {
-  const { defaultValue, registerField } = useField('logo');
+  const { defaultValue, registerField } = useField(inputId);
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
 

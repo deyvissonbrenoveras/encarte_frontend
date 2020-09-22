@@ -2,9 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { FaUser, FaStore, FaBoxes, FaUserFriends } from 'react-icons/fa';
+import { FaUser, FaStore, FaUserFriends } from 'react-icons/fa';
 import { AiFillHome } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
 
 import Profile from '../../../components/Profile';
 
@@ -20,8 +19,6 @@ import {
 import logo from '../../../assets/logo.png';
 
 function DashboardLayout({ children }) {
-  const { profile } = useSelector((state) => state.user);
-  console.tron.log(profile);
   return (
     <Wrapper>
       <Header>
@@ -41,21 +38,15 @@ function DashboardLayout({ children }) {
         <Drawer>
           <ul>
             <li>
-              <Link to="/novaloja">
+              <Link to="/newstore">
                 <FaStore />
                 Nova loja
               </Link>
             </li>
             <li>
-              <Link to="/lojas">
+              <Link to="/stores">
                 <FaStore />
                 Lojas
-              </Link>
-            </li>
-            <li>
-              <Link to="/produtos">
-                <FaBoxes />
-                Produtos
               </Link>
             </li>
             <li>
@@ -65,7 +56,7 @@ function DashboardLayout({ children }) {
               </Link>
             </li>
             <li>
-              <Link to="/usuarios">
+              <Link to="/users">
                 <FaUser />
                 Usuários
               </Link>

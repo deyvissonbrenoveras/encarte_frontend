@@ -2,21 +2,22 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import Route from './Route';
 
-import AuthLayout from '../pages/layouts/authLayout';
-import DashboardLayout from '../pages/layouts/dashboardLayout';
+import AuthLayout from '../pages/layouts/AuthLayout';
+import DashboardLayout from '../pages/layouts/DashboardLayout';
 
-import Login from '../pages/login';
-import Dashboard from '../pages/dashboard/dashboardIndex';
-import Signup from '../pages/signup';
-import Stores from '../pages/dashboard/stores';
-import NewStore from '../pages/dashboard/newstore';
+import Login from '../pages/Login';
+import Dashboard from '../pages/dashboard/DashboardIndex';
+import Signup from '../pages/Signup';
+import Stores from '../pages/dashboard/Stores';
+import NewStore from '../pages/dashboard/NewStore';
+import UpdateStore from '../pages/dashboard/UpdateStore';
+import Users from '../pages/dashboard/Users';
 
 function Routes() {
   return (
     <Switch>
       <Route path="/login" component={Login} layout={AuthLayout} />
       <Route path="/signup" component={Signup} layout={AuthLayout} />
-
       <Route
         exact
         isPrivate
@@ -27,15 +28,29 @@ function Routes() {
       <Route
         exact
         isPrivate
-        path="/novaloja"
+        path="/newstore"
         component={NewStore}
         layout={DashboardLayout}
       />
       <Route
         exact
         isPrivate
-        path="/lojas"
+        path="/stores"
         component={Stores}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/updatestore/:id"
+        component={UpdateStore}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/users"
+        component={Users}
         layout={DashboardLayout}
       />
     </Switch>
