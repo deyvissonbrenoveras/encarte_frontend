@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-export const PrivilegeArea = styled.div`
+export const ActiveInputArea = styled.div`
   label {
     margin-left: 5px;
-    margin-right: 10px;
   }
 `;

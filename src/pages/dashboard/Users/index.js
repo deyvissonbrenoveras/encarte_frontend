@@ -16,6 +16,21 @@ function Users() {
   useEffect(() => {
     dispatch(loadUsersRequest());
   }, []);
+
+  function renderPrivilegeSwitch(privilege) {
+    switch (privilege) {
+      case 0:
+        return 'Root';
+      case 1:
+        return 'Administrador do sistema';
+      case 2:
+        return 'Administrador de loja';
+      case 3:
+        return 'Usuário';
+      default:
+        return '';
+    }
+  }
   return (
     <Container>
       <h2>Usuários</h2>
@@ -45,7 +60,7 @@ function Users() {
                     <FaSquare color="#dbdbdb" />
                   )}
                 </Td>
-                <Td>{user.privilege}</Td>
+                <Td>{renderPrivilegeSwitch(user.privilege)}</Td>
               </Tr>
             ))}
         </Table>
