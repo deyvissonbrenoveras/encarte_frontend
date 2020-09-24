@@ -9,6 +9,12 @@ export function loadUsersSuccess(users) {
     payload: users,
   };
 }
+export function updateRequest(id, user) {
+  return {
+    type: '@user/UPDATE_REQUEST',
+    payload: { id, user },
+  };
+}
 export function userFailure() {
   return {
     type: '@user/FAILURE',
