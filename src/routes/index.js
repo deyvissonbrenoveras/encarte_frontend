@@ -13,6 +13,7 @@ import NewStore from '../pages/dashboard/NewStore';
 import UpdateStore from '../pages/dashboard/UpdateStore';
 import Users from '../pages/dashboard/Users';
 import UpdateUser from '../pages/dashboard/UpdateUser';
+import NewProduct from '../pages/dashboard/NewProduct';
 
 function Routes() {
   return (
@@ -45,6 +46,13 @@ function Routes() {
         isPrivate
         path="/updatestore/:id"
         component={UpdateStore}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/newproduct"
+        component={NewProduct}
         layout={DashboardLayout}
       />
       <Route

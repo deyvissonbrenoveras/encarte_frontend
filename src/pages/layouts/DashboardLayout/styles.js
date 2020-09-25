@@ -73,7 +73,8 @@ export const Content = styled.div`
       font-size: 15px;
       margin-top: 10px;
     }
-    input {
+    input,
+    textarea {
       margin-top: 3px;
       padding: 5px 10px;
       border-radius: 5px;

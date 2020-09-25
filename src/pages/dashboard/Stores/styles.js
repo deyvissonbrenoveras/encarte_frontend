@@ -37,7 +37,6 @@ export const StoreList = styled.ul`
     a {
       color: #000;
       text-overflow: ellipsis;
-      text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
     }

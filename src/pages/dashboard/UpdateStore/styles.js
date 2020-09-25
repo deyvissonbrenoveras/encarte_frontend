@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  button {
-    border-radius: 3px;
-    color: #fff;
-    background: #37ad5d;
-    margin-top: 10px;
-    padding: 10px 5px;
-    border: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  h2 {
+    text-align: center;
   }
 `;
 

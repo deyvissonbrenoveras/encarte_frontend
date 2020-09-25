@@ -7,6 +7,7 @@ import { Container, ImageInputs } from './styles';
 
 import ImageInput from '../../../components/ImageInput';
 import { addStoreRequest } from '../../../store/modules/store/actions';
+import { SaveButton } from '../../../components/Buttons';
 
 const schema = Yup.object().shape({
   name: Yup.string()
@@ -67,7 +68,7 @@ function NewStore() {
         <label htmlFor="facebook">Facebook:</label>
         <Input name="facebook" placeholder="Insira o Facebook" />
 
-        <button type="submit">Salvar</button>
+        <SaveButton type="submit">Salvar</SaveButton>
       </Form>
     </Container>
   );

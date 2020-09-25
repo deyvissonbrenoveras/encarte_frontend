@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { FaUser, FaStore, FaUserFriends } from 'react-icons/fa';
+import { FaUser, FaStore, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
 import { AiFillHome } from 'react-icons/ai';
 
 import Profile from '../../../components/Profile';
@@ -47,6 +47,12 @@ function DashboardLayout({ children }) {
               <Link to="/stores">
                 <FaStore />
                 Lojas
+              </Link>
+            </li>
+            <li>
+              <Link to="/newproduct">
+                <FaBoxOpen />
+                Novo produto
               </Link>
             </li>
             <li>

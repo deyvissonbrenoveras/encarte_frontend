@@ -8,9 +8,10 @@ import {
   loadStoresRequest,
   updateStoreRequest,
 } from '../../../store/modules/store/actions';
+import LoadingIcon from '../../../components/LoadingIcon';
 import ImageInput from '../../../components/ImageInput';
 
-import { ImageInputs } from './styles';
+import { Container, ImageInputs } from './styles';
 import { SaveButton } from '../../../components/Buttons';
 
 const schema = Yup.object().shape({
@@ -32,7 +33,7 @@ const schema = Yup.object().shape({
 
 function UpdateStore({ match }) {
   const dispatch = useDispatch();
-  const stores = useSelector((state) => state.store.stores);
+  const { loading, stores } = useSelector((state) => state.store);
   const id = Number(match.params.id);
   const store = stores.filter((str) => str.id === id)[0];
 
@@ -44,45 +45,55 @@ function UpdateStore({ match }) {
     dispatch(updateStoreRequest(id, data));
   }
   return (
-    <>
+    <Container>
       <h2>Nova loja</h2>
-      <Form initialData={store} onSubmit={submitHandle} schema={schema}>
-        <ImageInputs>
-          <ImageInput inputName="logoId" inputId="logo" inputLabel="Logo:" />
-          <ImageInput
-            inputName="coverId"
-            inputId="cover"
-            inputLabel="imagem da campanha:"
-          />
-        </ImageInputs>
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        store && (
+          <Form initialData={store} onSubmit={submitHandle} schema={schema}>
+            <ImageInputs>
+              <ImageInput
+                inputName="logoId"
+                inputId="logo"
+                inputLabel="Logo:"
+              />
+              <ImageInput
+                inputName="coverId"
+                inputId="cover"
+                inputLabel="imagem da campanha:"
+              />
+            </ImageInputs>
 
-        <label htmlFor="name">Nome:</label>
-        <Input name="name" placeholder="Insira o nome da loja" />
+            <label htmlFor="name">Nome:</label>
+            <Input name="name" placeholder="Insira o nome da loja" />
 
-        <label htmlFor="url">URL:</label>
-        <Input name="url" placeholder="Insira a URL" />
+            <label htmlFor="url">URL:</label>
+            <Input name="url" placeholder="Insira a URL" />
 
-        <label htmlFor="address">Endereço:</label>
-        <Input name="address" placeholder="Insira o endereço" />
+            <label htmlFor="address">Endereço:</label>
+            <Input name="address" placeholder="Insira o endereço" />
 
-        <label htmlFor="city">Cidade:</label>
-        <Input name="city" placeholder="Insira a cidade" />
+            <label htmlFor="city">Cidade:</label>
+            <Input name="city" placeholder="Insira a cidade" />
 
-        <label htmlFor="phone">Telefone:</label>
-        <Input name="phone" placeholder="Insira o telefone" />
+            <label htmlFor="phone">Telefone:</label>
+            <Input name="phone" placeholder="Insira o telefone" />
 
-        <label htmlFor="whatsapp">Whatsapp:</label>
-        <Input name="whatsapp" placeholder="Insira o Whatsapp" />
+            <label htmlFor="whatsapp">Whatsapp:</label>
+            <Input name="whatsapp" placeholder="Insira o Whatsapp" />
 
-        <label htmlFor="instagram">Instagram:</label>
-        <Input name="instagram" placeholder="Insira o Instagram" />
+            <label htmlFor="instagram">Instagram:</label>
+            <Input name="instagram" placeholder="Insira o Instagram" />
 
-        <label htmlFor="facebook">Facebook:</label>
-        <Input name="facebook" placeholder="Insira o Facebook" />
+            <label htmlFor="facebook">Facebook:</label>
+            <Input name="facebook" placeholder="Insira o Facebook" />
 
-        <SaveButton type="submit">Salvar</SaveButton>
-      </Form>
-    </>
+            <SaveButton type="submit">Salvar</SaveButton>
+          </Form>
+        )
+      )}
+    </Container>
   );
 }
 
