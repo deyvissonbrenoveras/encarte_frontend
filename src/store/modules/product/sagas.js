@@ -6,8 +6,12 @@ import { productFailure } from './actions';
 
 function* addProductRequest({ payload }) {
   try {
-    yield call(api.post, 'products', payload);
+    const response = yield call(api.post, 'products', payload);
+    const { id } = response.data;
     toast.success('O produto foi cadastrado com sucesso');
+    const { stores } = payload;
+    yield call(api.post, `products_stores/${id}`, { stores });
+    toast.success('O produto foi vinculado às lojas selecionadas');
   } catch (err) {
     yield put(productFailure());
     toast.error(

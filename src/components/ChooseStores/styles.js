@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 200px;
   margin: 10px 0;
   border: 1px solid #e3e3e3;
@@ -13,7 +15,7 @@ export const Container = styled.div`
     grid-gap: 2px;
     li {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
       height: 60px;
       padding: 5px;

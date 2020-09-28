@@ -6,7 +6,7 @@ import { Container } from './styles';
 import api from '../../services/api';
 
 function LogoInput({ inputName, inputId, inputLabel }) {
-  const { defaultValue, registerField } = useField(inputId);
+  const { defaultValue, registerField, error } = useField(inputId);
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
 
@@ -30,20 +30,23 @@ function LogoInput({ inputName, inputId, inputLabel }) {
     setPreview(url);
   }
   return (
-    <Container>
-      <label>
-        {inputLabel}
-        {preview ? <img src={preview} alt="" /> : <FaCamera />}
-        <input
-          type="file"
-          id={inputId}
-          accept="image/*"
-          data-file={file}
-          onChange={handleChange}
-          ref={ref}
-        />
-      </label>
-    </Container>
+    <>
+      <Container>
+        <label>
+          {inputLabel}
+          {preview ? <img src={preview} alt="" /> : <FaCamera />}
+          <input
+            type="file"
+            id={inputId}
+            accept="image/*"
+            data-file={file}
+            onChange={handleChange}
+            ref={ref}
+          />
+        </label>
+      </Container>
+      {error && <span>{error}</span>}
+    </>
   );
 }
 

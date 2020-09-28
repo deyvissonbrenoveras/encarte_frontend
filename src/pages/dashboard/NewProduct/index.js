@@ -1,6 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
+import * as Yup from 'yup';
+
 import { Form, Input, Textarea } from '@rocketseat/unform';
 import ImageInput from '../../../components/ImageInput';
 import ChooseStores from '../../../components/ChooseStores';
@@ -8,6 +10,16 @@ import ChooseStores from '../../../components/ChooseStores';
 import { Container } from './styles';
 import { SaveButton } from '../../../components/Buttons';
 import { addProductRequest } from '../../../store/modules/product/actions';
+
+const schema = Yup.object().shape({
+  file: Yup.number().required('Selecione uma imagem para o produto'),
+  name: Yup.string().required('O nome é obrigatório'),
+  description: Yup.string().required('A descrição é obrigatória'),
+  price: Yup.number('Preço inválido')
+    .positive('Números negativos não são permitidos')
+    .required('O preço é obrigatório'),
+  stores: Yup.array().min(1, 'Selecione pelo menos uma loja'),
+});
 
 function NewProduct() {
   const dispatch = useDispatch();
@@ -20,7 +32,7 @@ function NewProduct() {
   return (
     <Container>
       <h2>Novo Produto</h2>
-      <Form onSubmit={submitHandle}>
+      <Form schema={schema} onSubmit={submitHandle}>
         <ImageInput inputName="fileId" inputId="file" inputLabel="Imagem:" />
 
         <label htmlFor="name">Nome:</label>
@@ -30,8 +42,13 @@ function NewProduct() {
         <Textarea name="description" placeholder="Insira a descrição" />
 
         <label htmlFor="price">Preço:</label>
-        <Input type="number" name="price" placeholder="Insira o preço" />
-        <ChooseStores />
+        <Input
+          type="number"
+          step="any"
+          name="price"
+          placeholder="Insira o preço"
+        />
+        <ChooseStores name="stores" />
         <SaveButton type="submit">Salvar</SaveButton>
       </Form>
     </Container>
