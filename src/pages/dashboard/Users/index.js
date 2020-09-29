@@ -55,7 +55,7 @@ function Users() {
                 <Td>{user.email}</Td>
                 <Td>
                   {user.active ? (
-                    <FaCheckSquare color="#38db2c" />
+                    <FaCheckSquare color="#4d88ff" />
                   ) : (
                     <FaSquare color="#dbdbdb" />
                   )}

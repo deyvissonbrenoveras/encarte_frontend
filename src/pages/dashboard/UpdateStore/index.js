@@ -1,18 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {
-  loadStoresRequest,
-  updateStoreRequest,
-} from '../../../store/modules/store/actions';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import { updateStoreRequest } from '../../../store/modules/store/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
 import ImageInput from '../../../components/ImageInput';
 
-import { Container, ImageInputs } from './styles';
+import {
+  Container,
+  ImageInputs,
+  ProductImage,
+  SubContainer,
+  ProductsArea,
+} from './styles';
 import { SaveButton } from '../../../components/Buttons';
+
+import api from '../../../services/api';
+import { Table, Td, Th, Tr } from '../../../components/Table';
 
 const schema = Yup.object().shape({
   name: Yup.string()
@@ -33,12 +41,24 @@ const schema = Yup.object().shape({
 
 function UpdateStore({ match }) {
   const dispatch = useDispatch();
-  const { loading, stores } = useSelector((state) => state.store);
+  const [loading, setLoading] = useState(true);
+  const [initialData, setInitialData] = useState({});
   const id = Number(match.params.id);
-  const store = stores.filter((str) => str.id === id)[0];
 
   useEffect(() => {
-    dispatch(loadStoresRequest());
+    async function getStore() {
+      try {
+        const response = await api.get(`stores/${id}`);
+
+        setInitialData(response.data);
+
+        setLoading(false);
+      } catch (err) {
+        toast.error('Houve um erro ao carregar as informações da loja');
+        setLoading(false);
+      }
+    }
+    getStore();
   }, []);
 
   function submitHandle(data) {
@@ -46,12 +66,17 @@ function UpdateStore({ match }) {
   }
   return (
     <Container>
-      <h2>Nova loja</h2>
       {loading ? (
         <LoadingIcon />
       ) : (
-        store && (
-          <Form initialData={store} onSubmit={submitHandle} schema={schema}>
+        <SubContainer>
+          <Form
+            initialData={initialData}
+            onSubmit={submitHandle}
+            schema={schema}
+          >
+            <h2>Editar loja</h2>
+
             <ImageInputs>
               <ImageInput
                 inputName="logoId"
@@ -88,10 +113,36 @@ function UpdateStore({ match }) {
 
             <label htmlFor="facebook">Facebook:</label>
             <Input name="facebook" placeholder="Insira o Facebook" />
-
             <SaveButton type="submit">Salvar</SaveButton>
           </Form>
-        )
+          <ProductsArea>
+            <label> Produtos</label>
+            <Table>
+              <Tr>
+                <Th>Imagem</Th>
+                <Th>Nome</Th>
+                <Th>Preço</Th>
+              </Tr>
+              {initialData &&
+                initialData.products.map((product) => (
+                  <Tr>
+                    <Td>
+                      <ProductImage
+                        src={product.image.url}
+                        alt={product.name}
+                      />
+                    </Td>
+                    <Td>
+                      <Link to={`/updateproduct/${product.id}`}>
+                        {product.name}
+                      </Link>
+                    </Td>
+                    <Td>{product.price}</Td>
+                  </Tr>
+                ))}
+            </Table>
+          </ProductsArea>
+        </SubContainer>
       )}
     </Container>
   );
