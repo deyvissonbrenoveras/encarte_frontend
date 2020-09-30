@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import { FaCheckSquare, FaSquare } from 'react-icons/fa';
 import { updateStoreRequest } from '../../../store/modules/store/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
 import ImageInput from '../../../components/ImageInput';
@@ -14,7 +15,7 @@ import {
   Container,
   ImageInputs,
   ProductImage,
-  SubContainer,
+  // SubContainer,
   ProductsArea,
 } from './styles';
 import { SaveButton } from '../../../components/Buttons';
@@ -69,7 +70,7 @@ function UpdateStore({ match }) {
       {loading ? (
         <LoadingIcon />
       ) : (
-        <SubContainer>
+        <>
           <Form
             initialData={initialData}
             onSubmit={submitHandle}
@@ -122,6 +123,7 @@ function UpdateStore({ match }) {
                 <Th>Imagem</Th>
                 <Th>Nome</Th>
                 <Th>Preço</Th>
+                <Th>Destaque</Th>
               </Tr>
               {initialData &&
                 initialData.products.map((product) => (
@@ -138,11 +140,18 @@ function UpdateStore({ match }) {
                       </Link>
                     </Td>
                     <Td>{product.price}</Td>
+                    <Td>
+                      {product.featured ? (
+                        <FaCheckSquare color="#4d88ff" />
+                      ) : (
+                        <FaSquare color="#dbdbdb" />
+                      )}
+                    </Td>
                   </Tr>
                 ))}
             </Table>
           </ProductsArea>
-        </SubContainer>
+        </>
       )}
     </Container>
   );

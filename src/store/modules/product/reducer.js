@@ -13,6 +13,14 @@ export default function store(state = INITIAL_STATE, action) {
       return produce(state, (draft) => {
         draft.loading = false;
       });
+    case '@product/UPDATE_REQUEST':
+      return produce(state, (draft) => {
+        draft.loading = true;
+      });
+    case '@product/UPDATE_SUCCESS':
+      return produce(state, (draft) => {
+        draft.loading = false;
+      });
     default:
       return state;
   }
