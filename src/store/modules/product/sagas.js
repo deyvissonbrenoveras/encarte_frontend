@@ -1,9 +1,8 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import api from '../../../services/api';
-import history from '../../../services/history';
 
-import { productFailure, updateProductSuccess } from './actions';
+import { productFailure, loadSuccess, loadRequest } from './actions';
 
 function* addProductRequest({ payload }) {
   try {
@@ -25,7 +24,6 @@ function* addProductRequest({ payload }) {
 
 function* updateProductRequest({ payload }) {
   const { id, product, removeStores, addStores } = payload;
-  console.tron.log(addStores);
   try {
     yield call(api.put, `products/${id}`, product);
     toast.success('O produto foi editado com sucesso');
@@ -38,6 +36,7 @@ function* updateProductRequest({ payload }) {
       yield call(api.put, `products_stores/${id}`, { stores: removeStores });
       toast.success('Algumas lojas foram removidas');
     }
+    yield put(loadRequest(id));
   } catch (err) {
     yield put(productFailure());
     toast.error(
@@ -45,8 +44,20 @@ function* updateProductRequest({ payload }) {
     );
   }
 }
-
+function* loadProductRequest({ payload }) {
+  const { id } = payload;
+  try {
+    const response = yield call(api.get, `products/${id}`);
+    yield put(loadSuccess(response.data));
+  } catch (err) {
+    yield put(productFailure());
+    toast.error(
+      err.response.data ? err.response.data.error : 'Erro ao carregar o produto'
+    );
+  }
+}
 export default all([
   takeLatest('@product/ADD_REQUEST', addProductRequest),
   takeLatest('@product/UPDATE_REQUEST', updateProductRequest),
+  takeLatest('@product/LOAD_PRODUCT_REQUEST', loadProductRequest),
 ]);

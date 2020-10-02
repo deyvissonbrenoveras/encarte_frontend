@@ -2,6 +2,7 @@ import produce from 'immer';
 
 const INITIAL_STATE = {
   loading: false,
+  product: null,
 };
 export default function store(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -19,6 +20,15 @@ export default function store(state = INITIAL_STATE, action) {
       });
     case '@product/UPDATE_SUCCESS':
       return produce(state, (draft) => {
+        draft.loading = false;
+      });
+    case '@product/LOAD_PRODUCT_REQUEST':
+      return produce(state, (draft) => {
+        draft.loading = true;
+      });
+    case '@product/LOAD_PRODUCT_SUCCESS':
+      return produce(state, (draft) => {
+        draft.product = action.payload.product;
         draft.loading = false;
       });
     default:

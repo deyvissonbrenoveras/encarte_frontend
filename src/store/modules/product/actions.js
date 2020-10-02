@@ -17,8 +17,16 @@ export function updateProductRequest(id, product, removeStores, addStores) {
     payload: { id, product, removeStores, addStores },
   };
 }
-export function updateProductSuccess() {
+
+export function loadRequest(id) {
   return {
-    type: '@product/UPDATE_SUCCESS',
+    type: '@product/LOAD_PRODUCT_REQUEST',
+    payload: { id },
+  };
+}
+export function loadSuccess(product) {
+  return {
+    type: '@product/LOAD_PRODUCT_SUCCESS',
+    payload: { product },
   };
 }
