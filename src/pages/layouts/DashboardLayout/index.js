@@ -22,7 +22,7 @@ function DashboardLayout({ children }) {
   return (
     <Wrapper>
       <Header>
-        <img src={logo} alt="e-ncarte logo" />
+        <img src={logo} alt="logo" />
         <HeaderOptions>
           <li>
             <Link to="/dashboard">

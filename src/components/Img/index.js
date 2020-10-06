@@ -108,12 +108,7 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
           ref.value = '';
           setPreview(null);
         },
-        setValue(_, value) {
-          if (value) {
-            setFile(value.id);
-            setPreview(value.url);
-          }
-        },
+        setValue() {},
       });
     }
   }, [inputRef, registerField]);
@@ -134,8 +129,8 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
             {...rest}
           />
         </label>
+        {error && <span>{error}</span>}
       </Container>
-      {error && <span>{error}</span>}
     </>
   );
 };

@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Form, Input, Check, Select } from '@rocketseat/unform';
-
-import {
-  loadUsersRequest,
-  updateRequest,
-} from '../../../store/modules/user/actions';
+import { Form } from '@unform/web';
+import { toast } from 'react-toastify';
+import Input from '../../../components/Input';
+import Select from '../../../components/Select';
+import { updateRequest } from '../../../store/modules/user/actions';
 
 import LoadingIcon from '../../../components/LoadingIcon';
 
@@ -15,87 +14,106 @@ import { Container, ActiveInputArea } from './styles';
 
 import Privilege from '../../../util/PrivilegeEnum';
 import { SaveButton } from '../../../components/Buttons';
+import api from '../../../services/api';
 
 const selectOptions = [
-  { id: Privilege.ROOT, title: 'Root' },
-  { id: Privilege.SYSTEM_ADMINISTRATOR, title: 'Administrador do sistema' },
-  { id: Privilege.STORE_ADMINISTRATOR, title: 'Administrador de loja' },
-  { id: Privilege.USER, title: 'Usuário' },
+  { value: Privilege.ROOT, label: 'Root' },
+  { value: Privilege.SYSTEM_ADMINISTRATOR, label: 'Administrador do sistema' },
+  { value: Privilege.STORE_ADMINISTRATOR, label: 'Administrador de loja' },
+  { value: Privilege.USER, label: 'Usuário' },
 ];
-
-const schema = Yup.object().shape({
-  name: Yup.string().required('O nome é obrigatório'),
-  email: Yup.string()
-    .email('Insira um e-mail válido')
-    .required('O e-mail é obrigatório'),
-  privilege: Yup.number(),
-  active: Yup.boolean(),
-  password: Yup.string(),
-  confirmPassword: Yup.string().oneOf(
-    [Yup.ref('password'), null],
-    'As senhas não conferem'
-  ),
-});
 
 function UpdateUser({ match }) {
   const dispatch = useDispatch();
+  const formRef = useRef(null);
+  const [loading, setLoading] = useState(true);
   const id = Number(match.params.id);
-  const { loading, users } = useSelector((state) => state.user);
-  const user = users.filter((usr) => usr.id === id)[0];
-  const initialData = user
-    ? { ...user, privilege: String(user.privilege) }
-    : null;
   useEffect(() => {
-    dispatch(loadUsersRequest());
+    async function getData() {
+      try {
+        const response = await api.get(`users/${id}`);
+        console.tron.log(response.data);
+        formRef.current.setData(response.data);
+        setLoading(false);
+      } catch (err) {
+        toast.error('Houve um erro ao carregar o usuário');
+      }
+    }
+    getData();
   }, []);
 
-  function submitHandle(data) {
-    dispatch(updateRequest(id, data));
+  async function submitHandle(data) {
+    try {
+      formRef.current.setErrors({});
+
+      const schema = Yup.object().shape({
+        name: Yup.string().required('O nome é obrigatório'),
+        email: Yup.string()
+          .email('Insira um e-mail válido')
+          .required('O e-mail é obrigatório'),
+        privilege: Yup.number(),
+        active: Yup.boolean(),
+        password: Yup.string(),
+        confirmPassword: Yup.string().oneOf(
+          [Yup.ref('password'), null],
+          'As senhas não conferem'
+        ),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+      dispatch(updateRequest(id, data));
+    } catch (err) {
+      const validationErrors = {};
+      if (err instanceof Yup.ValidationError) {
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
+        });
+        formRef.current.setErrors(validationErrors);
+      }
+    }
   }
   return (
-    <Container>
-      {loading ? (
-        <LoadingIcon />
-      ) : (
-        initialData && (
-          <Form
-            initialData={initialData}
-            onSubmit={submitHandle}
-            schema={schema}
-          >
-            <ActiveInputArea>
-              <Check name="active" label="Ativo" />
-            </ActiveInputArea>
-            <label htmlFor="name">Nome:</label>
-            <Input name="name" placeholder="Insira o nome do usuário" />
-            <label htmlFor="email">E-mail:</label>
-            <Input
-              type="email"
-              name="email"
-              placeholder="Insira o e-mail do usuário"
-            />
-            <label htmlFor="password">Senha:</label>
-            <Input
-              type="password"
-              name="password"
-              placeholder="Insira uma nova senha"
-            />
-            <label htmlFor="confirmPassword">Confirmação de Senha:</label>
-            <Input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirme a senha"
-            />
+    <>
+      {loading ? <LoadingIcon /> : null}
+      <Container>
+        <Form onSubmit={submitHandle} ref={formRef}>
+          <ActiveInputArea>
+            <Input type="checkbox" name="active" label="Ativo" />
+          </ActiveInputArea>
+          <Input
+            name="name"
+            placeholder="Insira o nome do usuário"
+            label="Nome:"
+          />
+          <Input
+            type="email"
+            name="email"
+            placeholder="Insira o e-mail do usuário"
+            label="E-mail:"
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Insira uma nova senha"
+            label="Senha:"
+          />
+          <Input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirme a senha"
+            label="Confirmação de senha:"
+          />
 
-            <label>Privilegio:</label>
-            <div>
-              <Select name="privilege" options={selectOptions} />
-            </div>
-            <SaveButton type="submit">Salvar</SaveButton>
-          </Form>
-        )
-      )}
-    </Container>
+          <label>Privilegio:</label>
+          <div>
+            <Select name="privilege" options={selectOptions} />
+          </div>
+          <SaveButton type="submit">Salvar</SaveButton>
+        </Form>
+      </Container>
+    </>
   );
 }
 

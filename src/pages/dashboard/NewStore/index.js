@@ -1,72 +1,96 @@
-import React from 'react';
-import { Form, Input } from '@rocketseat/unform';
+import React, { useRef } from 'react';
 import * as Yup from 'yup';
 
 import { useDispatch } from 'react-redux';
+
+import { Form } from '@unform/web';
+import Input from '../../../components/Input';
+import Img from '../../../components/Img';
+
 import { Container, ImageInputs } from './styles';
 
-import ImageInput from '../../../components/ImageInput';
 import { addStoreRequest } from '../../../store/modules/store/actions';
 import { SaveButton } from '../../../components/Buttons';
 
-const schema = Yup.object().shape({
-  name: Yup.string()
-    .max(50, 'Máximo de 50 caracteres')
-    .required('O nome é obrigatório'),
-  url: Yup.string()
-    .max(50, 'Máximo de 50 caracteres')
-    .required('A URL é obrigatória'),
-  address: Yup.string().max(100, 'Máximo de 100 caracteres'),
-  city: Yup.string().max(100, 'Máximo de 100 caracteres'),
-  phone: Yup.string().max(100, 'Máximo de 100 caracteres'),
-  whatsapp: Yup.string().max(100, 'Máximo de 100 caracteres'),
-  instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
-  facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
-  logoId: Yup.number(),
-  coverId: Yup.number(),
-});
-
 function NewStore() {
   const dispatch = useDispatch();
-  function handleSubmit(data) {
-    dispatch(addStoreRequest(data));
+  const formRef = useRef();
+
+  async function handleSubmit(data) {
+    try {
+      formRef.current.setErrors({});
+      const schema = Yup.object().shape({
+        name: Yup.string()
+          .max(50, 'Máximo de 50 caracteres')
+          .required('O nome é obrigatório'),
+        url: Yup.string()
+          .max(50, 'Máximo de 50 caracteres')
+          .required('A URL é obrigatória'),
+        address: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        city: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        phone: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        whatsapp: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        logoId: Yup.number().required('Selecione uma logo'),
+        coverId: Yup.number(),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
+      dispatch(addStoreRequest(data));
+    } catch (err) {
+      const validationErrors = {};
+      if (err instanceof Yup.ValidationError) {
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
+        });
+        formRef.current.setErrors(validationErrors);
+      }
+    }
   }
   return (
     <Container>
       <h2>Nova loja</h2>
-      <Form onSubmit={handleSubmit} schema={schema}>
+      <Form ref={formRef} onSubmit={handleSubmit}>
         <ImageInputs>
-          <ImageInput inputName="logoId" inputId="logo" inputLabel="Logo:" />
-          <ImageInput
-            inputName="coverId"
-            inputId="cover"
-            inputLabel="imagem da campanha:"
-          />
+          <Img name="logo" submitName="logoId" label="Logo:" />
+          <Img name="cover" submitName="coverId" label="Imagem da campanha:" />
         </ImageInputs>
 
-        <label htmlFor="name">Nome:</label>
-        <Input name="name" placeholder="Insira o nome da loja" />
+        <Input name="name" placeholder="Insira o nome da loja" label="Nome:" />
 
-        <label htmlFor="url">URL:</label>
-        <Input name="url" placeholder="Insira a URL" />
+        <Input name="url" placeholder="Insira a URL" label="URL:" />
 
-        <label htmlFor="address">Endereço:</label>
-        <Input name="address" placeholder="Insira o endereço" />
+        <Input
+          name="address"
+          placeholder="Insira o endereço"
+          label="Endereço:"
+        />
 
-        <label htmlFor="city">Cidade:</label>
-        <Input name="city" placeholder="Insira a cidade" />
+        <Input name="city" placeholder="Insira a cidade" label="Cidade:" />
 
-        <label htmlFor="phone">Telefone:</label>
-        <Input name="phone" placeholder="Insira o telefone" />
+        <Input name="phone" placeholder="Insira o telefone" label="Telefone:" />
 
-        <label htmlFor="whatsapp">Whatsapp:</label>
-        <Input name="whatsapp" placeholder="Insira o Whatsapp" />
+        <Input
+          name="whatsapp"
+          placeholder="Insira o Whatsapp"
+          label="Whatsapp:"
+        />
 
-        <label htmlFor="instagram">Instagram:</label>
-        <Input name="instagram" placeholder="Insira o Instagram" />
+        <Input
+          name="instagram"
+          placeholder="Insira o Instagram"
+          label="Instagram:"
+        />
 
-        <label htmlFor="facebook">Facebook:</label>
-        <Input name="facebook" placeholder="Insira o Facebook" />
+        <Input
+          name="facebook"
+          placeholder="Insira o Facebook"
+          label="Facebook:"
+        />
 
         <SaveButton type="submit">Salvar</SaveButton>
       </Form>
