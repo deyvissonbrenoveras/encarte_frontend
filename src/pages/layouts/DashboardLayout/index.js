@@ -56,9 +56,9 @@ function DashboardLayout({ children }) {
               </Link>
             </li>
             <li>
-              <Link to="/parceiros">
+              <Link to="/newpartner">
                 <FaUserFriends />
-                Parceiros
+                Novo parceiro
               </Link>
             </li>
             <li>

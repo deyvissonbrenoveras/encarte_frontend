@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
 import Input from '../../../components/Input';
+import CheckboxInput from '../../../components/CheckboxInput';
 import Img from '../../../components/Img';
 import Textarea from '../../../components/Textarea';
 import Checkbox from '../../../components/Checkbox';
@@ -102,10 +103,7 @@ function UpdateProduct({ match }) {
         >
           <FormHeader>
             <h2>Novo Produto</h2>
-            <div>
-              <label>Destaque</label>
-              <Input type="checkbox" name="featured" />
-            </div>
+            <CheckboxInput name="featured" label="Destaque" />
           </FormHeader>
           <Img name="image" submitName="fileId" label="Imagem:" />
           <Input

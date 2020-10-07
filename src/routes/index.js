@@ -15,6 +15,7 @@ import Users from '../pages/dashboard/Users';
 import UpdateUser from '../pages/dashboard/UpdateUser';
 import NewProduct from '../pages/dashboard/NewProduct';
 import UpdateProduct from '../pages/dashboard/UpdateProduct';
+import NewPartner from '../pages/dashboard/NewPartner';
 
 function Routes() {
   return (
@@ -61,6 +62,13 @@ function Routes() {
         isPrivate
         path="/updateproduct/:id"
         component={UpdateProduct}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/newpartner"
+        component={NewPartner}
         layout={DashboardLayout}
       />
       <Route

@@ -5,6 +5,7 @@ import profile from './profile/reducer';
 import user from './user/reducer';
 import store from './store/reducer';
 import product from './product/reducer';
+import partner from './partner/reducer';
 
 export default combineReducers({
   auth,
@@ -12,4 +13,5 @@ export default combineReducers({
   user,
   store,
   product,
+  partner,
 });

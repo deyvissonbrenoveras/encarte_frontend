@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 import { sm } from '../../../styles/mediaQueries';
 
-export const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
+export const Container = styled.div``;
 
 export const FormHeader = styled.div`
   display: flex;
