@@ -21,5 +21,28 @@ function* addPartnerRequest({ payload }) {
     );
   }
 }
+function* updatePartnerRequest({ payload }) {
+  const { id, partner, removeStores, addStores } = payload;
+  try {
+    yield call(api.put, `partners/${id}`, partner);
+    toast.success('O parceiro foi editado com sucesso');
 
-export default all([takeLatest('@partner/ADD_REQUEST', addPartnerRequest)]);
+    if (addStores && addStores.length > 0) {
+      yield call(api.post, `partners_stores/${id}`, { stores: addStores });
+      toast.success('Novas lojas adicionadas');
+    }
+    if (removeStores && removeStores.length > 0) {
+      yield call(api.put, `partners_stores/${id}`, { stores: removeStores });
+      toast.success('Algumas lojas foram removidas');
+    }
+  } catch (err) {
+    yield put(partnerFailure());
+    toast.error(
+      err.response.data ? err.response.data.error : 'Erro ao editar o parceiro'
+    );
+  }
+}
+export default all([
+  takeLatest('@partner/ADD_REQUEST', addPartnerRequest),
+  takeLatest('@partner/UPDATE_REQUEST', updatePartnerRequest),
+]);

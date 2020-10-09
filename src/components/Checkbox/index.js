@@ -24,9 +24,6 @@ const CheckboxInput = ({ name, options, label, ...rest }) => {
       },
       setValue: (refs, values) => {
         refs.forEach((ref) => {
-          //   if (values.includes(Number(ref.id))) {
-          //     ref.checked = true;
-          //   }
           if (values.filter((value) => value.id === Number(ref.id))[0]) {
             ref.checked = true;
           }

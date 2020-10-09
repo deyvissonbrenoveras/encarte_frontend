@@ -39,7 +39,6 @@ function UpdateProduct({ match }) {
           url: store.logo ? store.logo.url : null,
         }));
         setChoiceOptions(options);
-
         const productResponse = await api.get(`products/${id}`);
         setLoadingProduct(false);
         formRef.current.setData(productResponse.data);
@@ -74,7 +73,6 @@ function UpdateProduct({ match }) {
       const removeStores = productStores.filter(
         (store) => !data.stores.includes(store)
       );
-      console.tron.log(productStores);
 
       const addStores = data.stores.filter((store) => {
         return !productStores.includes(store);
@@ -93,14 +91,9 @@ function UpdateProduct({ match }) {
 
   return (
     <>
-      {loadingProduct ? <LoadingIcon /> : null}
-
+      {loadingProduct && <LoadingIcon />}
       <Container>
-        <Form
-          // schema={schema}
-          ref={formRef}
-          onSubmit={submitHandle}
-        >
+        <Form ref={formRef} onSubmit={submitHandle}>
           <FormHeader>
             <h2>Novo Produto</h2>
             <CheckboxInput name="featured" label="Destaque" />

@@ -6,6 +6,7 @@ import user from './user/reducer';
 import store from './store/reducer';
 import product from './product/reducer';
 import partner from './partner/reducer';
+import category from './category/reducer';
 
 export default combineReducers({
   auth,
@@ -14,4 +15,5 @@ export default combineReducers({
   store,
   product,
   partner,
+  category,
 });

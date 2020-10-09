@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { FaUser, FaStore, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
+import { GiCheckboxTree } from 'react-icons/gi';
 import { AiFillHome } from 'react-icons/ai';
 
 import Profile from '../../../components/Profile';
@@ -59,6 +60,24 @@ function DashboardLayout({ children }) {
               <Link to="/newpartner">
                 <FaUserFriends />
                 Novo parceiro
+              </Link>
+            </li>
+            <li>
+              <Link to="/partners">
+                <FaUserFriends />
+                Parceiros
+              </Link>
+            </li>
+            <li>
+              <Link to="/newcategory">
+                <GiCheckboxTree />
+                Nova categoria
+              </Link>
+            </li>
+            <li>
+              <Link to="/categories">
+                <GiCheckboxTree />
+                Categorias
               </Link>
             </li>
             <li>

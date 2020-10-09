@@ -16,6 +16,10 @@ import UpdateUser from '../pages/dashboard/UpdateUser';
 import NewProduct from '../pages/dashboard/NewProduct';
 import UpdateProduct from '../pages/dashboard/UpdateProduct';
 import NewPartner from '../pages/dashboard/NewPartner';
+import Partners from '../pages/dashboard/Partners';
+import UpdatePartner from '../pages/dashboard/UpdatePartner';
+import NewCategory from '../pages/dashboard/NewCategory';
+import Categories from '../pages/dashboard/Categories';
 
 function Routes() {
   return (
@@ -69,6 +73,34 @@ function Routes() {
         isPrivate
         path="/newpartner"
         component={NewPartner}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/partners"
+        component={Partners}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/updatepartner/:id"
+        component={UpdatePartner}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/newcategory"
+        component={NewCategory}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/categories"
+        component={Categories}
         layout={DashboardLayout}
       />
       <Route

@@ -2,19 +2,19 @@ import produce from 'immer';
 
 const INITIAL_STATE = {
   loading: false,
-  partners: [],
+  categories: [],
 };
-export default function partner(state = INITIAL_STATE, action) {
+export default function category(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case '@partner/ADD_REQUEST':
+    case '@category/ADD_REQUEST':
       return produce(state, (draft) => {
         draft.loading = true;
       });
-    case '@partner/UPDATE_REQUEST':
+    case '@category/UPDATE_REQUEST':
       return produce(state, (draft) => {
         draft.loading = true;
       });
-    case '@partner/FAILURE':
+    case '@category/FAILURE':
       return produce(state, (draft) => {
         draft.loading = false;
       });

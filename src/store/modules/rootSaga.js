@@ -5,7 +5,8 @@ import store from './store/sagas';
 import user from './user/sagas';
 import product from './product/sagas';
 import partner from './partner/sagas';
+import category from './category/sagas';
 
 export default function* rootSaga() {
-  return yield all([auth, store, user, product, partner]);
+  return yield all([auth, store, user, product, partner, category]);
 }
