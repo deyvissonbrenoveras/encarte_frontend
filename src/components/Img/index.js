@@ -1,74 +1,15 @@
-// import React, { useState, useRef, useEffect } from 'react';
-// import PropTypes from 'prop-types';
-// import { useField } from '@unform/core';
-// import { FaCamera } from 'react-icons/fa';
-// import { Container } from './styles';
-// import api from '../../services/api';
-
-// function LogoInput({ inputName, inputId, inputLabel }) {
-//   const { defaultValue, registerField, error } = useField(inputId);
-//   const [file, setFile] = useState(defaultValue && defaultValue.id);
-//   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
-
-//   const ref = useRef();
-//   useEffect(() => {
-//     if (ref.current) {
-//       registerField({
-//         name: inputName,
-//         ref: ref.current,
-//         path: 'dataset.file',
-//         setValue(_, value) {
-//           console.tron.log(value);
-//           setPreview(value);
-//         },
-//       });
-//     }
-//   }, [inputName, registerField]);
-
-//   async function handleChange(e) {
-//     const data = new FormData();
-//     data.append('file', e.target.files[0]);
-//     const response = await api.post('files', data);
-//     const { id, url } = response.data;
-//     setFile(id);
-//     setPreview(url);
-//   }
-//   return (
-//     <>
-//       <Container>
-//         <label>
-//           {inputLabel}
-//           {preview ? <img src={preview} alt="" /> : <FaCamera />}
-//           <input
-//             type="file"
-//             id={inputId}
-//             accept="image/*"
-//             data-file={file}
-//             onChange={handleChange}
-//             ref={ref}
-//           />
-//         </label>
-//       </Container>
-//       {error && <span>{error}</span>}
-//     </>
-//   );
-// }
-
-// export default LogoInput;
-
-// LogoInput.propTypes = {
-//   inputName: PropTypes.string.isRequired,
-//   inputId: PropTypes.string.isRequired,
-//   inputLabel: PropTypes.string.isRequired,
-// };
-
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FaCamera } from 'react-icons/fa';
 import { useField } from '@unform/core';
-import { Container } from './styles';
-
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Typography,
+} from '@material-ui/core';
 import api from '../../services/api';
+import useStyles from './styles';
 
 const ImageInput = ({ name, submitName, label, ...rest }) => {
   const inputRef = useRef();
@@ -112,13 +53,14 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
       });
     }
   }, [inputRef, registerField]);
-
+  const classes = useStyles();
   return (
-    <>
-      <Container>
-        <label>
-          {label}
-          {preview ? <img src={preview} alt="" /> : <FaCamera />}
+    <Card className={classes.root} onClick={() => inputRef.current.click()}>
+      <CardActionArea>
+        <CardContent className={classes.content}>
+          <Typography gutterBottom variant="h6">
+            {label}
+          </Typography>
           <input
             type="file"
             id={submitName}
@@ -128,10 +70,11 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
             onChange={handleChange}
             {...rest}
           />
-        </label>
-        {error && <span>{error}</span>}
-      </Container>
-    </>
+        </CardContent>
+        <CardMedia className={classes.media} image={preview} title={label} />
+      </CardActionArea>
+      {error && <span className={classes.error}>{error}</span>}
+    </Card>
   );
 };
 

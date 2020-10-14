@@ -6,14 +6,11 @@ import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
+import { Typography, Grid, Button, Box } from '@material-ui/core';
 import Input from '../../../components/Input';
 import CheckboxInput from '../../../components/CheckboxInput';
 import Img from '../../../components/Img';
-import Textarea from '../../../components/Textarea';
 import Checkbox from '../../../components/Checkbox';
-
-import { Container, FormHeader } from './styles';
-import { SaveButton } from '../../../components/Buttons';
 
 import { updateProductRequest } from '../../../store/modules/product/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
@@ -90,37 +87,44 @@ function UpdateProduct({ match }) {
   }
 
   return (
-    <>
+    <Form ref={formRef} onSubmit={submitHandle}>
+      <Typography variant="h5">Editar Produto</Typography>
       {loadingProduct && <LoadingIcon />}
-      <Container>
-        <Form ref={formRef} onSubmit={submitHandle}>
-          <FormHeader>
-            <h2>Novo Produto</h2>
-            <CheckboxInput name="featured" label="Destaque" />
-          </FormHeader>
+
+      <Grid container justify="space-around" xs={12}>
+        <Grid item xs={12} md={4}>
           <Img name="image" submitName="fileId" label="Imagem:" />
+          <CheckboxInput name="featured" label="Destaque" />
+
           <Input
             name="name"
             placeholder="Insira o nome do produto"
-            label="Nome: "
-          />
-          <Textarea
-            name="description"
-            placeholder="Insira a descrição"
-            label="Descrição:"
+            label="Nome:"
           />
           <Input
             type="number"
-            step="any"
             name="price"
             placeholder="Insira o preço"
             label="Preço:"
           />
-          <Checkbox name="stores" options={choiceOptions} />
-          <SaveButton type="submit">Salvar</SaveButton>
-        </Form>
-      </Container>
-    </>
+          <Input
+            name="description"
+            placeholder="Insira a descrição"
+            label="Descrição:"
+            multiline
+            rows={4}
+          />
+        </Grid>
+        <Grid item xs={12} md={7}>
+          <Checkbox name="stores" options={choiceOptions} label="Lojas" />
+        </Grid>
+        <Box m={2} width="100%" textAlign="right">
+          <Button variant="contained" color="primary" type="submit">
+            Salvar
+          </Button>
+        </Box>
+      </Grid>
+    </Form>
   );
 }
 

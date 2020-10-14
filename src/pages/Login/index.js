@@ -17,6 +17,7 @@ function Login() {
   const dispatch = useDispatch();
 
   async function submitHandle(data) {
+    console.tron.log(data);
     try {
       formRef.current.setErrors({});
       const schema = Yup.object().shape({
@@ -47,7 +48,12 @@ function Login() {
     <>
       <img src={logo} alt="e-ncarte logo" />
       <Form ref={formRef} onSubmit={submitHandle}>
-        <Input type="email" name="email" placeholder="E-mail" />
+        <Input
+          type="email"
+          name="email"
+          placeholder="Insira o e-mail"
+          label="E-mail"
+        />
         <Input type="password" name="password" placeholder="Senha" />
         <button type="submit">Login</button>
       </Form>

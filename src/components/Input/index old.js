@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
-import { Checkbox, FormControlLabel } from '@material-ui/core';
 
 export default function Input({ name, label, ...rest }) {
   const inputRef = useRef(null);
@@ -9,27 +8,25 @@ export default function Input({ name, label, ...rest }) {
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
   useEffect(() => {
+    const path = rest.type === 'checkbox' ? 'checked' : 'value';
     registerField({
       name: fieldName,
       ref: inputRef.current,
-      path: 'checked',
+      path,
     });
   }, [fieldName, registerField]);
 
   return (
     <>
-      <FormControlLabel
-        control={
-          <Checkbox
-            id={fieldName}
-            inputRef={inputRef}
-            defaultChecked={defaultValue}
-            color="primary"
-            {...rest}
-          />
-        }
-        label={label}
+      <label htmlFor={fieldName}>{label}</label>
+
+      <input
+        id={fieldName}
+        ref={inputRef}
+        defaultValue={defaultValue}
+        {...rest}
       />
+
       {error && <span>{error}</span>}
     </>
   );

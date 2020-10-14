@@ -20,6 +20,7 @@ import Partners from '../pages/dashboard/Partners';
 import UpdatePartner from '../pages/dashboard/UpdatePartner';
 import NewCategory from '../pages/dashboard/NewCategory';
 import Categories from '../pages/dashboard/Categories';
+import UpdateCategory from '../pages/dashboard/UpdateCategory';
 
 function Routes() {
   return (
@@ -94,6 +95,13 @@ function Routes() {
         isPrivate
         path="/newcategory"
         component={NewCategory}
+        layout={DashboardLayout}
+      />
+      <Route
+        exact
+        isPrivate
+        path="/updatecategory/:id"
+        component={UpdateCategory}
         layout={DashboardLayout}
       />
       <Route

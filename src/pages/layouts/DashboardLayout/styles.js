@@ -1,91 +1,83 @@
-import styled from 'styled-components';
-import { lighten } from 'polished';
+import { makeStyles } from '@material-ui/core/styles';
 
-export const Wrapper = styled.div`
-  height: 100vh;
-`;
-export const Header = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 50px;
-  border-bottom: 1px solid #e3e3e3;
-  margin-bottom: 5px;
-  img {
-    width: 130px;
-  }
-`;
-export const HeaderOptions = styled.ul`
-  display: flex;
-  font-size: 24px;
-  > li {
-    margin: 0 10px;
-  }
-  svg {
-    color: var(--primary-color);
-    cursor: pointer;
-  }
-`;
+const drawerWidth = 240;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    backgroundColor: '#fff',
+    color: '#000',
+    boxShadow: 1,
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  hide: {
+    display: 'none',
+  },
+  toolbarOptions: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+    // backgroundColor: '#000',
+  },
+  list: {
+    // color: '#fff',
+  },
+  icon: {
+    // color: '#fff',
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(1),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+    ' & form': {
+      width: '100%',
+      ' & .MuiFormControl-root': {
+        width: '99%',
+        margin: theme.spacing(0.5),
+      },
+    },
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  },
+}));
 
-export const Container = styled.div`
-  display: flex;
-  height: calc(100% - 55px);
-  overflow: hidden;
-`;
-export const Drawer = styled.div`
-  background: #424242;
-  flex-grow: 0.15;
-  height: 100%;
-  color: #fff;
-  ul {
-    margin-top: 20px;
-    li {
-      font-size: 18px;
-      &:hover {
-        cursor: pointer;
-        background: ${lighten(0.1, '#424242')};
-      }
-      svg {
-        margin: 0 10px;
-      }
-      a {
-        padding: 10px;
-        display: flex;
-        width: 100%;
-        color: #fff;
-      }
-    }
-  }
-`;
-export const Content = styled.div`
-  flex-grow: 1;
-  overflow-y: scroll;
-  margin: 0 5px;
-  border: 1px solid #e3e3e3;
-  border-radius: 5px;
-  padding: 10px;
-  form {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    label {
-      font-size: 15px;
-      margin-top: 10px;
-    }
-    input,
-    textarea {
-      margin-top: 3px;
-      padding: 5px 10px;
-      border-radius: 5px;
-      border: 0;
-      background: rgba(0, 0, 0, 0.06);
-    }
-    span {
-      color: #e63630;
-      font-size: 14px;
-      margin: 5px 0 0;
-      align-self: flex-start;
-    }
-  }
-`;
+export default useStyles;

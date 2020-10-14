@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
+import { TextareaAutosize } from '@material-ui/core';
 
 export default function Textarea({ name, label, ...rest }) {
   const inputRef = useRef(null);
@@ -20,7 +21,7 @@ export default function Textarea({ name, label, ...rest }) {
     <>
       <label htmlFor={fieldName}>{label}</label>
 
-      <textarea
+      <TextareaAutosize
         id={fieldName}
         ref={inputRef}
         defaultValue={defaultValue}

@@ -13,7 +13,7 @@ import { signUpRequest } from '../../store/modules/auth/actions';
 
 function Signup() {
   const loading = useSelector((state) => state.auth.loading);
-  const formRef = useRef();
+  const formRef = useRef(null);
   const dispatch = useDispatch();
 
   async function submitHandle(data) {
@@ -31,6 +31,7 @@ function Signup() {
           .required('Confirme sua senha')
           .oneOf([Yup.ref('password'), null], 'As senhas não conferem'),
       });
+
       await schema.validate(data, {
         abortEarly: false,
       });

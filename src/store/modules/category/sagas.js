@@ -17,4 +17,19 @@ function* addCategoryRequest({ payload }) {
     );
   }
 }
-export default all([takeLatest('@category/ADD_REQUEST', addCategoryRequest)]);
+function* updateCategoryRequest({ payload }) {
+  const { id, category } = payload;
+  try {
+    yield call(api.put, `categories/${id}`, category);
+    toast.success('A categoria foi editada com sucesso');
+  } catch (err) {
+    yield put(categoryFailure());
+    toast.error(
+      err.response.data ? err.response.data.error : 'Erro ao editar a categoria'
+    );
+  }
+}
+export default all([
+  takeLatest('@category/ADD_REQUEST', addCategoryRequest),
+  takeLatest('@category/UPDATE_REQUEST', updateCategoryRequest),
+]);

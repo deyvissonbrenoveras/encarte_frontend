@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 
 import { Form } from '@unform/web';
+import { Grid, Box, Button, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { FaCheckSquare, FaSquare } from 'react-icons/fa';
 import {
   Container,
-  ImageInputs,
   ProductImage,
   // SubContainer,
   ProductsArea,
@@ -20,7 +20,6 @@ import Input from '../../../components/Input';
 import Img from '../../../components/Img';
 
 import { Table, Td, Th, Tr } from '../../../components/Table';
-import { SaveButton } from '../../../components/Buttons';
 
 import LoadingIcon from '../../../components/LoadingIcon';
 
@@ -87,51 +86,74 @@ function UpdateStore({ match }) {
   return (
     <Container>
       <Form ref={formRef} onSubmit={submitHandle}>
+        <Typography align="center" variant="h5">
+          Editar
+        </Typography>
+
         {loading ? (
           <LoadingIcon />
         ) : (
           <>
-            <ImageInputs>
-              <Img name="logo" submitName="logoId" label="Logo:" />
-              <Img
-                name="cover"
-                submitName="coverId"
-                label="Imagem da campanha:"
-              />
-            </ImageInputs>
-            <Input
-              name="name"
-              placeholder="Insira o nome da loja"
-              label="Nome:"
-            />
-            <Input name="url" placeholder="Insira a URL" label="URL:" />
-            <Input
-              name="address"
-              placeholder="Insira o endereço"
-              label="Endereço:"
-            />
-            <Input name="city" placeholder="Insira a cidade" label="Cidade:" />
-            <Input
-              name="phone"
-              placeholder="Insira o telefone"
-              label="Telefone:"
-            />
-            <Input
-              name="whatsapp"
-              placeholder="Insira o Whatsapp"
-              label="Whatsapp:"
-            />
-            <Input
-              name="instagram"
-              placeholder="Insira o Instagram"
-              label="Instagram:"
-            />
-            <Input
-              name="facebook"
-              placeholder="Insira o Facebook"
-              label="Facebook:"
-            />
-            <SaveButton type="submit">Salvar</SaveButton>
+            <Grid container xs={12} justify="space-around">
+              <Grid item xs={12} md={5}>
+                <Img name="logo" submitName="logoId" label="Logo:" />
+              </Grid>
+              <Grid item xs={12} md={5}>
+                <Img
+                  name="cover"
+                  submitName="coverId"
+                  label="Imagem da campanha:"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={5}>
+                <Input
+                  name="name"
+                  placeholder="Insira o nome da loja"
+                  label="Nome:"
+                />
+                <Input name="url" placeholder="Insira a URL" label="URL:" />
+                <Input
+                  name="address"
+                  placeholder="Insira o endereço"
+                  label="Endereço:"
+                />
+                <Input
+                  name="city"
+                  placeholder="Insira a cidade"
+                  label="Cidade:"
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} lg={5}>
+                <Input
+                  name="phone"
+                  placeholder="Insira o telefone"
+                  label="Telefone:"
+                />
+
+                <Input
+                  name="whatsapp"
+                  placeholder="Insira o Whatsapp"
+                  label="Whatsapp:"
+                />
+                <Input
+                  name="instagram"
+                  placeholder="Insira o Instagram"
+                  label="Instagram:"
+                />
+                <Input
+                  name="facebook"
+                  placeholder="Insira o Facebook"
+                  label="Facebook:"
+                />
+              </Grid>
+
+              <Box m={2} width="100%" textAlign="right">
+                <Button variant="contained" color="primary" type="submit">
+                  Salvar
+                </Button>
+              </Box>
+            </Grid>
             <ProductsArea>
               <label> Produtos</label>
               <Table>

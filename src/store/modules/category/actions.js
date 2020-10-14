@@ -4,6 +4,12 @@ export function addCategoryRequest(category) {
     payload: category,
   };
 }
+export function updateCategoryRequest(id, category) {
+  return {
+    type: '@category/UPDATE_REQUEST',
+    payload: { id, category },
+  };
+}
 export function categoryFailure() {
   return {
     type: '@category/FAILURE',

@@ -4,13 +4,11 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 
 import { Form } from '@unform/web';
+import { Grid, Box, Button, Typography } from '@material-ui/core';
 import Input from '../../../components/Input';
 import Img from '../../../components/Img';
 
-import { Container, ImageInputs } from './styles';
-
 import { addStoreRequest } from '../../../store/modules/store/actions';
-import { SaveButton } from '../../../components/Buttons';
 
 function NewStore() {
   const dispatch = useDispatch();
@@ -52,49 +50,63 @@ function NewStore() {
     }
   }
   return (
-    <Container>
-      <h2>Nova loja</h2>
-      <Form ref={formRef} onSubmit={handleSubmit}>
-        <ImageInputs>
+    <Form ref={formRef} onSubmit={handleSubmit}>
+      <Typography align="center" variant="h5">
+        Nova loja
+      </Typography>
+      <Grid container xs={12} justify="space-around">
+        <Grid item xs={12} md={5}>
           <Img name="logo" submitName="logoId" label="Logo:" />
+        </Grid>
+        <Grid item xs={12} md={5}>
           <Img name="cover" submitName="coverId" label="Imagem da campanha:" />
-        </ImageInputs>
+        </Grid>
+        <Grid item xs={12} sm={6} lg={5}>
+          <Input
+            name="name"
+            placeholder="Insira o nome da loja"
+            label="Nome:"
+          />
+          <Input name="url" placeholder="Insira a URL" label="URL:" />
+          <Input
+            name="address"
+            placeholder="Insira o endereço"
+            label="Endereço:"
+          />
+          <Input name="city" placeholder="Insira a cidade" label="Cidade:" />
+        </Grid>
 
-        <Input name="name" placeholder="Insira o nome da loja" label="Nome:" />
+        <Grid item xs={12} sm={6} lg={5}>
+          <Input
+            name="phone"
+            placeholder="Insira o telefone"
+            label="Telefone:"
+          />
 
-        <Input name="url" placeholder="Insira a URL" label="URL:" />
+          <Input
+            name="whatsapp"
+            placeholder="Insira o Whatsapp"
+            label="Whatsapp:"
+          />
+          <Input
+            name="instagram"
+            placeholder="Insira o Instagram"
+            label="Instagram:"
+          />
+          <Input
+            name="facebook"
+            placeholder="Insira o Facebook"
+            label="Facebook:"
+          />
+        </Grid>
 
-        <Input
-          name="address"
-          placeholder="Insira o endereço"
-          label="Endereço:"
-        />
-
-        <Input name="city" placeholder="Insira a cidade" label="Cidade:" />
-
-        <Input name="phone" placeholder="Insira o telefone" label="Telefone:" />
-
-        <Input
-          name="whatsapp"
-          placeholder="Insira o Whatsapp"
-          label="Whatsapp:"
-        />
-
-        <Input
-          name="instagram"
-          placeholder="Insira o Instagram"
-          label="Instagram:"
-        />
-
-        <Input
-          name="facebook"
-          placeholder="Insira o Facebook"
-          label="Facebook:"
-        />
-
-        <SaveButton type="submit">Salvar</SaveButton>
-      </Form>
-    </Container>
+        <Box m={2} width="100%" textAlign="right">
+          <Button variant="contained" color="primary" type="submit">
+            Salvar
+          </Button>
+        </Box>
+      </Grid>
+    </Form>
   );
 }
 
