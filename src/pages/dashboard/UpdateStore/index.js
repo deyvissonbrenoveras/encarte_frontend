@@ -6,11 +6,18 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 
 import { Form } from '@unform/web';
-import { Grid, Box, Button, Typography } from '@material-ui/core';
+import {
+  Grid,
+  Box,
+  Button,
+  Paper,
+  Tabs,
+  Tab,
+  makeStyles,
+} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { FaCheckSquare, FaSquare } from 'react-icons/fa';
 import {
-  Container,
   ProductImage,
   // SubContainer,
   ProductsArea,
@@ -25,15 +32,23 @@ import LoadingIcon from '../../../components/LoadingIcon';
 
 import { updateStoreRequest } from '../../../store/modules/store/actions';
 
+const useStyles = makeStyles({
+  root: {
+    flexGrow: 1,
+  },
+});
 function UpdateStore({ match }) {
   const id = Number(match.params.id);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [store, setStore] = useState({});
-
+  const [tabIndex, setTabIndex] = useState(0);
   const formRef = useRef(null);
+
   useEffect(() => {
     async function getStore() {
+      setLoading(true);
+
       try {
         const response = await api.get(`stores/${id}`);
         setLoading(false);
@@ -44,12 +59,10 @@ function UpdateStore({ match }) {
         setLoading(false);
       }
     }
-
     getStore();
-  }, []);
+  }, [tabIndex]);
   async function submitHandle(data) {
-    console.tron.log(data);
-
+    console.tron.log(formRef.current.getData());
     try {
       formRef.current.setErrors({});
 
@@ -83,77 +96,114 @@ function UpdateStore({ match }) {
       }
     }
   }
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
+  };
+  const classes = useStyles();
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  TabPanel.propTypes = {
+    children: PropTypes.node.isRequired,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+
   return (
-    <Container>
-      <Form ref={formRef} onSubmit={submitHandle}>
-        <Typography align="center" variant="h5">
-          Editar
-        </Typography>
+    <>
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        <Paper className={classes.root}>
+          <Tabs
+            value={tabIndex}
+            onChange={handleTabChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
+          >
+            <Tab label="Editar Loja" />
+            <Tab label="Produtos" />
+            <Tab label="Parceiros" />
+          </Tabs>
+          <TabPanel value={tabIndex} index={0}>
+            <Form ref={formRef} onSubmit={submitHandle}>
+              <Grid container xs={12} justify="space-around">
+                <Grid item xs={12} md={5}>
+                  <Img name="logo" submitName="logoId" label="Logo:" />
+                </Grid>
+                <Grid item xs={12} md={5}>
+                  <Img
+                    name="cover"
+                    submitName="coverId"
+                    label="Imagem da campanha:"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={5}>
+                  <Input
+                    name="name"
+                    placeholder="Insira o nome da loja"
+                    label="Nome:"
+                  />
+                  <Input name="url" placeholder="Insira a URL" label="URL:" />
+                  <Input
+                    name="address"
+                    placeholder="Insira o endereço"
+                    label="Endereço:"
+                  />
+                  <Input
+                    name="city"
+                    placeholder="Insira a cidade"
+                    label="Cidade:"
+                  />
+                </Grid>
 
-        {loading ? (
-          <LoadingIcon />
-        ) : (
-          <>
-            <Grid container xs={12} justify="space-around">
-              <Grid item xs={12} md={5}>
-                <Img name="logo" submitName="logoId" label="Logo:" />
-              </Grid>
-              <Grid item xs={12} md={5}>
-                <Img
-                  name="cover"
-                  submitName="coverId"
-                  label="Imagem da campanha:"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} lg={5}>
-                <Input
-                  name="name"
-                  placeholder="Insira o nome da loja"
-                  label="Nome:"
-                />
-                <Input name="url" placeholder="Insira a URL" label="URL:" />
-                <Input
-                  name="address"
-                  placeholder="Insira o endereço"
-                  label="Endereço:"
-                />
-                <Input
-                  name="city"
-                  placeholder="Insira a cidade"
-                  label="Cidade:"
-                />
-              </Grid>
+                <Grid item xs={12} sm={6} lg={5}>
+                  <Input
+                    name="phone"
+                    placeholder="Insira o telefone"
+                    label="Telefone:"
+                  />
 
-              <Grid item xs={12} sm={6} lg={5}>
-                <Input
-                  name="phone"
-                  placeholder="Insira o telefone"
-                  label="Telefone:"
-                />
+                  <Input
+                    name="whatsapp"
+                    placeholder="Insira o Whatsapp"
+                    label="Whatsapp:"
+                  />
+                  <Input
+                    name="instagram"
+                    placeholder="Insira o Instagram"
+                    label="Instagram:"
+                  />
+                  <Input
+                    name="facebook"
+                    placeholder="Insira o Facebook"
+                    label="Facebook:"
+                  />
+                </Grid>
 
-                <Input
-                  name="whatsapp"
-                  placeholder="Insira o Whatsapp"
-                  label="Whatsapp:"
-                />
-                <Input
-                  name="instagram"
-                  placeholder="Insira o Instagram"
-                  label="Instagram:"
-                />
-                <Input
-                  name="facebook"
-                  placeholder="Insira o Facebook"
-                  label="Facebook:"
-                />
+                <Box m={2} width="100%" textAlign="right">
+                  <Button variant="contained" color="primary" type="submit">
+                    Salvar
+                  </Button>
+                </Box>
               </Grid>
-
-              <Box m={2} width="100%" textAlign="right">
-                <Button variant="contained" color="primary" type="submit">
-                  Salvar
-                </Button>
-              </Box>
-            </Grid>
+            </Form>
+          </TabPanel>
+          <TabPanel value={tabIndex} index={1}>
             <ProductsArea>
               <label> Produtos</label>
               <Table>
@@ -190,10 +240,13 @@ function UpdateStore({ match }) {
                   ))}
               </Table>
             </ProductsArea>
-          </>
-        )}
-      </Form>
-    </Container>
+          </TabPanel>
+          <TabPanel value={tabIndex} index={2}>
+            Item Three
+          </TabPanel>
+        </Paper>
+      )}
+    </>
   );
 }
 

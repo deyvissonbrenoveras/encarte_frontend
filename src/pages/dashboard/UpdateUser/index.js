@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Form } from '@unform/web';
+import { Typography, Grid, Button, Box } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import Input from '../../../components/Input';
 import Select from '../../../components/Select';
@@ -10,15 +11,16 @@ import { updateRequest } from '../../../store/modules/user/actions';
 
 import LoadingIcon from '../../../components/LoadingIcon';
 
-import { Container, ActiveInputArea } from './styles';
-
 import Privilege from '../../../util/PrivilegeEnum';
-import { SaveButton } from '../../../components/Buttons';
 import api from '../../../services/api';
+import CheckboxInput from '../../../components/CheckboxInput';
 
 const selectOptions = [
   { value: Privilege.ROOT, label: 'Root' },
-  { value: Privilege.SYSTEM_ADMINISTRATOR, label: 'Administrador do sistema' },
+  {
+    value: Privilege.SYSTEM_ADMINISTRATOR,
+    label: 'Administrador do sistema',
+  },
   { value: Privilege.STORE_ADMINISTRATOR, label: 'Administrador de loja' },
   { value: Privilege.USER, label: 'Usuário' },
 ];
@@ -51,7 +53,7 @@ function UpdateUser({ match }) {
         email: Yup.string()
           .email('Insira um e-mail válido')
           .required('O e-mail é obrigatório'),
-        privilege: Yup.number(),
+        privilege: Yup.number().required('O privilégio é obrigatório'),
         active: Yup.boolean(),
         password: Yup.string(),
         confirmPassword: Yup.string().oneOf(
@@ -77,42 +79,48 @@ function UpdateUser({ match }) {
   return (
     <>
       {loading ? <LoadingIcon /> : null}
-      <Container>
-        <Form onSubmit={submitHandle} ref={formRef}>
-          <ActiveInputArea>
-            <Input type="checkbox" name="active" label="Ativo" />
-          </ActiveInputArea>
-          <Input
-            name="name"
-            placeholder="Insira o nome do usuário"
-            label="Nome:"
-          />
-          <Input
-            type="email"
-            name="email"
-            placeholder="Insira o e-mail do usuário"
-            label="E-mail:"
-          />
-          <Input
-            type="password"
-            name="password"
-            placeholder="Insira uma nova senha"
-            label="Senha:"
-          />
-          <Input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirme a senha"
-            label="Confirmação de senha:"
-          />
+      <Form onSubmit={submitHandle} ref={formRef}>
+        <Typography variant="h5">Editar Usuário</Typography>
 
-          <label>Privilegio:</label>
-          <div>
-            <Select name="privilege" options={selectOptions} />
-          </div>
-          <SaveButton type="submit">Salvar</SaveButton>
-        </Form>
-      </Container>
+        <Grid container>
+          <Grid item xs={12} md={4}>
+            <CheckboxInput name="active" label="Ativo" />
+            <Input
+              name="name"
+              placeholder="Insira o nome do usuário"
+              label="Nome:"
+            />
+            <Input
+              type="email"
+              name="email"
+              placeholder="Insira o e-mail do usuário"
+              label="E-mail:"
+            />
+            <Input
+              type="password"
+              name="password"
+              placeholder="Insira uma nova senha"
+              label="Senha:"
+            />
+            <Input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirme a senha"
+              label="Confirmação de senha:"
+            />
+            <Select
+              name="privilege"
+              options={selectOptions}
+              label="Privilegio:"
+            />
+          </Grid>
+          <Box m={2} width="100%" textAlign="right">
+            <Button variant="contained" color="primary" type="submit">
+              Salvar
+            </Button>
+          </Box>
+        </Grid>
+      </Form>
     </>
   );
 }

@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+  Typography,
+} from '@material-ui/core';
 import api from '../../../services/api';
 import LoadingIcon from '../../../components/LoadingIcon';
-import { Table, Td, Th, Tr } from '../../../components/Table';
 
 // import { Container } from './styles';
 
@@ -22,31 +31,37 @@ function Categories() {
     getData();
   }, []);
   return (
-    <Table>
-      <thead>
-        <Tr>
-          <Th>Id</Th>
-          <Th>Nome</Th>
-        </Tr>
-      </thead>
-      <tbody>
-        {loading ? (
-          <LoadingIcon />
-        ) : (
-          categories &&
-          categories.map((category) => (
-            <Tr>
-              <Td>{category.id}</Td>
-              <Td>
-                <Link to={`/updatecategory/${category.id}`}>
-                  {category.name}
-                </Link>
-              </Td>
-            </Tr>
-          ))
-        )}
-      </tbody>
-    </Table>
+    <>
+      <Typography align="center" variant="h5">
+        Categorias
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Nome</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {loading ? (
+              <LoadingIcon />
+            ) : (
+              categories.map((category) => (
+                <TableRow key={category.id}>
+                  <TableCell>{category.id}</TableCell>
+                  <TableCell>
+                    <Link to={`/updatecategory/${category.id}`}>
+                      {category.name}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 

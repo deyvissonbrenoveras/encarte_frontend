@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
+import { Typography, Grid, Button, Box } from '@material-ui/core';
 
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
@@ -12,9 +13,6 @@ import Input from '../../../components/Input';
 import Img from '../../../components/Img';
 import CheckboxInput from '../../../components/CheckboxInput';
 import Checkbox from '../../../components/Checkbox';
-import { Container, FormHeader } from './styles';
-
-import { SaveButton } from '../../../components/Buttons';
 import LoadingIcon from '../../../components/LoadingIcon';
 
 import { updatePartnerRequest } from '../../../store/modules/partner/actions';
@@ -91,35 +89,40 @@ function UpdatePartner({ match }) {
   return (
     <>
       {loadingPartner && <LoadingIcon />}
-      <Container>
-        <Form onSubmit={submitHandle} ref={formRef}>
-          <FormHeader>
-            <h2>Editar parceiro</h2>
+      <Form onSubmit={submitHandle} ref={formRef}>
+        <Typography variant="h5">Editar parceiro</Typography>
+        <Grid container justify="space-around" xs={12}>
+          <Grid item xs={12} md={4}>
+            <Img name="logo" submitName="logoId" label="Imagem:" />
             <CheckboxInput name="sponsorship" label="Patrocinador" />
-          </FormHeader>
-          <Img name="logo" submitName="logoId" label="Imagem:" />
+            <Input
+              name="name"
+              placeholder="Insira o nome do parceiro"
+              label="Nome:"
+            />
+            <Input name="site" placeholder="Insira o site" label="Site:" />
+            <Input
+              name="regionalAgent"
+              placeholder="Insira o nome do agente regional"
+              label="Agente regional:"
+            />
 
-          <Input
-            name="name"
-            placeholder="Insira o nome do parceiro"
-            label="Nome:"
-          />
-          <Input name="site" placeholder="Insira o site" label="Site:" />
-          <Input
-            name="regionalAgent"
-            placeholder="Insira o nome do agente regional"
-            label="Agente regional:"
-          />
-
-          <Input
-            name="agentWhatsapp"
-            placeholder="Insira o Whatsapp do agente regional"
-            label="Whatsapp do agente regional"
-          />
-          <Checkbox name="stores" options={choiceOptions} />
-          <SaveButton type="submit">Salvar</SaveButton>
-        </Form>
-      </Container>
+            <Input
+              name="agentWhatsapp"
+              placeholder="Insira o Whatsapp do agente regional"
+              label="Whatsapp do agente regional"
+            />
+          </Grid>
+          <Grid item xs={12} md={7}>
+            <Checkbox name="stores" options={choiceOptions} label="Lojas" />
+          </Grid>
+          <Box m={2} width="100%" textAlign="right">
+            <Button variant="contained" color="primary" type="submit">
+              Salvar
+            </Button>
+          </Box>
+        </Grid>
+      </Form>
     </>
   );
 }

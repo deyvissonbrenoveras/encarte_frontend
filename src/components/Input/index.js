@@ -22,7 +22,7 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
         setShrink(!!value);
       },
       setValue: (ref, value) => {
-        ref.value = value;
+        ref.value = value || '';
         setShrink(!!value);
       },
     });
@@ -64,6 +64,7 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
         variant={variant}
         size={size}
         type={type}
+        defaultValue={defaultValue || ''}
         InputLabelProps={{
           shrink,
         }}

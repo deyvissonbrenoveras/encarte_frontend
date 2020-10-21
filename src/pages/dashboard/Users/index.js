@@ -2,9 +2,17 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FaCheckSquare, FaSquare } from 'react-icons/fa';
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+  Typography,
+} from '@material-ui/core';
 import { loadUsersRequest } from '../../../store/modules/user/actions';
-
-import { Table, Td, Th, Tr } from '../../../components/Table';
 
 import { Container } from './styles';
 import LoadingIcon from '../../../components/LoadingIcon';
@@ -32,40 +40,47 @@ function Users() {
     }
   }
   return (
-    <Container>
-      <h2>Usuários</h2>
-      {loading ? (
-        <LoadingIcon />
-      ) : (
-        <Table>
-          <Tr>
-            <Th>Id</Th>
-            <Th>Nome</Th>
-            <Th>E-mail</Th>
-            <Th>Ativo</Th>
-            <Th>Privilégio</Th>
-          </Tr>
-          {users &&
-            users.map((user) => (
-              <Tr>
-                <Td>{user.id}</Td>
-                <Td>
-                  <Link to={`/updateuser/${user.id}`}>{user.name}</Link>
-                </Td>
-                <Td>{user.email}</Td>
-                <Td>
-                  {user.active ? (
-                    <FaCheckSquare color="#4d88ff" />
-                  ) : (
-                    <FaSquare color="#dbdbdb" />
-                  )}
-                </Td>
-                <Td>{renderPrivilegeSwitch(user.privilege)}</Td>
-              </Tr>
-            ))}
+    <>
+      <Typography align="center" variant="h5">
+        Categorias
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Nome</TableCell>
+              <TableCell>E-mail</TableCell>
+              <TableCell>Ativo</TableCell>
+              <TableCell>Privilégio</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {loading ? (
+              <LoadingIcon />
+            ) : (
+              users.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>
+                    <Link to={`/updateuser/${user.id}`}>{user.name}</Link>
+                  </TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    {user.active ? (
+                      <FaCheckSquare color="#4d88ff" />
+                    ) : (
+                      <FaSquare color="#dbdbdb" />
+                    )}
+                  </TableCell>
+                  <TableCell>{renderPrivilegeSwitch(user.privilege)}</TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
         </Table>
-      )}
-    </Container>
+      </TableContainer>
+    </>
   );
 }
 

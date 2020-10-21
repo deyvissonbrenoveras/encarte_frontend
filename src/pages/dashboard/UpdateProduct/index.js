@@ -11,6 +11,7 @@ import Input from '../../../components/Input';
 import CheckboxInput from '../../../components/CheckboxInput';
 import Img from '../../../components/Img';
 import Checkbox from '../../../components/Checkbox';
+import Select from '../../../components/Select';
 
 import { updateProductRequest } from '../../../store/modules/product/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
@@ -24,6 +25,7 @@ function UpdateProduct({ match }) {
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [stores, setStores] = useState([]);
   const [choiceOptions, setChoiceOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   useEffect(() => {
     async function getData() {
@@ -36,6 +38,15 @@ function UpdateProduct({ match }) {
           url: store.logo ? store.logo.url : null,
         }));
         setChoiceOptions(options);
+
+        const categoriesResponse = await api.get('categories');
+        setCategoryOptions(
+          categoriesResponse.data.map((category) => ({
+            value: category.id,
+            label: category.name,
+          }))
+        );
+
         const productResponse = await api.get(`products/${id}`);
         setLoadingProduct(false);
         formRef.current.setData(productResponse.data);
@@ -48,6 +59,7 @@ function UpdateProduct({ match }) {
   }, []);
 
   async function submitHandle(data) {
+    console.tron.log(data);
     try {
       formRef.current.setErrors({});
       const schema = Yup.object().shape({
@@ -61,6 +73,7 @@ function UpdateProduct({ match }) {
           .positive('Números negativos não são permitidos')
           .required('O preço é obrigatório'),
         featured: Yup.boolean(),
+        categoryId: Yup.number().positive().nullable(true),
       });
       await schema.validate(data, {
         abortEarly: false,
@@ -114,6 +127,7 @@ function UpdateProduct({ match }) {
             multiline
             rows={4}
           />
+          <Select name="categoryId" options={categoryOptions} isClearable />
         </Grid>
         <Grid item xs={12} md={7}>
           <Checkbox name="stores" options={choiceOptions} label="Lojas" />

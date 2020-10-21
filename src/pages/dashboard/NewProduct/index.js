@@ -15,14 +15,18 @@ import Img from '../../../components/Img';
 // import { SaveButton } from '../../../components/Buttons';
 import { addProductRequest } from '../../../store/modules/product/actions';
 import Checkbox from '../../../components/Checkbox';
+import Select from '../../../components/Select';
 import api from '../../../services/api';
+import LoadingIcon from '../../../components/LoadingIcon';
 
 function NewProduct() {
   const dispatch = useDispatch();
   const formRef = useRef(null);
   const [choiceOptions, setChoiceOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    async function getStores() {
+    async function getData() {
       try {
         const response = await api.get('stores');
         const options = response.data.map((store) => ({
@@ -32,11 +36,19 @@ function NewProduct() {
           url: store.logo ? store.logo.url : null,
         }));
         setChoiceOptions(options);
+        const categoriesResponse = await api.get('categories');
+        setCategoryOptions(
+          categoriesResponse.data.map((category) => ({
+            value: category.id,
+            label: category.name,
+          }))
+        );
+        setLoading(false);
       } catch (err) {
         toast.error('Houve um erro ao buscar as lojas');
       }
     }
-    getStores();
+    getData();
   }, []);
 
   async function submitHandle(data) {
@@ -55,6 +67,7 @@ function NewProduct() {
           .required('O preço é obrigatório'),
         featured: Yup.boolean(),
         stores: Yup.array().min(1, 'Selecione pelo menos uma loja'),
+        categoryId: Yup.number().positive().nullable(true),
       });
       await schema.validate(data, {
         abortEarly: false,
@@ -75,39 +88,44 @@ function NewProduct() {
     <Form ref={formRef} onSubmit={submitHandle}>
       <Typography variant="h5">Novo Produto</Typography>
 
-      <Grid container justify="space-around" xs={12}>
-        <Grid item xs={12} md={4}>
-          <Img name="image" submitName="fileId" label="Imagem:" />
-          <CheckboxInput name="featured" label="Destaque" />
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        <Grid container justify="space-around" xs={12}>
+          <Grid item xs={12} md={4}>
+            <Img name="image" submitName="fileId" label="Imagem:" />
+            <CheckboxInput name="featured" label="Destaque" />
 
-          <Input
-            name="name"
-            placeholder="Insira o nome do produto"
-            label="Nome:"
-          />
-          <Input
-            type="number"
-            name="price"
-            placeholder="Insira o preço"
-            label="Preço:"
-          />
-          <Input
-            name="description"
-            placeholder="Insira a descrição"
-            label="Descrição:"
-            multiline
-            rows={4}
-          />
+            <Input
+              name="name"
+              placeholder="Insira o nome do produto"
+              label="Nome:"
+            />
+            <Input
+              type="number"
+              name="price"
+              placeholder="Insira o preço"
+              label="Preço:"
+            />
+            <Input
+              name="description"
+              placeholder="Insira a descrição"
+              label="Descrição:"
+              multiline
+              rows={4}
+            />
+            <Select name="categoryId" options={categoryOptions} isClearable />
+          </Grid>
+          <Grid item xs={12} md={7}>
+            <Checkbox name="stores" options={choiceOptions} label="Lojas" />
+          </Grid>
+          <Box m={2} width="100%" textAlign="right">
+            <Button variant="contained" color="primary" type="submit">
+              Salvar
+            </Button>
+          </Box>
         </Grid>
-        <Grid item xs={12} md={7}>
-          <Checkbox name="stores" options={choiceOptions} label="Lojas" />
-        </Grid>
-        <Box m={2} width="100%" textAlign="right">
-          <Button variant="contained" color="primary" type="submit">
-            Salvar
-          </Button>
-        </Box>
-      </Grid>
+      )}
     </Form>
   );
 }

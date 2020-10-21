@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
+import { Typography, Grid, Button, Box } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import Input from '../../../components/Input';
-import { SaveButton } from '../../../components/Buttons';
 
 import { updateCategoryRequest } from '../../../store/modules/category/actions';
 import api from '../../../services/api';
@@ -50,17 +50,23 @@ function UpdateCategory({ match }) {
     }
   }
   return (
-    <div>
-      <h2>Editar categoria</h2>
-      <Form ref={formRef} onSubmit={submitHandle}>
-        <Input
-          name="name"
-          placeholder="Insira o nome da categoria"
-          label="Categoria:"
-        />
-        <SaveButton type="submit">Salvar</SaveButton>
-      </Form>
-    </div>
+    <Form ref={formRef} onSubmit={submitHandle}>
+      <Typography variant="h5">Editar categoria</Typography>
+      <Grid container xs={12}>
+        <Grid item xs={12} md={4}>
+          <Input
+            name="name"
+            placeholder="Insira o nome da categoria"
+            label="Categoria:"
+          />
+        </Grid>
+        <Box m={2} width="100%" textAlign="right">
+          <Button variant="contained" color="primary" type="submit">
+            Salvar
+          </Button>
+        </Box>
+      </Grid>
+    </Form>
   );
 }
 
