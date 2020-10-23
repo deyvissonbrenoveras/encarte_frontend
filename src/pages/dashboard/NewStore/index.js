@@ -54,7 +54,7 @@ function NewStore() {
       <Typography align="center" variant="h5">
         Nova loja
       </Typography>
-      <Grid container xs={12} justify="space-around">
+      <Grid container justify="space-around">
         <Grid item xs={12} md={5}>
           <Img name="logo" submitName="logoId" label="Logo:" />
         </Grid>

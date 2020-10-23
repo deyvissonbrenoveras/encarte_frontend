@@ -52,7 +52,7 @@ function UpdateCategory({ match }) {
   return (
     <Form ref={formRef} onSubmit={submitHandle}>
       <Typography variant="h5">Editar categoria</Typography>
-      <Grid container xs={12}>
+      <Grid container>
         <Grid item xs={12} md={4}>
           <Input
             name="name"

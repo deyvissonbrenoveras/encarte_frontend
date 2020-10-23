@@ -69,7 +69,7 @@ function NewPartner() {
   return (
     <Form onSubmit={submitHandle} ref={formRef}>
       <Typography variant="h5">Novo parceiro</Typography>
-      <Grid container justify="space-around" xs={12}>
+      <Grid container justify="space-around">
         <Grid item xs={12} md={4}>
           <Img name="logo" submitName="logoId" label="Imagem:" />
           <CheckboxInput name="sponsorship" label="Patrocinador" />

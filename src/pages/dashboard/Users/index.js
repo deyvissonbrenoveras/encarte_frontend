@@ -14,7 +14,6 @@ import {
 } from '@material-ui/core';
 import { loadUsersRequest } from '../../../store/modules/user/actions';
 
-import { Container } from './styles';
 import LoadingIcon from '../../../components/LoadingIcon';
 
 function Users() {
@@ -57,7 +56,11 @@ function Users() {
           </TableHead>
           <TableBody>
             {loading ? (
-              <LoadingIcon />
+              <TableRow>
+                <TableCell>
+                  <LoadingIcon />
+                </TableCell>
+              </TableRow>
             ) : (
               users.map((user) => (
                 <TableRow key={user.id}>

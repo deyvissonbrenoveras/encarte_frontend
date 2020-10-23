@@ -33,7 +33,7 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
       setValue(_, value) {
         if (value) {
           setFile(value.id);
-          setPreview(value.url);
+          setPreview(value.url || '');
         }
       },
     });
@@ -47,7 +47,7 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
         path: 'dataset.file',
         clearValue(ref) {
           ref.value = '';
-          setPreview(null);
+          setPreview('');
         },
         setValue() {},
       });
@@ -71,7 +71,12 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
             {...rest}
           />
         </CardContent>
-        <CardMedia className={classes.media} image={preview} title={label} />
+        <CardMedia
+          component="div"
+          className={classes.media}
+          image={preview || ''}
+          title={label || ''}
+        />
       </CardActionArea>
       {error && <span className={classes.error}>{error}</span>}
     </Card>

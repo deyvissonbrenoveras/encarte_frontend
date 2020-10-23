@@ -13,20 +13,20 @@ import {
   Paper,
   Tabs,
   Tab,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Avatar,
   makeStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { FaCheckSquare, FaSquare } from 'react-icons/fa';
-import {
-  ProductImage,
-  // SubContainer,
-  ProductsArea,
-} from './styles';
 import api from '../../../services/api';
 import Input from '../../../components/Input';
 import Img from '../../../components/Img';
-
-import { Table, Td, Th, Tr } from '../../../components/Table';
 
 import LoadingIcon from '../../../components/LoadingIcon';
 
@@ -53,6 +53,7 @@ function UpdateStore({ match }) {
         const response = await api.get(`stores/${id}`);
         setLoading(false);
         setStore(response.data);
+        console.tron.log(response.data);
         formRef.current.setData(response.data);
       } catch (err) {
         toast.error('Houve um erro ao carregar as informações da loja');
@@ -141,7 +142,7 @@ function UpdateStore({ match }) {
           </Tabs>
           <TabPanel value={tabIndex} index={0}>
             <Form ref={formRef} onSubmit={submitHandle}>
-              <Grid container xs={12} justify="space-around">
+              <Grid container justify="space-around">
                 <Grid item xs={12} md={5}>
                   <Img name="logo" submitName="logoId" label="Logo:" />
                 </Grid>
@@ -204,45 +205,84 @@ function UpdateStore({ match }) {
             </Form>
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
-            <ProductsArea>
-              <label> Produtos</label>
-              <Table>
-                <Tr>
-                  <Th>Imagem</Th>
-                  <Th>Nome</Th>
-                  <Th>Preço</Th>
-                  <Th>Destaque</Th>
-                </Tr>
-                {store &&
-                  store.products &&
-                  store.products.map((product) => (
-                    <Tr key={product.id}>
-                      <Td>
-                        <ProductImage
-                          src={product.image.url}
-                          alt={product.name}
-                        />
-                      </Td>
-                      <Td>
-                        <Link to={`/updateproduct/${product.id}`}>
-                          {product.name}
-                        </Link>
-                      </Td>
-                      <Td>{product.price}</Td>
-                      <Td>
-                        {product.featured ? (
-                          <FaCheckSquare color="#4d88ff" />
-                        ) : (
-                          <FaSquare color="#dbdbdb" />
-                        )}
-                      </Td>
-                    </Tr>
-                  ))}
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Imagem</TableCell>
+                    <TableCell>Nome</TableCell>
+                    <TableCell>Preço</TableCell>
+                    <TableCell>Destaque</TableCell>
+                    <TableCell>Categoria</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {loading ? (
+                    <LoadingIcon />
+                  ) : (
+                    store &&
+                    store.products &&
+                    store.products.map((product) => (
+                      <TableRow key={product.id}>
+                        <TableCell>
+                          <Avatar src={product.image.url} alt={product.name} />
+                        </TableCell>
+                        <TableCell>
+                          <Link to={`/updateproduct/${product.id}`}>
+                            {product.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell>{product.price}</TableCell>
+                        <TableCell>
+                          {product.featured ? (
+                            <FaCheckSquare color="#4d88ff" />
+                          ) : (
+                            <FaSquare color="#dbdbdb" />
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {product.category
+                            ? product.category.name
+                            : 'Sem categoria'}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
               </Table>
-            </ProductsArea>
+            </TableContainer>
           </TabPanel>
           <TabPanel value={tabIndex} index={2}>
-            Item Three
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Logo</TableCell>
+                    <TableCell>Nome</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {loading ? (
+                    <LoadingIcon />
+                  ) : (
+                    store &&
+                    store.partners &&
+                    store.partners.map((partner) => (
+                      <TableRow key={partner.id}>
+                        <TableCell>
+                          <Avatar src={partner.logo.url} alt={partner.name} />
+                        </TableCell>
+                        <TableCell>
+                          <Link to={`/updatepartner/${partner.id}`}>
+                            {partner.name}
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </TabPanel>
         </Paper>
       )}

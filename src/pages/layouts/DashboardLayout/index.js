@@ -19,7 +19,7 @@ import {
   // Typography,
   Paper,
 } from '@material-ui/core';
-import { FaUser, FaStore, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
+import { FaUser, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
 import { GiCheckboxTree } from 'react-icons/gi';
 import { AiFillHome } from 'react-icons/ai';
 import { useTheme } from '@material-ui/core/styles';
@@ -105,13 +105,6 @@ function DashboardLayout({ children }) {
             <ListItemText primary="Dashboard" />
           </ListItem>
 
-          <ListItem button component={Link} to="/newstore">
-            <ListItemIcon>
-              <FaStore className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Nova Loja" />
-          </ListItem>
-
           <ListItem button component={Link} to="/stores">
             <ListItemIcon>
               <FaBoxOpen className={classes.list} />
@@ -119,18 +112,11 @@ function DashboardLayout({ children }) {
             <ListItemText primary="Lojas" />
           </ListItem>
 
-          <ListItem button component={Link} to="/newproduct">
+          <ListItem button component={Link} to="/products">
             <ListItemIcon>
               <FaBoxOpen className={classes.list} />
             </ListItemIcon>
-            <ListItemText primary="Novo produto" />
-          </ListItem>
-
-          <ListItem button component={Link} to="/newpartner">
-            <ListItemIcon>
-              <FaUserFriends className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Novo parceiro" />
+            <ListItemText primary="Produtos" />
           </ListItem>
 
           <ListItem button component={Link} to="/partners">
@@ -138,13 +124,6 @@ function DashboardLayout({ children }) {
               <FaUserFriends className={classes.list} />
             </ListItemIcon>
             <ListItemText primary="Parceiros" />
-          </ListItem>
-
-          <ListItem button component={Link} to="/newcategory">
-            <ListItemIcon>
-              <GiCheckboxTree className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Nova categoria" />
           </ListItem>
 
           <ListItem button component={Link} to="/categories">

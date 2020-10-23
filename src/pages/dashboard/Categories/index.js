@@ -12,8 +12,7 @@ import {
 } from '@material-ui/core';
 import api from '../../../services/api';
 import LoadingIcon from '../../../components/LoadingIcon';
-
-// import { Container } from './styles';
+import AddButton from '../../../components/AddButton';
 
 function Categories() {
   const [loading, setLoading] = useState(true);
@@ -32,6 +31,7 @@ function Categories() {
   }, []);
   return (
     <>
+      <AddButton to="newcategory" />
       <Typography align="center" variant="h5">
         Categorias
       </Typography>
@@ -45,7 +45,11 @@ function Categories() {
           </TableHead>
           <TableBody>
             {loading ? (
-              <LoadingIcon />
+              <TableRow>
+                <TableCell>
+                  <LoadingIcon />
+                </TableCell>
+              </TableRow>
             ) : (
               categories.map((category) => (
                 <TableRow key={category.id}>

@@ -64,7 +64,7 @@ export default CheckboxInput;
 
 CheckboxInput.propTypes = {
   name: PropTypes.string.isRequired,
-  options: PropTypes.shape.isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
   label: PropTypes.string,
 };
 

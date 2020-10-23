@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   TableContainer,
@@ -14,10 +13,10 @@ import {
   Avatar,
   Typography,
 } from '@material-ui/core';
+import AddButton from '../../../components/AddButton';
 // import TableTest from './TableTest';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
-import { Container } from './styles';
 
 function Stores() {
   const dispatch = useDispatch();
@@ -30,7 +29,9 @@ function Stores() {
     getStores();
   }, []);
   return (
-    <Container>
+    <>
+      <AddButton to="newstore" />
+
       <Typography align="center" variant="h5">
         Lojas
       </Typography>
@@ -45,7 +46,11 @@ function Stores() {
           </TableHead>
           <TableBody>
             {loading ? (
-              <LoadingIcon />
+              <TableRow>
+                <TableCell>
+                  <LoadingIcon />
+                </TableCell>
+              </TableRow>
             ) : (
               stores.map((store) => (
                 <TableRow key={store.id}>
@@ -61,9 +66,8 @@ function Stores() {
             )}
           </TableBody>
         </Table>
-        {/* <TableTest label="Lojas" /> */}
       </TableContainer>
-    </Container>
+    </>
   );
 }
 export default Stores;
