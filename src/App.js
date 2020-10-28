@@ -4,8 +4,9 @@ import { ToastContainer } from 'react-toastify';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core';
 import GlobalStyle from './styles/global';
-
+import theme from './styles/theme';
 import './config/ReactotronConfig';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,12 +21,14 @@ function App() {
     <>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <Router history={history}>
-            <Routes />
-            <GlobalStyle />
-            <CssBaseline />
-            <ToastContainer autoClose={3000} />
-          </Router>
+          <ThemeProvider theme={theme}>
+            <Router history={history}>
+              <Routes />
+              <GlobalStyle />
+              <CssBaseline />
+              <ToastContainer autoClose={3000} />
+            </Router>
+          </ThemeProvider>
         </PersistGate>
       </Provider>
     </>

@@ -2,12 +2,16 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import Route from './Route';
 
+// LAYOUTS
 import AuthLayout from '../pages/layouts/AuthLayout';
 import DashboardLayout from '../pages/layouts/DashboardLayout';
-
+import ShowcaseLayout from '../pages/layouts/ShowcaseLayout';
+// AUTH
 import Login from '../pages/Login';
-import Dashboard from '../pages/dashboard/DashboardIndex';
 import Signup from '../pages/Signup';
+
+// DASHBOARD
+import Dashboard from '../pages/dashboard/DashboardIndex';
 import Stores from '../pages/dashboard/Stores';
 import NewStore from '../pages/dashboard/NewStore';
 import UpdateStore from '../pages/dashboard/UpdateStore';
@@ -23,11 +27,20 @@ import Categories from '../pages/dashboard/Categories';
 import UpdateCategory from '../pages/dashboard/UpdateCategory';
 import Products from '../pages/dashboard/Products';
 
+// SHOWCASE
+import Store from '../pages/showcase/Store';
+
 function Routes() {
   return (
     <Switch>
+      {/* AUTH */}
       <Route path="/login" component={Login} layout={AuthLayout} />
       <Route path="/signup" component={Signup} layout={AuthLayout} />
+
+      {/* SHOWCASE */}
+      <Route path="/loja/:url" component={Store} layout={ShowcaseLayout} />
+
+      {/* DASHBOARD */}
       <Route
         exact
         isPrivate

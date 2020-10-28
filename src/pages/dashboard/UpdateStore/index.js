@@ -50,7 +50,7 @@ function UpdateStore({ match }) {
       setLoading(true);
 
       try {
-        const response = await api.get(`stores/${id}`);
+        const response = await api.get(`store`, { params: { id } });
         setLoading(false);
         setStore(response.data);
         console.tron.log(response.data);
