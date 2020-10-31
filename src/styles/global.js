@@ -35,13 +35,15 @@ export default createGlobalStyle`
         list-style: none;
     }
     ::-webkit-scrollbar {
-        width: 10px;
+        width: 6px;
+        height: 2px;
+        
     }
-    ::-webkit-scrollbar-track {
+    ::-webkit-scrollbar-track {        
         margin: 20px 0;
         background: #fff;
     }
-    ::-webkit-scrollbar-thumb {      
+    ::-webkit-scrollbar-thumb {     
         height: 10px;  
         background: var(--primary-color);
         border-radius: 10px;
