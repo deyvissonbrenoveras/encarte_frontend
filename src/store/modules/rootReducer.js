@@ -7,6 +7,7 @@ import store from './store/reducer';
 import product from './product/reducer';
 import partner from './partner/reducer';
 import category from './category/reducer';
+import showcase from './showcase/reducer';
 
 export default combineReducers({
   auth,
@@ -16,4 +17,5 @@ export default combineReducers({
   product,
   partner,
   category,
+  showcase,
 });

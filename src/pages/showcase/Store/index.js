@@ -9,54 +9,13 @@ import {
   CardContent,
   Typography,
   Avatar,
-  makeStyles,
 } from '@material-ui/core';
 import api from '../../../services/api';
 
-const useStyles = makeStyles((theme) => ({
-  name: { textAlign: 'center' },
-  cover: {},
-  cardArea: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // maxHeight: 150,
-  },
-  media: {
-    maxHeight: 150,
-    objectFit: 'contain',
-  },
-  largeAvatar: {
-    width: theme.spacing(8),
-    height: theme.spacing(8),
-    margin: theme.spacing(1),
-  },
-  partnerList: {
-    padding: theme.spacing(1),
-    overflow: 'scroll',
-    width: '100%',
-    display: 'flex',
-    fontSize: 10,
-    textAlign: 'center',
-    '& li': {
-      marginLeft: theme.spacing(1),
-    },
-  },
-  overflow: {
-    maxWidth: 100,
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
-  featuredProductCard: {
-    height: 150,
-  },
-  featuredProductImage: {
-    maxWidth: 100,
-    maxHeight: 100,
-    objectFit: 'contain',
-  },
-}));
+import history from '../../../services/history';
+
+import useStyles from './styles';
+
 function Store({ match }) {
   const classes = useStyles();
   const [store, setStore] = useState({});
@@ -94,27 +53,53 @@ function Store({ match }) {
             </CardActionArea>
           )}
         </Card>
+        <Typography
+          variant="subtitle2"
+          component="h2"
+          className={classes.subtitle}
+        >
+          Parceiros
+        </Typography>
         <ul className={classes.partnerList}>
           {store.partners &&
-            store.partners.map((partner) => (
-              <li key={partner.id}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={partner.logo ? partner.logo.url : ''}
-                  className={classes.largeAvatar}
-                />
-                <div className={classes.overflow}>{partner.name}</div>
-              </li>
-            ))}
+            store.partners
+              .filter((partner) => !partner.sponsorship)
+              .map((partner) => (
+                <li key={partner.id}>
+                  <Avatar
+                    alt={partner.name}
+                    src={partner.logo ? partner.logo.url : ''}
+                    className={classes.largeAvatar}
+                  />
+                  <div className={classes.overflow}>{partner.name}</div>
+                </li>
+              ))}
         </ul>
-        <Grid container>
+        <Typography
+          variant="subtitle2"
+          component="h2"
+          className={classes.subtitle}
+        >
+          Produtos em destaque
+        </Typography>
+        <Grid container justify="space-around">
           {store.products &&
             store.products
               .filter((product) => product.featured)
               .map((product) => (
-                <Grid item xs={4}>
-                  <Card className={classes.featuredProductCard}>
-                    <CardActionArea className={classes.cardArea}>
+                <Grid
+                  item
+                  xs={4}
+                  className={classes.productGrid}
+                  key={product.id}
+                >
+                  <Card
+                    className={classes.featuredProductCard}
+                    onClick={() => {
+                      history.push(`/loja/${store.url}/produto/${product.id}`);
+                    }}
+                  >
+                    <CardActionArea className={classes.productCardArea}>
                       <CardMedia
                         component="img"
                         className={classes.featuredProductImage}
@@ -127,6 +112,28 @@ function Store({ match }) {
                 </Grid>
               ))}
         </Grid>
+        <Typography
+          variant="subtitle2"
+          component="h2"
+          className={classes.subtitle}
+        >
+          Patrocinadores
+        </Typography>
+        <ul className={classes.partnerList}>
+          {store.partners &&
+            store.partners
+              .filter((partner) => partner.sponsorship)
+              .map((partner) => (
+                <li key={partner.id}>
+                  <Avatar
+                    alt={partner.name}
+                    src={partner.logo ? partner.logo.url : ''}
+                    className={classes.largeAvatar}
+                  />
+                  <div className={classes.overflow}>{partner.name}</div>
+                </li>
+              ))}
+        </ul>
       </Grid>
     </Grid>
   );

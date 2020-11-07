@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   loading: false,
   product: null,
 };
-export default function store(state = INITIAL_STATE, action) {
+export default function product(state = INITIAL_STATE, action) {
   switch (action.type) {
     case '@product/ADD_REQUEST':
       return produce(state, (draft) => {

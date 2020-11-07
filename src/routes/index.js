@@ -29,6 +29,7 @@ import Products from '../pages/dashboard/Products';
 
 // SHOWCASE
 import Store from '../pages/showcase/Store';
+import Product from '../pages/showcase/Product';
 
 function Routes() {
   return (
@@ -38,7 +39,17 @@ function Routes() {
       <Route path="/signup" component={Signup} layout={AuthLayout} />
 
       {/* SHOWCASE */}
-      <Route path="/loja/:url" component={Store} layout={ShowcaseLayout} />
+      <Route
+        exact
+        path="/loja/:url"
+        component={Store}
+        layout={ShowcaseLayout}
+      />
+      <Route
+        path="/loja/:url/produto/:productId"
+        component={Product}
+        layout={ShowcaseLayout}
+      />
 
       {/* DASHBOARD */}
       <Route

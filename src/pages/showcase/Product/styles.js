@@ -1,0 +1,66 @@
+import { makeStyles } from '@material-ui/core';
+
+export default makeStyles((theme) => ({
+  cover: {},
+  cardArea: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // maxHeight: 150,
+  },
+  media: {
+    maxHeight: 320,
+    objectFit: 'contain',
+  },
+  cardContent: {
+    padding: theme.spacing(0.5),
+  },
+  productName: {
+    width: '100%',
+    height: 106,
+    fontSize: 22,
+    border: `1px solid ${theme.palette.greyBorder}`,
+    borderRadius: 3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.stoke,
+  },
+  productPrice: {
+    marginTop: theme.spacing(2),
+    width: '100%',
+    height: 46,
+    fontSize: 22,
+    border: `1px solid ${theme.palette.greyBorder}`,
+    borderRadius: 3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.encarte,
+    '&::before': {
+      content: '"Preço:"',
+      marginRight: theme.spacing(1),
+      color: theme.palette.stoke,
+    },
+  },
+  productDescription: {
+    marginTop: theme.spacing(3),
+    width: '100%',
+    textAlign: 'left',
+    fontSize: 18,
+    minHeight: 350,
+    border: `1px solid ${theme.palette.greyBorder}`,
+    borderRadius: 3,
+    padding: theme.spacing(1),
+    position: 'relative',
+    '&::before': {
+      content: '"Descrição"',
+      fontSize: 14,
+      position: 'absolute',
+      top: -18,
+      left: 0,
+      color: theme.palette.stoke,
+      fontWeight: '600',
+    },
+  },
+}));
