@@ -8,7 +8,6 @@ import {
   CardContent,
   CardActionArea,
   CardMedia,
-  Paper,
 } from '@material-ui/core';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';

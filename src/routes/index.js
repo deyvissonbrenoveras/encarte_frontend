@@ -30,6 +30,7 @@ import Products from '../pages/dashboard/Products';
 // SHOWCASE
 import Store from '../pages/showcase/Store';
 import Product from '../pages/showcase/Product';
+import Info from '../pages/showcase/Info';
 
 function Routes() {
   return (
@@ -45,6 +46,7 @@ function Routes() {
         component={Store}
         layout={ShowcaseLayout}
       />
+      <Route path="/loja/:url/info" component={Info} layout={ShowcaseLayout} />
       <Route
         path="/loja/:url/produto/:productId"
         component={Product}

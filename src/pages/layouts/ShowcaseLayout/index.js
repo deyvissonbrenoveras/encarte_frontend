@@ -5,7 +5,8 @@ import { Store, ShoppingCart } from '@material-ui/icons';
 import { useStyles } from './styles';
 import logo from '../../../assets/logo.png';
 
-function ShowcaseLayout({ children }) {
+function ShowcaseLayout({ children, match }) {
+  const { url } = match.params;
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -13,16 +14,10 @@ function ShowcaseLayout({ children }) {
         <Toolbar className={classes.toolbar}>
           <img className={classes.logo} src={logo} alt="logo" />
           <div className={classes.iconButtons}>
-            {/* <Link to="/teste">
-              <Store />
-            </Link>
-            <Link to="/teste">
-              <ShoppingCart />
-            </Link> */}
-            <IconButton href="/teste">
+            <IconButton href={`/loja/${url}/info`}>
               <Store className={classes.icon} />
             </IconButton>
-            <IconButton href="/teste">
+            <IconButton href={`/loja/${url}/carrinho`}>
               <ShoppingCart className={classes.icon} />
             </IconButton>
           </div>
@@ -37,4 +32,9 @@ export default ShowcaseLayout;
 
 ShowcaseLayout.propTypes = {
   children: PropTypes.element.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      url: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };

@@ -5,5 +5,6 @@ export default createMuiTheme({
     encarte: '#ed2f57',
     stoke: '#383838',
     greyBorder: '#d8d8d8',
+    descriptionBackground: '#FBFBFB',
   },
 });
