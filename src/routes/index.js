@@ -31,6 +31,7 @@ import Products from '../pages/dashboard/Products';
 import Store from '../pages/showcase/Store';
 import Product from '../pages/showcase/Product';
 import Info from '../pages/showcase/Info';
+import Partner from '../pages/showcase/Partner';
 
 function Routes() {
   return (
@@ -50,6 +51,11 @@ function Routes() {
       <Route
         path="/loja/:url/produto/:productId"
         component={Product}
+        layout={ShowcaseLayout}
+      />
+      <Route
+        path="/loja/:url/parceiro/:partnerId"
+        component={Partner}
         layout={ShowcaseLayout}
       />
 

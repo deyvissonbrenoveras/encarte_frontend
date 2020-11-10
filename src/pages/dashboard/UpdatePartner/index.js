@@ -59,6 +59,8 @@ function UpdatePartner({ match }) {
         agentWhatsapp: Yup.number('Whatsapp inválido').typeError(
           'Whatsapp inválido'
         ),
+        instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
         regionalAgent: Yup.string().max(50, 'Máximo de 50 caracteres'),
         sponsorship: Yup.boolean(),
       });
@@ -111,6 +113,16 @@ function UpdatePartner({ match }) {
               name="agentWhatsapp"
               placeholder="Insira o Whatsapp do agente regional"
               label="Whatsapp do agente regional"
+            />
+            <Input
+              name="instagram"
+              placeholder="Insira o Instagram"
+              label="Instagram:"
+            />
+            <Input
+              name="facebook"
+              placeholder="Insira o Facebook"
+              label="Facebook:"
             />
           </Grid>
           <Grid item xs={12} md={7}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,13 @@ import {
   CardMedia,
   IconButton,
 } from '@material-ui/core';
-import { Facebook, Instagram, WhatsApp } from '@material-ui/icons';
+import {
+  Link as LinkIcon,
+  Facebook,
+  Instagram,
+  WhatsApp,
+} from '@material-ui/icons';
+
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import useStyles from './styles';
@@ -20,20 +26,29 @@ function Info({ match }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { url } = match.params;
+  const partnerId = Number(match.params.partnerId);
 
+  const [partner, setPartner] = useState({});
   const showcase = useSelector((state) => state.showcase.showcase);
   const loading = useSelector((state) => state.showcase.loading);
 
   useEffect(() => {
-    async function getStore() {
+    async function getPartner() {
       try {
         dispatch(loadRequest(url));
       } catch (error) {
-        toast.error('Houve um erro ao carregar as informações da loja');
+        toast.error('Houve um erro ao carregar o parceiro');
       }
     }
-    getStore();
+    getPartner();
   }, []);
+  useEffect(() => {
+    if (showcase && showcase.partners) {
+      const part = showcase.partners.filter((ptr) => ptr.id === partnerId)[0];
+      setPartner(part);
+      console.tron.log(part);
+    }
+  }, [showcase]);
   return (
     <Grid container justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>
@@ -46,34 +61,45 @@ function Info({ match }) {
                 <CardMedia
                   className={classes.media}
                   component="img"
-                  alt={showcase.name}
-                  image={showcase.logo && showcase.logo.url}
-                  title={showcase.name}
+                  alt={partner.name}
+                  image={partner.logo && partner.logo.url}
+                  title={partner.name}
                 />
               </CardActionArea>
               <CardContent className={classes.cardContent} />
             </Card>
-            <h2 className={classes.showcaseName}>{showcase.name}</h2>
-            {(showcase.facebook || showcase.instagram || showcase.whatsapp) && (
+            <h2 className={classes.partnerName}>{partner.name}</h2>
+            {partner.site && (
+              <>
+                <h5>Site</h5>
+                <div className={classes.site}>
+                  <IconButton type="button" size="small">
+                    <LinkIcon />
+                  </IconButton>
+                  {partner.site}
+                </div>
+              </>
+            )}
+            {(partner.facebook ||
+              partner.instagram ||
+              partner.agentWhatsapp) && (
               <>
                 <h5>Redes sociais</h5>
                 <div className={classes.socialNetworks}>
-                  {showcase.facebook && (
+                  {partner.facebook && (
                     <IconButton
                       onClick={() => {
-                        window.open(
-                          `https://facebook.com/${showcase.facebook}`
-                        );
+                        window.open(`https://facebook.com/${partner.facebook}`);
                       }}
                     >
                       <Facebook style={{ fill: '#4267B2' }} fontSize="medium" />
                     </IconButton>
                   )}
-                  {showcase.instagram && (
+                  {partner.instagram && (
                     <IconButton
                       onClick={() => {
                         window.open(
-                          `https://instagram.com/${showcase.instagram}`
+                          `https://instagram.com/${partner.instagram}`
                         );
                       }}
                     >
@@ -83,11 +109,11 @@ function Info({ match }) {
                       />
                     </IconButton>
                   )}
-                  {showcase.whatsapp && (
+                  {partner.agentWhatsapp && (
                     <IconButton
                       onClick={() => {
                         window.open(
-                          `https://api.whatsapp.com/send?phone=${showcase.whatsapp}`
+                          `https://api.whatsapp.com/send?phone=${partner.agentWhatsapp}`
                         );
                       }}
                     >
@@ -104,11 +130,6 @@ function Info({ match }) {
                 </div>
               </>
             )}
-            <h5>Endereço</h5>
-            <div className={classes.address}>
-              {showcase.address}
-              {showcase.city}
-            </div>
           </>
         )}
       </Grid>
@@ -121,6 +142,7 @@ export default Info;
 Info.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
+      partnerId: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,

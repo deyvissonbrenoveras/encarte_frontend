@@ -30,14 +30,14 @@ export default makeStyles((theme) => ({
     overflow: 'scroll',
     width: '100%',
     display: 'flex',
-    fontSize: 8,
     textAlign: 'center',
-    '& li': {
+    '& .MuiButtonBase-root': {
       marginLeft: theme.spacing(1.5),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      fontSize: 10,
     },
   },
   overflow: {

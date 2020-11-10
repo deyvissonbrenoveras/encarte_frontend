@@ -9,6 +9,7 @@ import {
   CardContent,
   Typography,
   Avatar,
+  ButtonBase,
 } from '@material-ui/core';
 import api from '../../../services/api';
 
@@ -66,12 +67,19 @@ function Store({ match }) {
               .filter((partner) => !partner.sponsorship)
               .map((partner) => (
                 <li key={partner.id}>
-                  <Avatar
-                    alt={partner.name}
-                    src={partner.logo ? partner.logo.url : ''}
-                    className={classes.largeAvatar}
-                  />
-                  <div className={classes.overflow}>{partner.name}</div>
+                  <ButtonBase
+                    key={partner.id}
+                    onClick={() => {
+                      history.push(`/loja/${store.url}/parceiro/${partner.id}`);
+                    }}
+                  >
+                    <Avatar
+                      alt={partner.name}
+                      src={partner.logo ? partner.logo.url : ''}
+                      className={classes.largeAvatar}
+                    />
+                    <div className={classes.overflow}>{partner.name}</div>
+                  </ButtonBase>
                 </li>
               ))}
         </ul>
