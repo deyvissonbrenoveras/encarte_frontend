@@ -47,4 +47,14 @@ export default makeStyles((theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
+  contact: {
+    width: '100%',
+    textAlign: 'left',
+    fontSize: 13,
+    height: 30,
+    border: `1px solid ${theme.palette.greyBorder}`,
+    borderRadius: 10,
+    color: theme.palette.stoke,
+    padding: theme.spacing(1),
+  },
 }));

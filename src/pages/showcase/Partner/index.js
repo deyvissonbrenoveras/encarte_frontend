@@ -73,10 +73,24 @@ function Info({ match }) {
               <>
                 <h5>Site</h5>
                 <div className={classes.site}>
-                  <IconButton type="button" size="small">
+                  <IconButton
+                    type="button"
+                    size="small"
+                    onClick={() => {
+                      window.open(partner.site);
+                    }}
+                  >
                     <LinkIcon />
                   </IconButton>
                   {partner.site}
+                </div>
+              </>
+            )}
+            {partner.regionalAgent && (
+              <>
+                <h5>Contato</h5>
+                <div className={classes.contact}>
+                  {partner.regionalAgent}, {partner.agentWhatsapp}.
                 </div>
               </>
             )}

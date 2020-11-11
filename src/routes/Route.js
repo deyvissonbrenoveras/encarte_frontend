@@ -15,9 +15,9 @@ function RouteWrapper({
     return <Redirect to="/login" />;
   }
 
-  if (signed && !isPrivate) {
-    return <Redirect to="/dashboard" />;
-  }
+  // if (signed && !isPrivate) {
+  //   return <Redirect to="/dashboard" />;
+  // }
   return (
     <Route
       {...rest}

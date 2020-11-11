@@ -46,11 +46,11 @@ function Product({ match }) {
   }, []);
   return (
     <Grid container justify="center">
-      <Grid item xs={12} sm={10} md={8} lg={6}>
-        {loading ? (
-          <LoadingIcon />
-        ) : (
-          <>
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        <>
+          <Grid item xs={12} sm={10} md={8} lg={6}>
             <Card>
               <CardActionArea className={classes.cardArea}>
                 <CardMedia
@@ -72,9 +72,9 @@ function Product({ match }) {
                 </div>
               </CardContent>
             </Card>
-          </>
-        )}
-      </Grid>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 }

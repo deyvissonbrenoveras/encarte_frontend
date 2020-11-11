@@ -36,11 +36,11 @@ function Info({ match }) {
   }, []);
   return (
     <Grid container justify="center">
-      <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>
-        {loading ? (
-          <LoadingIcon />
-        ) : (
-          <>
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        <>
+          <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>
             <Card>
               <CardActionArea className={classes.cardArea}>
                 <CardMedia
@@ -109,9 +109,9 @@ function Info({ match }) {
               {showcase.address}
               {showcase.city}
             </div>
-          </>
-        )}
-      </Grid>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 }
