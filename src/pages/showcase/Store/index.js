@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -45,7 +45,6 @@ function Store({ match }) {
         if (product.category) {
           let exists = false;
           for (let i = 0; i < cat.length; i += 1) {
-            console.tron.log(cat[i]);
             if (cat[i].id === product.category.id) {
               exists = true;
             }
@@ -56,6 +55,7 @@ function Store({ match }) {
         }
         return cat;
       }, []);
+      categories.push({ id: null, name: 'Outros produtos' });
     }
     categories =
       categories &&
@@ -196,17 +196,44 @@ function Store({ match }) {
                     </li>
                   ))}
             </ul>
-            {store.categories &&
-              store.categories.map((category) => (
-                <>
-                  <h5>{category.name}</h5>
-                  <ul>
-                    {category.products.map(
-                      (product) => !product.featured && <li>{product.name}</li>
-                    )}
-                  </ul>
-                </>
-              ))}
+            <Grid container>
+              {store.categories &&
+                store.categories.map((category) => (
+                  <>
+                    <Grid Item xs={12}>
+                      <Typography variant="h5" className={classes.categoryName}>
+                        {category.name.toUpperCase()}
+                      </Typography>
+                    </Grid>
+                    {category.products.map((product) => (
+                      <Grid
+                        item
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        className={classes.cardGrid}
+                      >
+                        <Card className={classes.productCard}>
+                          <CardMedia
+                            className={classes.productImage}
+                            component="img"
+                            alt={product.name}
+                            image={product.image && product.image.url}
+                            title={product.name}
+                          />
+
+                          <div className={classes.productContent}>
+                            <div>{product.name}</div>
+                            <div className={classes.productPrice}>
+                              {product.price}
+                            </div>
+                          </div>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </>
+                ))}
+            </Grid>
           </Grid>
         </>
       )}

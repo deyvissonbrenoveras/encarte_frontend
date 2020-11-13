@@ -65,4 +65,38 @@ export default makeStyles((theme) => ({
     maxHeight: 100,
     objectFit: 'contain',
   },
+  categoryName: {
+    color: '#616161',
+    letterSpacing: 3,
+    marginLeft: theme.spacing(1),
+  },
+  cardGrid: {
+    padding: theme.spacing(0.5),
+  },
+  productCard: {
+    height: 64,
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: theme.spacing(0.5),
+  },
+  productImage: {
+    maxWidth: 43,
+    maxHeight: 60,
+    objectFit: 'contain',
+  },
+  productContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
+    textAlign: 'right',
+    fontSize: 13,
+    width: '100%',
+    height: '100%',
+    padding: theme.spacing(1),
+  },
+  productPrice: {
+    color: theme.palette.encarte,
+    fontSize: 14,
+  },
 }));
