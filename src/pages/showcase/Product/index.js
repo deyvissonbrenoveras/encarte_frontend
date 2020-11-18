@@ -8,9 +8,12 @@ import {
   CardContent,
   CardActionArea,
   CardMedia,
+  IconButton,
 } from '@material-ui/core';
+import { Add, Remove, AddShoppingCart } from '@material-ui/icons';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
+import { addProduct } from '../../../store/modules/cart/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
 import useStyles from './styles';
 
@@ -44,6 +47,9 @@ function Product({ match }) {
     }
     getProduct();
   }, []);
+  function handleAddProduct() {
+    dispatch(addProduct(product));
+  }
   return (
     <Grid container justify="center">
       {loading ? (
@@ -72,6 +78,20 @@ function Product({ match }) {
                 </div>
               </CardContent>
             </Card>
+            <div className={classes.addProduct}>
+              <div>
+                <IconButton>
+                  <Remove />
+                </IconButton>
+                <IconButton>
+                  <Add />
+                </IconButton>
+              </div>
+              <div>RS 17,98</div>
+              <IconButton>
+                <AddShoppingCart />
+              </IconButton>
+            </div>
           </Grid>
         </>
       )}

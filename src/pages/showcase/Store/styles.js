@@ -65,10 +65,17 @@ export default makeStyles((theme) => ({
     maxHeight: 100,
     objectFit: 'contain',
   },
+  search: {
+    margin: theme.spacing(2),
+    display: 'flex',
+    justifyContent: ' center',
+  },
+  productsContainer: {},
   categoryName: {
     color: '#616161',
     letterSpacing: 3,
     marginLeft: theme.spacing(1),
+    marginTop: theme.spacing(2),
   },
   cardGrid: {
     padding: theme.spacing(0.5),
