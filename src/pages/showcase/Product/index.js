@@ -10,6 +10,7 @@ import {
   CardMedia,
   IconButton,
 } from '@material-ui/core';
+
 import { Add, Remove, AddShoppingCart } from '@material-ui/icons';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
@@ -25,6 +26,8 @@ function Product({ match }) {
   const [product, setProduct] = useState({});
   const showcase = useSelector((state) => state.showcase.showcase);
   const loading = useSelector((state) => state.showcase.loading);
+  const [amount, setAmount] = useState(1);
+  const [total, setTotal] = useState(null);
   useEffect(() => {
     if (showcase && showcase.products) {
       const prod = showcase.products
@@ -33,7 +36,7 @@ function Product({ match }) {
           return { ...pdt, formattedPrice: formatPrice(pdt.price) };
         })[0];
       setProduct(prod);
-      console.tron.log(prod);
+      setTotal(amount * product.price);
     }
   }, [showcase]);
 
@@ -50,6 +53,27 @@ function Product({ match }) {
   function handleAddProduct() {
     dispatch(addProduct(product));
   }
+  async function decreaseAmount() {
+    if (amount > 1) {
+      await setAmount(amount - 1);
+    }
+  }
+  async function increaseAmount() {
+    await setAmount(amount + 1, () => {});
+  }
+  async function handleAmountChange(e) {
+    if (e.target.value >= 0 && e.target.value <= 500) {
+      await setAmount(Number(e.target.value));
+    }
+  }
+  async function amountFocusOut(e) {
+    if (e.target.value < 1 || e.target.value > 500) {
+      await setAmount(1);
+    }
+  }
+  useEffect(() => {
+    setTotal(formatPrice(amount * product.price));
+  }, [amount]);
   return (
     <Grid container justify="center">
       {loading ? (
@@ -72,7 +96,6 @@ function Product({ match }) {
                 <div className={classes.productPrice}>
                   {product.formattedPrice}
                 </div>
-
                 <div className={classes.productDescription}>
                   {product.description}
                 </div>
@@ -80,15 +103,24 @@ function Product({ match }) {
             </Card>
             <div className={classes.addProduct}>
               <div>
-                <IconButton>
+                <IconButton onClick={decreaseAmount}>
                   <Remove />
                 </IconButton>
-                <IconButton>
+                <input
+                  type="number"
+                  className={classes.productAmount}
+                  value={amount}
+                  min={1}
+                  max={500}
+                  onChange={handleAmountChange}
+                  onBlur={amountFocusOut}
+                />
+                <IconButton onClick={increaseAmount}>
                   <Add />
                 </IconButton>
               </div>
-              <div>RS 17,98</div>
-              <IconButton>
+              <div>{total || product.formattedPrice}</div>
+              <IconButton onClick={handleAddProduct}>
                 <AddShoppingCart />
               </IconButton>
             </div>

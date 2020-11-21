@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     backgroundColor: '#efefef',
-    height: 58,
+    minHeight: 58,
   },
   logo: {
     width: 101,
@@ -19,6 +19,9 @@ export const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0),
   },
   toolbar: {
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+    },
     justifyContent: 'space-between',
   },
   menuButton: {

@@ -83,4 +83,10 @@ export default makeStyles((theme) => ({
     },
     margin: '0 auto',
   },
+  productAmount: {
+    width: 50,
+    textAlign: 'center',
+    outline: 'none',
+    border: 'none',
+  },
 }));

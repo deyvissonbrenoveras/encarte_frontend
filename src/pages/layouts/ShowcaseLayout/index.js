@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
-import { Store, ShoppingCart } from '@material-ui/icons';
+import { Store, ShoppingCart, Info } from '@material-ui/icons';
 import { useStyles } from './styles';
 import logo from '../../../assets/logo.png';
+import history from '../../../services/history';
 
 function ShowcaseLayout({ children, match }) {
   const { url } = match.params;
@@ -14,10 +15,25 @@ function ShowcaseLayout({ children, match }) {
         <Toolbar className={classes.toolbar}>
           <img className={classes.logo} src={logo} alt="logo" />
           <div className={classes.iconButtons}>
-            <IconButton href={`/loja/${url}/info`}>
+            <IconButton
+              onClick={() => {
+                history.push(`/loja/${url}`);
+              }}
+            >
               <Store className={classes.icon} />
             </IconButton>
-            <IconButton href={`/loja/${url}/carrinho`}>
+            <IconButton
+              onClick={() => {
+                history.push(`/loja/${url}/info`);
+              }}
+            >
+              <Info className={classes.icon} />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                history.push(`/loja/${url}/carrinho`);
+              }}
+            >
               <ShoppingCart className={classes.icon} />
             </IconButton>
           </div>
