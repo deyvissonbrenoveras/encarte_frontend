@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Grid,
   Paper,
@@ -8,18 +8,26 @@ import {
   CardContent,
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { ShoppingCart, Remove, Add, Delete } from '@material-ui/icons';
+import {
+  ShoppingCart,
+  Remove,
+  Add,
+  Delete,
+  WhatsApp,
+} from '@material-ui/icons';
 import useStyles from './styles';
 import {
   removeProduct,
   changeAmount,
 } from '../../../store/modules/cart/actions';
+import { formatPrice } from '../../../util/format';
 
 function Cart() {
   const dispatch = useDispatch();
 
   const classes = useStyles();
   const cart = useSelector((state) => state.cart.products);
+  const [total, setTotal] = useState(formatPrice(0));
   function handleRemove(id) {
     dispatch(removeProduct(id));
   }
@@ -29,6 +37,27 @@ function Cart() {
   function handleAddAmount(id, amount) {
     dispatch(changeAmount(id, amount));
   }
+  async function handleSend() {
+    let buyList = await cart.reduce((list, product, index) => {
+      let text = `${list} %0A%0A ${index + 1}: Id ${product.id} `;
+      text += `%0AProduto: ${product.name}`;
+      text += `%0APreço: ${product.formattedPrice}`;
+      text += `%0AQuantidade: ${product.amount}`;
+      text += `%0ASubtotal: ${product.total}`;
+      return text;
+    }, 'Lista de compras e-ncarte:');
+    buyList += `%0A%0ATotal: ${total}`;
+    window.open(
+      `https://api.whatsapp.com/send?phone=558393999169&text=${buyList}`
+    );
+  }
+  useEffect(() => {
+    const newTotal = cart.reduce((accumulator, currentProduct) => {
+      console.tron.log(currentProduct);
+      return accumulator + currentProduct.price * currentProduct.amount;
+    }, 0);
+    setTotal(formatPrice(newTotal));
+  }, [cart]);
   return (
     <Grid container justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6}>
@@ -91,8 +120,8 @@ function Cart() {
                             </IconButton>
                           </div>
                         </div>
-                        <div className={classes.total}>
-                          <div>Total:</div>
+                        <div className={classes.subTotal}>
+                          <div>Subtotal:</div>
                           <div>{product.total}</div>
                           <IconButton
                             onClick={() => {
@@ -106,6 +135,12 @@ function Cart() {
                     </Card>
                   </Grid>
                 ))}
+              <div className={classes.total}>
+                Total: {total}
+                <button type="button" onClick={handleSend}>
+                  Enviar pedido <WhatsApp />
+                </button>
+              </div>
             </>
           )}
         </Paper>

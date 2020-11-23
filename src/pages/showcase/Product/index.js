@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 
 import { Add, Remove, AddShoppingCart } from '@material-ui/icons';
+import history from '../../../services/history';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import { addProduct } from '../../../store/modules/cart/actions';
@@ -36,7 +37,7 @@ function Product({ match }) {
           return { ...pdt, formattedPrice: formatPrice(pdt.price) };
         })[0];
       setProduct(prod);
-      setTotal(amount * product.price);
+      setTotal(formatPrice(amount * prod.price));
     }
   }, [showcase]);
 
@@ -51,7 +52,8 @@ function Product({ match }) {
     getProduct();
   }, []);
   function handleAddProduct() {
-    dispatch(addProduct(product));
+    dispatch(addProduct(product, amount));
+    history.push(`/loja/${url}/carrinho`);
   }
   async function decreaseAmount() {
     if (amount > 1) {

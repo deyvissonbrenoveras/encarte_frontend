@@ -80,6 +80,9 @@ export default makeStyles((theme) => ({
     '& svg': {
       fontSize: 30,
       color: theme.palette.encarte,
+      [theme.breakpoints.down('xs')]: {
+        fontSize: 15,
+      },
     },
     margin: '0 auto',
   },
@@ -88,5 +91,8 @@ export default makeStyles((theme) => ({
     textAlign: 'center',
     outline: 'none',
     border: 'none',
+    [theme.breakpoints.down('xs')]: {
+      width: 30,
+    },
   },
 }));

@@ -9,15 +9,21 @@ export default function cart(state = INITIAL_STATE, action) {
     case '@cart/ADD_PRODUCT':
       return produce(state, (draft) => {
         const productIndex = draft.products.findIndex(
-          (p) => p.id === action.payload.id
+          (p) => p.id === action.payload.product.id
         );
         if (productIndex >= 0) {
-          draft.products[productIndex].amount += 1;
+          draft.products[productIndex].amount += action.payload.amount;
+          draft.products[productIndex].total = formatPrice(
+            draft.products[productIndex].price *
+              draft.products[productIndex].amount
+          );
         } else {
           draft.products.push({
-            ...action.payload,
-            amount: 1,
-            total: formatPrice(action.payload.price),
+            ...action.payload.product,
+            amount: action.payload.amount,
+            total: formatPrice(
+              action.payload.product.price * action.payload.amount
+            ),
           });
         }
       });

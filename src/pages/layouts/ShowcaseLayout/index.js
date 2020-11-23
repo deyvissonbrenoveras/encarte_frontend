@@ -11,7 +11,7 @@ function ShowcaseLayout({ children, match }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <AppBar elevation={0} className={classes.appBar} position="static">
+      <AppBar elevation={0} className={classes.appBar} position="sticky">
         <Toolbar className={classes.toolbar}>
           <img className={classes.logo} src={logo} alt="logo" />
           <div className={classes.iconButtons}>
