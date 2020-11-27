@@ -1,10 +1,11 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
+import jwt from 'jsonwebtoken';
 import { toast } from 'react-toastify';
 
 import api from '../../../services/api';
 import history from '../../../services/history';
 
-import { signFailure, signInSuccess } from './actions';
+import { signFailure, signInSuccess, signOut } from './actions';
 
 export function* signUp({ payload }) {
   try {
@@ -39,11 +40,23 @@ export function* signIn({ payload }) {
   }
 }
 
-export function setToken({ payload }) {
-  if (!payload) return;
+export function* setToken({ payload }) {
+  if (!payload) {
+    yield put(signOut());
+    return;
+  }
   const { token } = payload.auth;
+
   if (token) {
-    api.defaults.headers.Authorization = `Bearer ${token}`;
+    const decoded = jwt.decode(token);
+
+    if (Date.now().valueOf() / 1000 > decoded.exp) {
+      yield put(signOut());
+    } else {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+    }
+  } else {
+    yield put(signOut());
   }
 }
 

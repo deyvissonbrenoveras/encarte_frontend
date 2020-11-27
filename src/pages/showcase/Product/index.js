@@ -12,11 +12,12 @@ import {
 } from '@material-ui/core';
 
 import { Add, Remove, AddShoppingCart } from '@material-ui/icons';
+import NotFound from '../../../components/NotFound';
+
 import history from '../../../services/history';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import { addProduct } from '../../../store/modules/cart/actions';
-import LoadingIcon from '../../../components/LoadingIcon';
 import useStyles from './styles';
 
 function Product({ match }) {
@@ -24,9 +25,8 @@ function Product({ match }) {
   const dispatch = useDispatch();
   const { url } = match.params;
   const productId = Number(match.params.productId);
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState(null);
   const showcase = useSelector((state) => state.showcase.showcase);
-  const loading = useSelector((state) => state.showcase.loading);
   const [amount, setAmount] = useState(1);
   const [total, setTotal] = useState(null);
   useEffect(() => {
@@ -37,7 +37,7 @@ function Product({ match }) {
           return { ...pdt, formattedPrice: formatPrice(pdt.price) };
         })[0];
       setProduct(prod);
-      setTotal(formatPrice(amount * prod.price));
+      setTotal(formatPrice(amount * prod ? prod.price : 0));
     }
   }, [showcase]);
 
@@ -52,7 +52,7 @@ function Product({ match }) {
     getProduct();
   }, []);
   function handleAddProduct() {
-    dispatch(addProduct(product, amount));
+    dispatch(addProduct(showcase.id, product, amount));
     history.push(`/loja/${url}/carrinho`);
   }
   async function decreaseAmount() {
@@ -74,12 +74,14 @@ function Product({ match }) {
     }
   }
   useEffect(() => {
-    setTotal(formatPrice(amount * product.price));
+    if (product) {
+      setTotal(formatPrice(amount * product.price));
+    }
   }, [amount]);
   return (
     <Grid container justify="center">
-      {loading ? (
-        <LoadingIcon />
+      {!product ? (
+        <NotFound />
       ) : (
         <>
           <Grid item xs={12} sm={10} md={8} lg={6}>

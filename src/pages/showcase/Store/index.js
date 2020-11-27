@@ -17,8 +17,8 @@ import {
 } from '@material-ui/core';
 
 import { Search } from '@material-ui/icons';
+import NotFound from '../../../components/NotFound';
 import { formatPrice } from '../../../util/format';
-import LoadingIcon from '../../../components/LoadingIcon';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import history from '../../../services/history';
 
@@ -28,9 +28,8 @@ function Store({ match }) {
   const { url } = match.params;
   const dispatch = useDispatch();
   const classes = useStyles();
-
+  const notFound = useSelector((state) => state.showcase.notFound);
   const showcase = useSelector((state) => state.showcase.showcase);
-  const loading = useSelector((state) => state.showcase.loading);
   const [productsFound, setProductsFound] = useState(null);
   useEffect(() => {
     async function getData() {
@@ -121,8 +120,8 @@ function Store({ match }) {
 
   return (
     <Grid container justify="center">
-      {loading ? (
-        <LoadingIcon />
+      {notFound ? (
+        <NotFound />
       ) : (
         <>
           <Grid item xs={12} md={8}>

@@ -17,10 +17,9 @@ import {
   WhatsApp,
 } from '@material-ui/icons';
 
-import LoadingIcon from '../../../components/LoadingIcon';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import useStyles from './styles';
-// import { Container } from './styles';
+import NotFound from '../../../components/NotFound';
 
 function Info({ match }) {
   const classes = useStyles();
@@ -30,7 +29,6 @@ function Info({ match }) {
 
   const [partner, setPartner] = useState({});
   const showcase = useSelector((state) => state.showcase.showcase);
-  const loading = useSelector((state) => state.showcase.loading);
 
   useEffect(() => {
     async function getPartner() {
@@ -52,8 +50,8 @@ function Info({ match }) {
   return (
     <Grid container justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>
-        {loading ? (
-          <LoadingIcon />
+        {!partner ? (
+          <NotFound />
         ) : (
           <>
             <Card>

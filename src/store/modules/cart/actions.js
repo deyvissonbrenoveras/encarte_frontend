@@ -1,20 +1,20 @@
-export function addProduct(product, amount) {
+export function addProduct(storeId, product, amount) {
   return {
     type: '@cart/ADD_PRODUCT',
-    payload: { product, amount },
+    payload: { storeId, product, amount },
   };
 }
 
-export function removeProduct(id) {
+export function removeProduct(storeId, productId) {
   return {
     type: '@cart/REMOVE_PRODUCT',
-    payload: id,
+    payload: { storeId, productId },
   };
 }
 
-export function changeAmount(id, amount) {
+export function changeAmount(storeId, productId, amount) {
   return {
     type: '@cart/CHANGE_AMOUNT',
-    payload: { id, amount },
+    payload: { storeId, productId, amount },
   };
 }

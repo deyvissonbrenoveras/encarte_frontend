@@ -51,7 +51,7 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'space-around',
     height: '100%',
-    padding: theme.spacing(0.2),
+    padding: theme.spacing(1),
     fontSize: 17,
     '& svg': {
       fontSize: 30,
@@ -66,7 +66,7 @@ export default makeStyles((theme) => ({
     color: theme.palette.encarte,
     fontSize: 14,
     [theme.breakpoints.down('xs')]: {
-      fontSize: 10,
+      fontSize: 12,
     },
   },
   amountArea: {
@@ -110,7 +110,7 @@ export default makeStyles((theme) => ({
       color: theme.palette.encarte,
       fontSize: 17,
       [theme.breakpoints.down('xs')]: {
-        fontSize: 10,
+        fontSize: 12,
       },
     },
     '& svg': {

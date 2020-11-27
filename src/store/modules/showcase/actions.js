@@ -15,3 +15,9 @@ export function loadSuccess(showcase) {
     payload: showcase,
   };
 }
+
+export function notFound() {
+  return {
+    type: '@showcase/NOT_FOUND',
+  };
+}
