@@ -22,6 +22,9 @@ const Select = ({ name, ...rest }) => {
         }
         return ref.state.value.value;
       },
+      clearValue: (ref) => {
+        ref.select.setValue(null);
+      },
       setValue: (ref, value) => {
         const option = ref.props.options.filter(
           (opt) => opt.value === value

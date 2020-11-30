@@ -1,7 +1,8 @@
-export function addProductRequest(product) {
+export function addProductRequest(product, successCb) {
   return {
     type: '@product/ADD_REQUEST',
     payload: product,
+    successCb,
   };
 }
 

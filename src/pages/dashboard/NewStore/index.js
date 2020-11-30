@@ -38,7 +38,12 @@ function NewStore() {
         abortEarly: false,
       });
 
-      dispatch(addStoreRequest(data));
+      dispatch(
+        addStoreRequest(data, function successCb() {
+          console.tron.log('executado');
+          formRef.current.reset();
+        })
+      );
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {

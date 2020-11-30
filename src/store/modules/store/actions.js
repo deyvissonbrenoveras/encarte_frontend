@@ -9,10 +9,11 @@ export function loadStoresSuccess(stores) {
     payload: stores,
   };
 }
-export function addStoreRequest(store) {
+export function addStoreRequest(store, successCb) {
   return {
     type: '@store/ADD_REQUEST',
     payload: store,
+    successCb,
   };
 }
 export function addStoreSuccess(store) {

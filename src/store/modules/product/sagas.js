@@ -4,7 +4,7 @@ import api from '../../../services/api';
 
 import { productFailure, loadSuccess, loadRequest } from './actions';
 
-function* addProductRequest({ payload }) {
+function* addProductRequest({ payload, successCb }) {
   try {
     const response = yield call(api.post, 'products', payload);
     const { id } = response.data;
@@ -12,6 +12,7 @@ function* addProductRequest({ payload }) {
     const { stores } = payload;
     yield call(api.post, `products_stores/${id}`, { stores });
     toast.success('O produto foi vinculado às lojas selecionadas');
+    successCb();
   } catch (err) {
     yield put(productFailure());
     toast.error(

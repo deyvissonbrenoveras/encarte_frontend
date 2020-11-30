@@ -72,7 +72,11 @@ function NewProduct() {
       await schema.validate(data, {
         abortEarly: false,
       });
-      dispatch(addProductRequest(data));
+      dispatch(
+        addProductRequest(data, function successCb() {
+          formRef.current.reset();
+        })
+      );
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {

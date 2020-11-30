@@ -1,6 +1,7 @@
 import produce from 'immer';
 
 const INITIAL_STATE = {
+  loggedUser: {},
   users: [],
   loading: false,
 };
@@ -18,6 +19,10 @@ export default function user(state = INITIAL_STATE, action) {
     case '@user/FAILURE':
       return produce(state, (draft) => {
         draft.loading = false;
+      });
+    case '@auth/SIGN_IN_SUCCESS':
+      return produce(state, (draft) => {
+        draft.loggedUser = action.payload.user;
       });
     default:
       return state;

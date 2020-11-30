@@ -104,7 +104,7 @@ function Info({ match }) {
                         window.open(`https://facebook.com/${partner.facebook}`);
                       }}
                     >
-                      <Facebook style={{ fill: '#4267B2' }} fontSize="medium" />
+                      <Facebook style={{ fill: '#4267B2' }} fontSize="large" />
                     </IconButton>
                   )}
                   {partner.instagram && (
@@ -115,10 +115,7 @@ function Info({ match }) {
                         );
                       }}
                     >
-                      <Instagram
-                        style={{ fill: '#C13584' }}
-                        fontSize="medium"
-                      />
+                      <Instagram style={{ fill: '#C13584' }} fontSize="large" />
                     </IconButton>
                   )}
                   {partner.agentWhatsapp && (
@@ -135,7 +132,7 @@ function Info({ match }) {
                           backgroundColor: '#128C7E',
                           borderRadius: 10,
                         }}
-                        fontSize="medium"
+                        fontSize="large"
                       />
                     </IconButton>
                   )}

@@ -1,7 +1,8 @@
-export function addCategoryRequest(category) {
+export function addCategoryRequest(category, successCb) {
   return {
     type: '@category/ADD_REQUEST',
     payload: category,
+    successCb,
   };
 }
 export function updateCategoryRequest(id, category) {

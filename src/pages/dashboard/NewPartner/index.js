@@ -57,7 +57,11 @@ function NewPartner() {
       await schema.validate(data, {
         abortEarly: false,
       });
-      dispatch(addPartnerRequest(data));
+      dispatch(
+        addPartnerRequest(data, function successCb() {
+          formRef.current.reset();
+        })
+      );
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {

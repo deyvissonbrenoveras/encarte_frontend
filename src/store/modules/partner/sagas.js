@@ -4,7 +4,7 @@ import api from '../../../services/api';
 
 import { partnerFailure } from './actions';
 
-function* addPartnerRequest({ payload }) {
+function* addPartnerRequest({ payload, successCb }) {
   try {
     const response = yield call(api.post, 'partners', payload);
     const { id } = response.data;
@@ -12,6 +12,7 @@ function* addPartnerRequest({ payload }) {
     const { stores } = payload;
     yield call(api.post, `partners_stores/${id}`, { stores });
     toast.success('O parceiro foi vinculado às lojas selecionadas');
+    successCb();
   } catch (err) {
     yield put(partnerFailure());
     toast.error(

@@ -2,6 +2,7 @@ import produce from 'immer';
 
 const INITIAL_STATE = {
   token: null,
+  privilege: 3,
   signed: false,
   loading: false,
 };

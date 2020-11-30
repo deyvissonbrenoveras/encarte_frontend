@@ -23,7 +23,11 @@ function NewCategory() {
       await schema.validate(data, {
         abortEarly: false,
       });
-      dispatch(addCategoryRequest(data));
+      dispatch(
+        addCategoryRequest(data, function successCb() {
+          formRef.current.reset();
+        })
+      );
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {

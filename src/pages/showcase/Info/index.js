@@ -62,7 +62,7 @@ function Info({ match }) {
                     window.open(`https://facebook.com/${showcase.facebook}`);
                   }}
                 >
-                  <Facebook style={{ fill: '#4267B2' }} fontSize="medium" />
+                  <Facebook style={{ fill: '#4267B2' }} fontSize="large" />
                 </IconButton>
               )}
               {showcase.instagram && (
@@ -71,7 +71,7 @@ function Info({ match }) {
                     window.open(`https://instagram.com/${showcase.instagram}`);
                   }}
                 >
-                  <Instagram style={{ fill: '#C13584' }} fontSize="medium" />
+                  <Instagram style={{ fill: '#C13584' }} fontSize="large" />
                 </IconButton>
               )}
               {showcase.whatsapp && (
@@ -88,7 +88,7 @@ function Info({ match }) {
                       backgroundColor: '#128C7E',
                       borderRadius: 10,
                     }}
-                    fontSize="medium"
+                    fontSize="large"
                   />
                 </IconButton>
               )}

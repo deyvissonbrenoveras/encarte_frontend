@@ -1,7 +1,8 @@
-export function addPartnerRequest(partner) {
+export function addPartnerRequest(partner, successCb) {
   return {
     type: '@partner/ADD_REQUEST',
     payload: partner,
+    successCb,
   };
 }
 

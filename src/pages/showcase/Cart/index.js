@@ -65,6 +65,7 @@ function Cart({ match }) {
   function handleAddAmount(productId, amount) {
     dispatch(changeAmount(store.id, productId, amount));
   }
+
   async function handleSend() {
     let buyList = await cart.reduce((list, product, index) => {
       let text = `${list} %0A%0A ${index + 1}: Id ${product.id} `;
@@ -85,6 +86,7 @@ function Cart({ match }) {
     }, 0);
     setTotal(formatPrice(newTotal));
   }, [cart]);
+
   return (
     <Grid container justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6}>
@@ -98,7 +100,12 @@ function Cart({ match }) {
             <>
               {cart &&
                 cart.map((product) => (
-                  <Grid item xs={12} className={classes.cardGrid}>
+                  <Grid
+                    item
+                    xs={12}
+                    className={classes.cardGrid}
+                    key={product.id}
+                  >
                     <Card
                       className={classes.productCard}
                       // onClick={() => {
@@ -135,6 +142,7 @@ function Cart({ match }) {
                               value={product.amount}
                               min={1}
                               max={500}
+                              readOnly
                             />
                             <IconButton
                               onClick={() => {
@@ -161,7 +169,7 @@ function Cart({ match }) {
                   </Grid>
                 ))}
               <div className={classes.total}>
-                Total: {total}
+                Valor Total: {total}
                 {store.whatsapp && (
                   <button type="button" onClick={handleSend}>
                     Enviar pedido <WhatsApp />

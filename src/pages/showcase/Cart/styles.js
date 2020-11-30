@@ -141,7 +141,8 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    color: theme.palette.encarte,
+    // color: theme.palette.encarte,
+    fontWeight: 'bold',
     paddingLeft: theme.spacing(2),
     fontSize: 17,
     '& svg': {

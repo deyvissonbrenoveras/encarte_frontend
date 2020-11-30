@@ -10,8 +10,9 @@ function RouteWrapper({
   ...rest
 }) {
   const signed = useSelector((state) => state.auth.signed);
-  console.tron.log(signed);
-  if (!signed && isPrivate) {
+  const privilege = useSelector((state) => state.user.loggedUser.privilege);
+
+  if ((!signed || privilege === 3) && isPrivate) {
     return <Redirect to="/login" />;
   }
 

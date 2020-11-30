@@ -4,10 +4,11 @@ import api from '../../../services/api';
 
 import { categoryFailure } from './actions';
 
-function* addCategoryRequest({ payload }) {
+function* addCategoryRequest({ payload, successCb }) {
   try {
     yield call(api.post, 'categories', payload);
     toast.success('A categoria foi cadastrada com sucesso');
+    successCb();
   } catch (err) {
     yield put(categoryFailure());
     toast.error(

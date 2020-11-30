@@ -17,10 +17,11 @@ export function* loadStoresRequest() {
   }
 }
 
-export function* addStoreRequest({ payload }) {
+export function* addStoreRequest({ payload, successCb }) {
   try {
     yield call(api.post, 'stores', payload);
     toast.success('A loja foi cadastrada com sucesso');
+    successCb();
   } catch (err) {
     yield put(storeFailure());
     toast.error(

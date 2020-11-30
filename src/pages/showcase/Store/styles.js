@@ -30,6 +30,7 @@ export default makeStyles((theme) => ({
     overflow: 'scroll',
     width: '100%',
     display: 'flex',
+    justifyContent: 'space-around',
     textAlign: 'center',
     '& .MuiButtonBase-root': {
       marginLeft: theme.spacing(1.5),

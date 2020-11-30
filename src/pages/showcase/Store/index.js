@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import { MetaTags } from 'react-meta-tags';
 import { toast } from 'react-toastify';
 import {
   Grid,
@@ -119,234 +120,248 @@ function Store({ match }) {
   }
 
   return (
-    <Grid container justify="center">
-      {notFound ? (
-        <NotFound />
-      ) : (
-        <>
-          <Grid item xs={12} md={8}>
-            <Card className={classes.cover}>
-              <CardContent className={classes.name}>
-                <Typography variant="h6" component="h2">
-                  {store.name}
-                </Typography>
-              </CardContent>
-              {store.cover && (
-                <CardActionArea className={classes.cardArea}>
-                  <CardMedia
-                    className={classes.media}
-                    component="img"
-                    alt={store.name}
-                    image={store.cover && store.cover.url}
-                    title={store.name}
-                  />
-                </CardActionArea>
-              )}
-            </Card>
-            <Typography
-              variant="subtitle2"
-              component="h2"
-              className={classes.subtitle}
-            >
-              Parceiros
-            </Typography>
-            <ul className={classes.partnerList}>
-              {store.partners &&
-                store.partners
-                  .filter((partner) => !partner.sponsorship)
-                  .map((partner) => (
-                    <li key={partner.id}>
-                      <ButtonBase
-                        key={partner.id}
-                        onClick={() => {
-                          history.push(
-                            `/loja/${store.url}/parceiro/${partner.id}`
-                          );
-                        }}
-                      >
-                        <Avatar
-                          alt={partner.name}
-                          src={partner.logo ? partner.logo.url : ''}
-                          className={classes.largeAvatar}
-                        />
-                        <div className={classes.overflow}>{partner.name}</div>
-                      </ButtonBase>
-                    </li>
-                  ))}
-            </ul>
-            <Typography
-              variant="subtitle2"
-              component="h2"
-              className={classes.subtitle}
-            >
-              Produtos em destaque
-            </Typography>
-            <Grid container justify="space-around">
-              {store.products &&
-                store.products
-                  .filter((product) => product.featured)
-                  .map((product) => (
-                    <Grid
-                      item
-                      xs={4}
-                      className={classes.productGrid}
-                      key={product.id}
-                    >
-                      <Card
-                        className={classes.featuredProductCard}
-                        onClick={() => {
-                          history.push(
-                            `/loja/${store.url}/produto/${product.id}`
-                          );
-                        }}
-                      >
-                        <CardActionArea className={classes.productCardArea}>
-                          <CardMedia
-                            component="img"
-                            className={classes.featuredProductImage}
-                            alt={product.name}
-                            image={product.image.url}
-                            title={product.name}
+    <>
+      <MetaTags>
+        <title>e-ncarte {store.name}</title>
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`e-ncarte ${store.name}`} />
+        <meta
+          property="og:description"
+          content={`Veja o Encarte Digital da(o) ${store.name}`}
+        />
+        {store.logo && <meta property="og:image" content={store.logo.url} />}
+      </MetaTags>
+      <Grid container justify="center" className={classes.teste}>
+        {notFound ? (
+          <NotFound />
+        ) : (
+          <>
+            <Grid item xs={12} md={8}>
+              <Card className={classes.cover}>
+                <CardContent className={classes.name}>
+                  <Typography variant="h6" component="h2">
+                    {store.name}
+                  </Typography>
+                </CardContent>
+                {store.cover && (
+                  <CardActionArea>
+                    <CardMedia
+                      className={classes.media}
+                      component="img"
+                      alt={store.name}
+                      image={store.logo && store.logo.url}
+                      title={store.name}
+                    />
+                  </CardActionArea>
+                )}
+              </Card>
+              <Typography
+                variant="subtitle2"
+                component="h2"
+                className={classes.subtitle}
+              >
+                Parceiros
+              </Typography>
+              <ul className={classes.partnerList}>
+                {store.partners &&
+                  store.partners
+                    .filter((partner) => !partner.sponsorship)
+                    .map((partner) => (
+                      <li key={partner.id}>
+                        <ButtonBase
+                          key={partner.id}
+                          onClick={() => {
+                            history.push(
+                              `/loja/${store.url}/parceiro/${partner.id}`
+                            );
+                          }}
+                        >
+                          <Avatar
+                            alt={partner.name}
+                            src={partner.logo ? partner.logo.url : ''}
+                            className={classes.largeAvatar}
                           />
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-                  ))}
-            </Grid>
-            <Typography
-              variant="subtitle2"
-              component="h2"
-              className={classes.subtitle}
-            >
-              Patrocinadores
-            </Typography>
-            <ul className={classes.partnerList}>
-              {store.partners &&
-                store.partners
-                  .filter((partner) => partner.sponsorship)
-                  .map((partner) => (
-                    <li key={partner.id}>
-                      <ButtonBase
-                        key={partner.id}
-                        onClick={() => {
-                          history.push(
-                            `/loja/${store.url}/parceiro/${partner.id}`
-                          );
-                        }}
+                          <div className={classes.overflow}>{partner.name}</div>
+                        </ButtonBase>
+                      </li>
+                    ))}
+              </ul>
+              <Typography
+                variant="subtitle2"
+                component="h2"
+                className={classes.subtitle}
+              >
+                Produtos em destaque
+              </Typography>
+              <Grid container justify="space-around">
+                {store.products &&
+                  store.products
+                    .filter((product) => product.featured)
+                    .map((product) => (
+                      <Grid
+                        item
+                        xs={4}
+                        className={classes.productGrid}
+                        key={product.id}
                       >
-                        <Avatar
-                          alt={partner.name}
-                          src={partner.logo ? partner.logo.url : ''}
-                          className={classes.largeAvatar}
-                        />
-                        <div className={classes.overflow}>{partner.name}</div>
-                      </ButtonBase>
-                    </li>
-                  ))}
-            </ul>
-            <Grid container className={classes.productsContainer}>
-              <Grid item xs={12} className={classes.search}>
-                <TextField
-                  onChange={handleSearch}
-                  className={classes.searchInput}
-                  label="Buscar"
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Search />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+                        <Card
+                          className={classes.featuredProductCard}
+                          onClick={() => {
+                            history.push(
+                              `/loja/${store.url}/produto/${product.id}`
+                            );
+                          }}
+                        >
+                          <CardActionArea className={classes.productCardArea}>
+                            <CardMedia
+                              component="img"
+                              className={classes.featuredProductImage}
+                              alt={product.name}
+                              image={product.image.url}
+                              title={product.name}
+                            />
+                          </CardActionArea>
+                        </Card>
+                      </Grid>
+                    ))}
               </Grid>
-              {productsFound !== null
-                ? productsFound.map((product) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={6}
-                      md={4}
-                      className={classes.cardGrid}
-                    >
-                      <Card
-                        onClick={() => {
-                          history.push(
-                            `/loja/${store.url}/produto/${product.id}`
-                          );
-                        }}
-                      >
-                        <CardActionArea className={classes.productCard}>
-                          <CardMedia
-                            className={classes.productImage}
-                            component="img"
-                            alt={product.name}
-                            image={product.image && product.image.url}
-                            title={product.name}
+              <Typography
+                variant="subtitle2"
+                component="h2"
+                className={classes.subtitle}
+              >
+                Patrocinadores
+              </Typography>
+              <ul className={classes.partnerList}>
+                {store.partners &&
+                  store.partners
+                    .filter((partner) => partner.sponsorship)
+                    .map((partner) => (
+                      <li key={partner.id}>
+                        <ButtonBase
+                          key={partner.id}
+                          onClick={() => {
+                            history.push(
+                              `/loja/${store.url}/parceiro/${partner.id}`
+                            );
+                          }}
+                        >
+                          <Avatar
+                            alt={partner.name}
+                            src={partner.logo ? partner.logo.url : ''}
+                            className={classes.largeAvatar}
                           />
+                          <div className={classes.overflow}>{partner.name}</div>
+                        </ButtonBase>
+                      </li>
+                    ))}
+              </ul>
+              <Grid container className={classes.productsContainer}>
+                <Grid item xs={12} className={classes.search}>
+                  <TextField
+                    onChange={handleSearch}
+                    className={classes.searchInput}
+                    label="Buscar"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Search />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                {productsFound !== null
+                  ? productsFound.map((product) => (
+                      <Grid
+                        item
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        className={classes.cardGrid}
+                        key={product.id}
+                      >
+                        <Card
+                          onClick={() => {
+                            history.push(
+                              `/loja/${store.url}/produto/${product.id}`
+                            );
+                          }}
+                        >
+                          <CardActionArea className={classes.productCard}>
+                            <CardMedia
+                              className={classes.productImage}
+                              component="img"
+                              alt={product.name}
+                              image={product.image && product.image.url}
+                              title={product.name}
+                            />
 
-                          <div className={classes.productContent}>
-                            <div>{product.name}</div>
-                            <div className={classes.productPrice}>
-                              {product.formattedPrice}
+                            <div className={classes.productContent}>
+                              <div>{product.name}</div>
+                              <div className={classes.productPrice}>
+                                {product.formattedPrice}
+                              </div>
                             </div>
-                          </div>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-                  ))
-                : store.categories &&
-                  store.categories.map((category) => (
-                    <>
-                      <Grid item xs={12}>
+                          </CardActionArea>
+                        </Card>
+                      </Grid>
+                    ))
+                  : store.categories &&
+                    store.categories.map((category) => (
+                      <Grid item xs={12} key={category.id}>
                         <Typography
                           variant="h5"
                           className={classes.categoryName}
                         >
                           {category.name.toUpperCase()}
                         </Typography>
-                      </Grid>
-                      {category.products.map((product) => (
-                        <Grid
-                          item
-                          xs={12}
-                          sm={6}
-                          md={4}
-                          className={classes.cardGrid}
-                        >
-                          <Card
-                            onClick={() => {
-                              history.push(
-                                `/loja/${store.url}/produto/${product.id}`
-                              );
-                            }}
-                          >
-                            <CardActionArea className={classes.productCard}>
-                              <CardMedia
-                                className={classes.productImage}
-                                component="img"
-                                alt={product.name}
-                                image={product.image && product.image.url}
-                                title={product.name}
-                              />
+                        <Grid container>
+                          {category.products.map((product) => (
+                            <Grid
+                              item
+                              xs={12}
+                              sm={6}
+                              md={4}
+                              className={classes.cardGrid}
+                              key={product.id}
+                            >
+                              <Card
+                                onClick={() => {
+                                  history.push(
+                                    `/loja/${store.url}/produto/${product.id}`
+                                  );
+                                }}
+                              >
+                                <CardActionArea className={classes.productCard}>
+                                  <CardMedia
+                                    className={classes.productImage}
+                                    component="img"
+                                    alt={product.name}
+                                    image={product.image && product.image.url}
+                                    title={product.name}
+                                  />
 
-                              <div className={classes.productContent}>
-                                <div>{product.name}</div>
-                                <div className={classes.productPrice}>
-                                  {product.formattedPrice}
-                                </div>
-                              </div>
-                            </CardActionArea>
-                          </Card>
+                                  <div className={classes.productContent}>
+                                    <div>{product.name}</div>
+                                    <div className={classes.productPrice}>
+                                      {product.formattedPrice}
+                                    </div>
+                                  </div>
+                                </CardActionArea>
+                              </Card>
+                            </Grid>
+                          ))}
                         </Grid>
-                      ))}
-                    </>
-                  ))}
+                      </Grid>
+                    ))}
+              </Grid>
             </Grid>
-          </Grid>
-        </>
-      )}
-    </Grid>
+          </>
+        )}
+      </Grid>
+    </>
   );
 }
 
