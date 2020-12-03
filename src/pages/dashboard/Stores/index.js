@@ -55,7 +55,10 @@ function Stores() {
               stores.map((store) => (
                 <TableRow key={store.id}>
                   <TableCell>
-                    <Avatar src={store.logo.url} alt={store.name} />
+                    <Avatar
+                      src={store.logo ? store.logo.url : ''}
+                      alt={store.name}
+                    />
                   </TableCell>
                   <TableCell>
                     <Link to={`/updatestore/${store.id}`}>{store.name}</Link>

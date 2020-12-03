@@ -17,11 +17,19 @@ function* loadUsersRequest() {
   }
 }
 function* updateRequest({ payload }) {
-  const { id, user } = payload;
+  const { id, user, removeStores, addStores } = payload;
   try {
     const response = yield call(api.put, `users/${id}`, user);
     console.tron.log(response.data);
     toast.success('O usuário foi editado com sucesso');
+    if (addStores && addStores.length > 0) {
+      yield call(api.post, `users_stores/${id}`, { stores: addStores });
+      toast.success('Novas lojas adicionadas');
+    }
+    if (removeStores && removeStores.length > 0) {
+      yield call(api.put, `users_stores/${id}`, { stores: removeStores });
+      toast.success('Algumas lojas foram removidas');
+    }
   } catch (err) {
     toast.error(
       err.response.data

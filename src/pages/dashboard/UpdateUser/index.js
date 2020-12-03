@@ -9,6 +9,8 @@ import Input from '../../../components/Input';
 import Select from '../../../components/Select';
 import { updateRequest } from '../../../store/modules/user/actions';
 
+import Checkbox from '../../../components/Checkbox';
+
 import LoadingIcon from '../../../components/LoadingIcon';
 
 import Privilege from '../../../util/PrivilegeEnum';
@@ -29,15 +31,27 @@ function UpdateUser({ match }) {
   const dispatch = useDispatch();
   const formRef = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [stores, setStores] = useState([]);
+  const [choiceOptions, setChoiceOptions] = useState([]);
   const id = Number(match.params.id);
   useEffect(() => {
     async function getData() {
       try {
+        const storesResponse = await api.get('stores');
+        const options = storesResponse.data.map((store) => ({
+          id: store.id,
+          value: store.id,
+          label: store.name,
+          url: store.logo ? store.logo.url : null,
+        }));
+        setChoiceOptions(options);
         const response = await api.get(`users/${id}`);
         console.tron.log(response.data);
         formRef.current.setData(response.data);
+        setStores(response.data.stores);
         setLoading(false);
       } catch (err) {
+        console.log(err);
         toast.error('Houve um erro ao carregar o usuário');
       }
     }
@@ -65,7 +79,16 @@ function UpdateUser({ match }) {
       await schema.validate(data, {
         abortEarly: false,
       });
-      dispatch(updateRequest(id, data));
+      const userStores = stores.map((store) => Number(store.id));
+
+      const removeStores = userStores.filter(
+        (store) => !data.stores.includes(store)
+      );
+
+      const addStores = data.stores.filter((store) => {
+        return !userStores.includes(store);
+      });
+      dispatch(updateRequest(id, data, removeStores, addStores));
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {
@@ -82,7 +105,7 @@ function UpdateUser({ match }) {
       <Form onSubmit={submitHandle} ref={formRef}>
         <Typography variant="h5">Editar Usuário</Typography>
 
-        <Grid container>
+        <Grid container justify="space-around">
           <Grid item xs={12} md={4}>
             <CheckboxInput name="active" label="Ativo" />
             <Input
@@ -113,6 +136,9 @@ function UpdateUser({ match }) {
               options={selectOptions}
               label="Privilegio:"
             />
+          </Grid>
+          <Grid item xs={12} md={7}>
+            <Checkbox name="stores" options={choiceOptions} label="Lojas" />
           </Grid>
           <Box m={2} width="100%" textAlign="right">
             <Button variant="contained" color="primary" type="submit">

@@ -9,10 +9,10 @@ export function loadUsersSuccess(users) {
     payload: users,
   };
 }
-export function updateRequest(id, user) {
+export function updateRequest(id, user, removeStores, addStores) {
   return {
     type: '@user/UPDATE_REQUEST',
-    payload: { id, user },
+    payload: { id, user, removeStores, addStores },
   };
 }
 export function userFailure() {

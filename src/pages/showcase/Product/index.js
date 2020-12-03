@@ -37,7 +37,8 @@ function Product({ match }) {
           return { ...pdt, formattedPrice: formatPrice(pdt.price) };
         })[0];
       setProduct(prod);
-      setTotal(formatPrice(amount * prod ? prod.price : 0));
+      // setTotal(formatPrice(amount * prod ? prod.price : 0));
+      setAmount(1);
     }
   }, [showcase]);
 

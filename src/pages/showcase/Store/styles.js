@@ -17,8 +17,14 @@ export default makeStyles((theme) => ({
     objectFit: 'contain',
   },
   subtitle: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    letterSpacing: 3,
+    textTransform: 'uppercase',
     marginTop: theme.spacing(1.5),
     marginLeft: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    textAlign: 'center',
   },
   largeAvatar: {
     width: theme.spacing(8),

@@ -95,7 +95,7 @@ function NewProduct() {
       {loading ? (
         <LoadingIcon />
       ) : (
-        <Grid container justify="space-around" xs={12}>
+        <Grid container justify="space-around">
           <Grid item xs={12} md={4}>
             <Img name="image" submitName="fileId" label="Imagem:" />
             <CheckboxInput name="featured" label="Destaque" />

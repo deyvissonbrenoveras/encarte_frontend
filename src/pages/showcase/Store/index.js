@@ -155,13 +155,15 @@ function Store({ match }) {
                   </CardActionArea>
                 )}
               </Card>
-              <Typography
-                variant="subtitle2"
-                component="h2"
-                className={classes.subtitle}
-              >
-                Parceiros
-              </Typography>
+
+              {store.partners &&
+                store.partners.filter((partner) => !partner.sponsorship)
+                  .length > 0 && (
+                  <Typography component="h2" className={classes.subtitle}>
+                    Parceiros
+                  </Typography>
+                )}
+
               <ul className={classes.partnerList}>
                 {store.partners &&
                   store.partners
@@ -186,13 +188,15 @@ function Store({ match }) {
                       </li>
                     ))}
               </ul>
-              <Typography
-                variant="subtitle2"
-                component="h2"
-                className={classes.subtitle}
-              >
-                Produtos em destaque
-              </Typography>
+
+              {store.products &&
+                store.products.filter((product) => product.featured).length >
+                  0 && (
+                  <Typography component="h2" className={classes.subtitle}>
+                    Produtos em destaque
+                  </Typography>
+                )}
+
               <Grid container justify="space-around">
                 {store.products &&
                   store.products
@@ -225,13 +229,15 @@ function Store({ match }) {
                       </Grid>
                     ))}
               </Grid>
-              <Typography
-                variant="subtitle2"
-                component="h2"
-                className={classes.subtitle}
-              >
-                Patrocinadores
-              </Typography>
+
+              {store.partners &&
+                store.partners.filter((partner) => partner.sponsorship).length >
+                  0 && (
+                  <Typography component="h2" className={classes.subtitle}>
+                    Patrocinadores
+                  </Typography>
+                )}
+
               <ul className={classes.partnerList}>
                 {store.partners &&
                   store.partners
@@ -309,53 +315,61 @@ function Store({ match }) {
                       </Grid>
                     ))
                   : store.categories &&
-                    store.categories.map((category) => (
-                      <Grid item xs={12} key={category.id}>
-                        <Typography
-                          variant="h5"
-                          className={classes.categoryName}
-                        >
-                          {category.name.toUpperCase()}
-                        </Typography>
-                        <Grid container>
-                          {category.products.map((product) => (
-                            <Grid
-                              item
-                              xs={12}
-                              sm={6}
-                              md={4}
-                              className={classes.cardGrid}
-                              key={product.id}
+                    store.categories.map(
+                      (category) =>
+                        category.products &&
+                        category.products.length > 0 && (
+                          <Grid item xs={12} key={category.id}>
+                            <Typography
+                              variant="h5"
+                              className={classes.categoryName}
                             >
-                              <Card
-                                onClick={() => {
-                                  history.push(
-                                    `/loja/${store.url}/produto/${product.id}`
-                                  );
-                                }}
-                              >
-                                <CardActionArea className={classes.productCard}>
-                                  <CardMedia
-                                    className={classes.productImage}
-                                    component="img"
-                                    alt={product.name}
-                                    image={product.image && product.image.url}
-                                    title={product.name}
-                                  />
+                              {category.name.toUpperCase()}
+                            </Typography>
+                            <Grid container>
+                              {category.products.map((product) => (
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={4}
+                                  className={classes.cardGrid}
+                                  key={product.id}
+                                >
+                                  <Card
+                                    onClick={() => {
+                                      history.push(
+                                        `/loja/${store.url}/produto/${product.id}`
+                                      );
+                                    }}
+                                  >
+                                    <CardActionArea
+                                      className={classes.productCard}
+                                    >
+                                      <CardMedia
+                                        className={classes.productImage}
+                                        component="img"
+                                        alt={product.name}
+                                        image={
+                                          product.image && product.image.url
+                                        }
+                                        title={product.name}
+                                      />
 
-                                  <div className={classes.productContent}>
-                                    <div>{product.name}</div>
-                                    <div className={classes.productPrice}>
-                                      {product.formattedPrice}
-                                    </div>
-                                  </div>
-                                </CardActionArea>
-                              </Card>
+                                      <div className={classes.productContent}>
+                                        <div>{product.name}</div>
+                                        <div className={classes.productPrice}>
+                                          {product.formattedPrice}
+                                        </div>
+                                      </div>
+                                    </CardActionArea>
+                                  </Card>
+                                </Grid>
+                              ))}
                             </Grid>
-                          ))}
-                        </Grid>
-                      </Grid>
-                    ))}
+                          </Grid>
+                        )
+                    )}
               </Grid>
             </Grid>
           </>
