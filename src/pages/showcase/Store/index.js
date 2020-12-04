@@ -15,9 +15,10 @@ import {
   ButtonBase,
   TextField,
   InputAdornment,
+  IconButton,
 } from '@material-ui/core';
 
-import { Search } from '@material-ui/icons';
+import { Search, Facebook, Instagram, WhatsApp } from '@material-ui/icons';
 import NotFound from '../../../components/NotFound';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
@@ -371,6 +372,104 @@ function Store({ match }) {
                         )
                     )}
               </Grid>
+              <footer className={classes.footer}>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Card className={classes.cover}>
+                      {store.cover && (
+                        <CardActionArea>
+                          <CardMedia
+                            className={classes.media}
+                            component="img"
+                            alt={store.name}
+                            image={store.logo && store.logo.url}
+                            title={store.name}
+                          />
+                        </CardActionArea>
+                      )}
+                      <CardContent>
+                        {showcase.facebook && (
+                          <IconButton
+                            onClick={() => {
+                              window.open(
+                                `https://facebook.com/${showcase.facebook}`
+                              );
+                            }}
+                          >
+                            <Facebook
+                              style={{ fill: '#4267B2' }}
+                              fontSize="large"
+                            />
+                          </IconButton>
+                        )}
+                        {showcase.instagram && (
+                          <IconButton
+                            onClick={() => {
+                              window.open(
+                                `https://instagram.com/${showcase.instagram}`
+                              );
+                            }}
+                          >
+                            <Instagram
+                              style={{ fill: '#C13584' }}
+                              fontSize="large"
+                            />
+                          </IconButton>
+                        )}
+                        {showcase.whatsapp && (
+                          <IconButton
+                            onClick={() => {
+                              window.open(
+                                `https://api.whatsapp.com/send?phone=${showcase.whatsapp}`
+                              );
+                            }}
+                          >
+                            <WhatsApp
+                              style={{
+                                fill: 'white',
+                                backgroundColor: '#128C7E',
+                                borderRadius: 10,
+                              }}
+                              fontSize="large"
+                            />
+                          </IconButton>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} sm={6} className={classes.footerInfo}>
+                    {store.address && store.city && (
+                      <>
+                        <Typography
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                        >
+                          Endereço: {store.address}
+                        </Typography>
+                        <Typography
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                        >
+                          {store.city}.
+                        </Typography>{' '}
+                      </>
+                    )}
+                  </Grid>
+                  <Grid item xs={12} sm={6} className={classes.footerInfo}>
+                    {store.phone && (
+                      <Typography
+                        variant="overline"
+                        display="block"
+                        gutterBottom
+                      >
+                        Contato: {store.phone}
+                      </Typography>
+                    )}
+                  </Grid>
+                </Grid>
+              </footer>
             </Grid>
           </>
         )}

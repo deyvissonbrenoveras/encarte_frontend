@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import footerImage from '../../../assets/footerImage.png';
 
 export default makeStyles((theme) => ({
   name: {
@@ -30,25 +31,32 @@ export default makeStyles((theme) => ({
     width: theme.spacing(8),
     height: theme.spacing(8),
     marginBottom: theme.spacing(0.3),
+    [theme.breakpoints.up('md')]: {
+      width: theme.spacing(10),
+      height: theme.spacing(10),
+    },
   },
   partnerList: {
     padding: theme.spacing(0.8),
     overflow: 'scroll',
-    width: '100%',
+    // width: '100%',
     display: 'flex',
-    justifyContent: 'space-around',
+    [theme.breakpoints.up('sm')]: {
+      justifyContent: 'space-around',
+    },
     textAlign: 'center',
     '& .MuiButtonBase-root': {
-      marginLeft: theme.spacing(1.5),
+      marginLeft: theme.spacing(3),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: 10,
+      fontSize: 12,
+      letterSpacing: 1,
     },
   },
   overflow: {
-    maxWidth: 50,
+    maxWidth: 80,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -112,5 +120,25 @@ export default makeStyles((theme) => ({
   productPrice: {
     color: theme.palette.encarte,
     fontSize: 14,
+  },
+  footer: {
+    backgroundImage: `url(${footerImage})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% 100%',
+    width: '100%',
+    height: 400,
+    marginTop: theme.spacing(5),
+    paddingTop: theme.spacing(2),
+    borderTop: `2px solid ${theme.palette.encarte}`,
+    '& .MuiCardContent-root': {
+      display: 'flex',
+      justifyContent: 'center',
+      padding: 0,
+    },
+  },
+  footerInfo: {
+    paddingTop: theme.spacing(2),
+    textAlign: 'center',
+    backgroundColor: '#fff',
   },
 }));
