@@ -437,6 +437,11 @@ function Store({ match }) {
                       </CardContent>
                     </Card>
                   </Grid>
+                  <Grid item xs={12} className={classes.footerInfo}>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      IMAGENS MERAMENTE ILUSTRATIVAS**
+                    </Typography>
+                  </Grid>
                   <Grid item xs={12} sm={6} className={classes.footerInfo}>
                     {store.address && store.city && (
                       <>
