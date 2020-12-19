@@ -46,12 +46,10 @@ function UpdateUser({ match }) {
         }));
         setChoiceOptions(options);
         const response = await api.get(`users/${id}`);
-        console.tron.log(response.data);
         formRef.current.setData(response.data);
         setStores(response.data.stores);
         setLoading(false);
       } catch (err) {
-        console.log(err);
         toast.error('Houve um erro ao carregar o usuário');
       }
     }

@@ -39,7 +39,6 @@ function Cart({ match }) {
   const [total, setTotal] = useState(formatPrice(0));
 
   // useEffect(() => {
-  //   console.tron.log(nonFilteredCart);
   //   const filteredCart = nonFilteredCart.filter(
   //     (prod) => prod.Products_Stores.storeId === store.id
   //   );

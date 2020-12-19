@@ -18,7 +18,6 @@
 //         ref: ref.current,
 //         path: 'dataset.file',
 //         setValue(_, value) {
-//           console.tron.log(value);
 //           setPreview(value);
 //         },
 //       });

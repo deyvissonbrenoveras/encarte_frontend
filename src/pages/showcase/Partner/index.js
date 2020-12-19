@@ -44,7 +44,6 @@ function Info({ match }) {
     if (showcase && showcase.partners) {
       const part = showcase.partners.filter((ptr) => ptr.id === partnerId)[0];
       setPartner(part);
-      console.tron.log(part);
     }
   }, [showcase]);
   return (

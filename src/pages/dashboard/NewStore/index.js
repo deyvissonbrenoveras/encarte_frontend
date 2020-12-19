@@ -40,7 +40,6 @@ function NewStore() {
 
       dispatch(
         addStoreRequest(data, function successCb() {
-          console.tron.log('executado');
           formRef.current.reset();
         })
       );

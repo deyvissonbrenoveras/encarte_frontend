@@ -75,7 +75,6 @@ function UpdatePartner({ match }) {
       const addStores = data.stores.filter((store) => {
         return !partnerStores.includes(store);
       });
-      console.tron.log(removeStores, addStores);
 
       dispatch(updatePartnerRequest(id, data, removeStores, addStores));
     } catch (err) {

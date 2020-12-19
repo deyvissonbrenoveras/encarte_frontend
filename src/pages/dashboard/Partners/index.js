@@ -24,7 +24,6 @@ function Partners() {
     async function getData() {
       try {
         const response = await api.get('partners');
-        console.tron.log(response.data);
         setPartners(response.data);
         setLoading(false);
       } catch (err) {

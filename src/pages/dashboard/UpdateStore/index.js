@@ -53,7 +53,6 @@ function UpdateStore({ match }) {
         const response = await api.get(`store`, { params: { id } });
         setLoading(false);
         setStore(response.data);
-        console.tron.log(response.data);
         formRef.current.setData(response.data);
       } catch (err) {
         toast.error('Houve um erro ao carregar as informações da loja');
@@ -63,7 +62,6 @@ function UpdateStore({ match }) {
     getStore();
   }, [tabIndex]);
   async function submitHandle(data) {
-    console.tron.log(formRef.current.getData());
     try {
       formRef.current.setErrors({});
 

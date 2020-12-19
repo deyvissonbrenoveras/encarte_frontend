@@ -20,7 +20,6 @@ function* updateRequest({ payload }) {
   const { id, user, removeStores, addStores } = payload;
   try {
     const response = yield call(api.put, `users/${id}`, user);
-    console.tron.log(response.data);
     toast.success('O usuário foi editado com sucesso');
     if (addStores && addStores.length > 0) {
       yield call(api.post, `users_stores/${id}`, { stores: addStores });

@@ -26,7 +26,6 @@ function Products() {
     async function getData() {
       try {
         const response = await api.get('products');
-        console.tron.log(response.data);
         setProducts(response.data);
         setLoading(false);
       } catch (err) {

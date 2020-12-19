@@ -60,7 +60,6 @@ Select.propTypes = {
 //   const { fieldName, registerField, error } = useField(name);
 
 //   function register(event, newValue) {
-//     console.log(newValue);
 //     registerField({
 //       name: fieldName,
 //       ref: selectRef.current,
@@ -73,7 +72,6 @@ Select.propTypes = {
 //       setValue: (ref, value) => {
 //         ref.selectedValue = value;
 //         ref.value = 'Usuário';
-//         console.log(ref);
 //       },
 //     });
 //   }
