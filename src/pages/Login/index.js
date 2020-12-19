@@ -17,7 +17,6 @@ function Login() {
   const dispatch = useDispatch();
 
   async function submitHandle(data) {
-    console.tron.log(data);
     try {
       formRef.current.setErrors({});
       const schema = Yup.object().shape({
