@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import footerImage from '../../../assets/footerImage.png';
+import footerImage from '../../../assets/footerImage.webp';
 
 export default makeStyles((theme) => ({
   name: {
