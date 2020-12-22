@@ -22,7 +22,7 @@ function Users() {
 
   useEffect(() => {
     dispatch(loadUsersRequest());
-  }, []);
+  }, [dispatch]);
 
   function renderPrivilegeSwitch(privilege) {
     switch (privilege) {

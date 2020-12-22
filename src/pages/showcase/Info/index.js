@@ -31,7 +31,7 @@ function Info({ match }) {
       }
     }
     getStore();
-  }, []);
+  }, [dispatch, url]);
   return (
     <Grid container justify="center">
       {/* {loading ? (

@@ -39,13 +39,13 @@ function Info({ match }) {
       }
     }
     getPartner();
-  }, []);
+  }, [dispatch, url]);
   useEffect(() => {
     if (showcase && showcase.partners) {
       const part = showcase.partners.filter((ptr) => ptr.id === partnerId)[0];
       setPartner(part);
     }
-  }, [showcase]);
+  }, [showcase, partnerId]);
   return (
     <Grid container justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>

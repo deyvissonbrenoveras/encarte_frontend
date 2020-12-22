@@ -17,20 +17,25 @@ import AddButton from '../../../components/AddButton';
 // import TableTest from './TableTest';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
+import PrivilegeEnum from '../../../util/PrivilegeEnum';
 
 function Stores() {
   const dispatch = useDispatch();
   const stores = useSelector((state) => state.store.stores);
   const loading = useSelector((state) => state.store.loading);
+  const profile = useSelector((state) => state.profile.profile);
+
   useEffect(() => {
     async function getStores() {
       dispatch(loadStoresRequest());
     }
     getStores();
-  }, []);
+  }, [dispatch]);
   return (
     <>
-      <AddButton to="newstore" />
+      {profile.privilege <= PrivilegeEnum.SYSTEM_ADMINISTRATOR && (
+        <AddButton to="newstore" />
+      )}
 
       <Typography align="center" variant="h5">
         Lojas

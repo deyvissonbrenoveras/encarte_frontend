@@ -38,13 +38,6 @@ function Cart({ match }) {
   });
   const [total, setTotal] = useState(formatPrice(0));
 
-  // useEffect(() => {
-  //   const filteredCart = nonFilteredCart.filter(
-  //     (prod) => prod.Products_Stores.storeId === store.id
-  //   );
-  //   setCart(filteredCart);
-  // }, [store, nonFilteredCart]);
-
   useEffect(() => {
     async function getStore() {
       try {
@@ -54,7 +47,7 @@ function Cart({ match }) {
       }
     }
     getStore();
-  }, []);
+  }, [dispatch, url]);
   function handleRemove(productId) {
     dispatch(removeProduct(store.id, productId));
   }

@@ -26,7 +26,7 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
         setShrink(!!value);
       },
     });
-  }, [fieldName, registerField]);
+  }, [fieldName, registerField, name]);
 
   useEffect(() => {
     const input = inputRef.current;

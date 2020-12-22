@@ -37,7 +37,7 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
         }
       },
     });
-  }, []);
+  }, [imgRegisterField, name]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -52,7 +52,7 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
         setValue() {},
       });
     }
-  }, [inputRef, registerField]);
+  }, [inputRef, registerField, submitName]);
   const classes = useStyles();
   return (
     <Card className={classes.root} onClick={() => inputRef.current.click()}>

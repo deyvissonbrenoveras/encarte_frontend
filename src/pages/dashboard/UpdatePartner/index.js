@@ -46,7 +46,7 @@ function UpdatePartner({ match }) {
       }
     }
     getData();
-  }, []);
+  }, [id]);
   async function submitHandle(data) {
     try {
       formRef.current.setErrors({});

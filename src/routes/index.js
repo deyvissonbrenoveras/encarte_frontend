@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import Route from './Route';
 
+import PrivilegeEnum from '../util/PrivilegeEnum';
+
 // LAYOUTS
 import AuthLayout from '../pages/layouts/AuthLayout';
 import DashboardLayout from '../pages/layouts/DashboardLayout';
@@ -68,105 +70,105 @@ function Routes() {
       {/* DASHBOARD */}
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/dashboard"
         component={Dashboard}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.SYSTEM_ADMINISTRATOR}
         path="/newstore"
         component={NewStore}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/stores"
         component={Stores}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/updatestore/:id"
         component={UpdateStore}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.SYSTEM_ADMINISTRATOR}
         path="/products"
         component={Products}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/newproduct"
         component={NewProduct}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/updateproduct/:id"
         component={UpdateProduct}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/newpartner"
         component={NewPartner}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/partners"
         component={Partners}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/updatepartner/:id"
         component={UpdatePartner}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.SYSTEM_ADMINISTRATOR}
         path="/newcategory"
         component={NewCategory}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.SYSTEM_ADMINISTRATOR}
         path="/updatecategory/:id"
         component={UpdateCategory}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.SYSTEM_ADMINISTRATOR}
         path="/categories"
         component={Categories}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.SYSTEM_ADMINISTRATOR}
         path="/users"
         component={Users}
         layout={DashboardLayout}
       />
       <Route
         exact
-        isPrivate
+        privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
         path="/updateuser/:id"
         component={UpdateUser}
         layout={DashboardLayout}

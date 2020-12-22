@@ -56,7 +56,7 @@ function UpdateProduct({ match }) {
       }
     }
     getData();
-  }, []);
+  }, [id]);
 
   async function submitHandle(data) {
     try {

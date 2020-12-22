@@ -54,7 +54,7 @@ function UpdateUser({ match }) {
       }
     }
     getData();
-  }, []);
+  }, [id]);
 
   async function submitHandle(data) {
     try {

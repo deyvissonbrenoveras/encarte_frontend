@@ -40,7 +40,7 @@ function Product({ match }) {
       // setTotal(formatPrice(amount * prod ? prod.price : 0));
       setAmount(1);
     }
-  }, [showcase]);
+  }, [showcase, productId]);
 
   useEffect(() => {
     async function getProduct() {
@@ -51,7 +51,7 @@ function Product({ match }) {
       }
     }
     getProduct();
-  }, []);
+  }, [dispatch, url]);
   function handleAddProduct() {
     dispatch(addProduct(showcase.id, product, amount));
     history.push(`/loja/${url}/carrinho`);
@@ -78,7 +78,7 @@ function Product({ match }) {
     if (product) {
       setTotal(formatPrice(amount * product.price));
     }
-  }, [amount]);
+  }, [amount, product]);
   return (
     <Grid container justify="center">
       {!product ? (

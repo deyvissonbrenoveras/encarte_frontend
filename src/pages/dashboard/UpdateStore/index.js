@@ -60,7 +60,7 @@ function UpdateStore({ match }) {
       }
     }
     getStore();
-  }, [tabIndex]);
+  }, [tabIndex, id]);
   async function submitHandle(data) {
     try {
       formRef.current.setErrors({});

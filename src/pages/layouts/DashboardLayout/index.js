@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 // import { FaUser, FaStore, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
 // import { GiCheckboxTree } from 'react-icons/gi';
 import {
@@ -31,6 +30,7 @@ import {
   // Mail,
   ExitToApp,
 } from '@material-ui/icons';
+import PrivilegeEnum from '../../../util/PrivilegeEnum';
 
 import logo from '../../../assets/logo.png';
 import useStyles from './styles';
@@ -38,6 +38,7 @@ import useStyles from './styles';
 import { signOut } from '../../../store/modules/auth/actions';
 
 function DashboardLayout({ children }) {
+  const profile = useSelector((state) => state.profile.profile);
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
@@ -112,12 +113,14 @@ function DashboardLayout({ children }) {
             <ListItemText primary="Lojas" />
           </ListItem>
 
-          <ListItem button component={Link} to="/products">
-            <ListItemIcon>
-              <FaBoxOpen className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Produtos" />
-          </ListItem>
+          {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
+            <ListItem button component={Link} to="/products">
+              <ListItemIcon>
+                <FaBoxOpen className={classes.list} />
+              </ListItemIcon>
+              <ListItemText primary="Produtos" />
+            </ListItem>
+          )}
 
           <ListItem button component={Link} to="/partners">
             <ListItemIcon>
@@ -126,19 +129,23 @@ function DashboardLayout({ children }) {
             <ListItemText primary="Parceiros" />
           </ListItem>
 
-          <ListItem button component={Link} to="/categories">
-            <ListItemIcon>
-              <GiCheckboxTree className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Categorias" />
-          </ListItem>
+          {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
+            <ListItem button component={Link} to="/categories">
+              <ListItemIcon>
+                <GiCheckboxTree className={classes.list} />
+              </ListItemIcon>
+              <ListItemText primary="Categorias" />
+            </ListItem>
+          )}
 
-          <ListItem button component={Link} to="/users">
-            <ListItemIcon>
-              <FaUser className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Usuários" />
-          </ListItem>
+          {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
+            <ListItem button component={Link} to="/users">
+              <ListItemIcon>
+                <FaUser className={classes.list} />
+              </ListItemIcon>
+              <ListItemText primary="Usuários" />
+            </ListItem>
+          )}
         </List>
         <Divider />
       </Drawer>

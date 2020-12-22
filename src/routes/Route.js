@@ -2,23 +2,24 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
+import PrivilegeEnum from '../util/PrivilegeEnum';
 
 function RouteWrapper({
   component: Component,
   layout: Layout,
-  isPrivate,
+  privilegeRequired,
   ...rest
 }) {
   const signed = useSelector((state) => state.auth.signed);
-  const privilege = useSelector((state) => state.user.loggedUser.privilege);
+  const profile = useSelector((state) => state.profile.profile);
 
-  if ((!signed || privilege === 3) && isPrivate) {
+  if (!signed && privilegeRequired < PrivilegeEnum.USER) {
     return <Redirect to="/login" />;
   }
 
-  // if (signed && !isPrivate) {
-  //   return <Redirect to="/dashboard" />;
-  // }
+  if (signed && privilegeRequired < profile.privilege) {
+    return <Redirect to="/login" />;
+  }
   return (
     <Route
       {...rest}
@@ -37,9 +38,9 @@ RouteWrapper.propTypes = {
   component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
     .isRequired,
   layout: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
-  isPrivate: PropTypes.bool,
+  privilegeRequired: PropTypes.number,
 };
 
 RouteWrapper.defaultProps = {
-  isPrivate: false,
+  privilegeRequired: 3,
 };

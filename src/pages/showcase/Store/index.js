@@ -42,7 +42,7 @@ function Store({ match }) {
       }
     }
     getData();
-  }, []);
+  }, [dispatch, url]);
 
   const store = useMemo(() => {
     // Filter all categories
