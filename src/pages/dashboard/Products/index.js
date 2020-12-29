@@ -17,6 +17,7 @@ import {
 import AddButton from '../../../components/AddButton';
 import api from '../../../services/api';
 import LoadingIcon from '../../../components/LoadingIcon';
+import CustomTable from '../../../components/CustomTable';
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -38,10 +39,65 @@ function Products() {
   return (
     <>
       <AddButton to="newproduct" />
-      <Typography align="center" variant="h5">
+      {/* <Typography align="center" variant="h5">
         Produtos
-      </Typography>
-      <TableContainer component={Paper}>
+      </Typography> */}
+      <CustomTable
+        label="Produtos"
+        headCells={[
+          {
+            id: 'id',
+            numeric: true,
+            disablePadding: false,
+            label: 'Id',
+          },
+          {
+            id: 'image',
+            numeric: false,
+            disablePadding: false,
+            label: 'Imagem',
+            type: 'image',
+          },
+          {
+            id: 'name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Nome',
+            type: 'link',
+          },
+          {
+            id: 'price',
+            numeric: false,
+            disablePadding: false,
+            label: 'Preço',
+          },
+          {
+            id: 'featured',
+            numeric: false,
+            disablePadding: false,
+            label: 'Destaque',
+            type: 'bool',
+          },
+          {
+            id: 'category',
+            numeric: false,
+            disablePadding: false,
+            label: 'Categoria',
+          },
+        ]}
+        rows={products.map((product) => ({
+          id: product.id,
+          image: {
+            src: product.image ? product.image.url : '',
+            alt: product.name,
+          },
+          name: { href: `/updateproduct/${product.id}`, label: product.name },
+          price: product.price,
+          featured: product.featured,
+          category: product.category ? product.category.name : 'Sem categoria',
+        }))}
+      />
+      {/* <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -91,7 +147,7 @@ function Products() {
             )}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
     </>
   );
 }

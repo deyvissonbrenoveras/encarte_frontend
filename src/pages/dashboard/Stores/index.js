@@ -24,7 +24,6 @@ function Stores() {
   const stores = useSelector((state) => state.store.stores);
   const loading = useSelector((state) => state.store.loading);
   const profile = useSelector((state) => state.profile.profile);
-  // TESTE NOVA BRANCH DE DESENVOLVIMENTO
   useEffect(() => {
     async function getStores() {
       dispatch(loadStoresRequest());

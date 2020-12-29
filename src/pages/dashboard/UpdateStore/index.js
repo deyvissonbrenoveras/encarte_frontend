@@ -24,6 +24,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { FaCheckSquare, FaSquare } from 'react-icons/fa';
+import AddButton from '../../../components/AddButton';
 import api from '../../../services/api';
 import Input from '../../../components/Input';
 import Img from '../../../components/Img';
@@ -204,6 +205,7 @@ function UpdateStore({ match }) {
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
             <TableContainer component={Paper}>
+              <AddButton to="/newproduct" />
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
@@ -252,6 +254,7 @@ function UpdateStore({ match }) {
           </TabPanel>
           <TabPanel value={tabIndex} index={2}>
             <TableContainer component={Paper}>
+              <AddButton to="/newpartner" />
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>

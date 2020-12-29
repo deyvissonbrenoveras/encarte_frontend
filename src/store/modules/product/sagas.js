@@ -34,7 +34,12 @@ function* updateProductRequest({ payload }) {
       toast.success('Novas lojas adicionadas');
     }
     if (removeStores && removeStores.length > 0) {
-      yield call(api.put, `products_stores/${id}`, { stores: removeStores });
+      yield call(
+        api.put,
+        `products_stores/`,
+        { stores: removeStores },
+        { params: { productId: id } }
+      );
       toast.success('Algumas lojas foram removidas');
     }
     yield put(loadRequest(id));

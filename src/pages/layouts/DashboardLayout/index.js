@@ -122,12 +122,14 @@ function DashboardLayout({ children }) {
             </ListItem>
           )}
 
-          <ListItem button component={Link} to="/partners">
-            <ListItemIcon>
-              <FaUserFriends className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Parceiros" />
-          </ListItem>
+          {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
+            <ListItem button component={Link} to="/partners">
+              <ListItemIcon>
+                <FaUserFriends className={classes.list} />
+              </ListItemIcon>
+              <ListItemText primary="Parceiros" />
+            </ListItem>
+          )}
 
           {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
             <ListItem button component={Link} to="/categories">
