@@ -1,23 +1,11 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Paper,
-  Avatar,
-  Typography,
-} from '@material-ui/core';
 import AddButton from '../../../components/AddButton';
 // import TableTest from './TableTest';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
 import PrivilegeEnum from '../../../util/PrivilegeEnum';
+import CustomTable from '../../../components/CustomTable';
 
 function Stores() {
   const dispatch = useDispatch();
@@ -36,10 +24,51 @@ function Stores() {
         <AddButton to="newstore" />
       )}
 
-      <Typography align="center" variant="h5">
-        Lojas
-      </Typography>
-      <TableContainer component={Paper}>
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        <CustomTable
+          label="Lojas"
+          headCells={[
+            {
+              id: 'id',
+              numeric: true,
+              disablePadding: false,
+              label: 'Id',
+            },
+            {
+              id: 'logo',
+              numeric: false,
+              disablePadding: false,
+              label: 'Logo',
+              type: 'image',
+            },
+            {
+              id: 'name',
+              numeric: false,
+              disablePadding: false,
+              label: 'Nome',
+              type: 'link',
+            },
+            {
+              id: 'url',
+              numeric: false,
+              disablePadding: false,
+              label: 'Url',
+            },
+          ]}
+          rows={stores.map((store) => ({
+            id: store.id,
+            logo: {
+              src: store.logo ? store.logo.url : '',
+              alt: store.name,
+            },
+            name: { href: `/updatestore/${store.id}`, label: store.name },
+            url: store.url,
+          }))}
+        />
+      )}
+      {/* <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -73,7 +102,7 @@ function Stores() {
             )}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
     </>
   );
 }

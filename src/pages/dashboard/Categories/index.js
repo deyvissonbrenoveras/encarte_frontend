@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Paper,
-  Typography,
-} from '@material-ui/core';
 import api from '../../../services/api';
 import LoadingIcon from '../../../components/LoadingIcon';
 import AddButton from '../../../components/AddButton';
+import CustomTable from '../../../components/CustomTable';
 
 function Categories() {
   const [loading, setLoading] = useState(true);
@@ -32,39 +22,35 @@ function Categories() {
   return (
     <>
       <AddButton to="newcategory" />
-      <Typography align="center" variant="h5">
-        Categorias
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>Nome</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell>
-                  <LoadingIcon />
-                </TableCell>
-              </TableRow>
-            ) : (
-              categories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell>{category.id}</TableCell>
-                  <TableCell>
-                    <Link to={`/updatecategory/${category.id}`}>
-                      {category.name}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        <CustomTable
+          label="Categorias"
+          headCells={[
+            {
+              id: 'id',
+              numeric: true,
+              disablePadding: false,
+              label: 'Id',
+            },
+            {
+              id: 'name',
+              numeric: false,
+              disablePadding: false,
+              label: 'Nome',
+              type: 'link',
+            },
+          ]}
+          rows={categories.map((category) => ({
+            id: category.id,
+            name: {
+              href: `/updatecategory/${category.id}`,
+              label: category.name,
+            },
+          }))}
+        />
+      )}
     </>
   );
 }

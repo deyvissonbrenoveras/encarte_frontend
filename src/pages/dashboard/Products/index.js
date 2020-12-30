@@ -54,7 +54,7 @@ function Products() {
             },
             {
               id: 'price',
-              numeric: false,
+              numeric: true,
               disablePadding: false,
               label: 'Preço',
             },
@@ -85,10 +85,6 @@ function Products() {
               ? product.category.name
               : 'Sem categoria',
           }))}
-          actionLabel="Desvincular produtos"
-          actionCallback={(selected) => {
-            console.tron.log(selected);
-          }}
         />
       )}
     </>

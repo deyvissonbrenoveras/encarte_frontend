@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { FaCheckSquare, FaSquare } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Avatar,
-  Paper,
-} from '@material-ui/core';
 import LoadingIcon from '../../../components/LoadingIcon';
 import api from '../../../services/api';
 
 import AddButton from '../../../components/AddButton';
+import CustomTable from '../../../components/CustomTable';
 
 function Partners() {
   const [loading, setLoading] = useState(true);
@@ -38,49 +27,68 @@ function Partners() {
       {loading ? (
         <LoadingIcon />
       ) : (
-        <TableContainer component={Paper}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Logo</TableCell>
-                <TableCell>Nome</TableCell>
-                <TableCell>Patrocinador</TableCell>
-                <TableCell>Site</TableCell>
-                <TableCell>Agente Regional</TableCell>
-                <TableCell>Whatsapp Agente</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {loading ? (
-                <LoadingIcon />
-              ) : (
-                partners &&
-                partners.map((partner) => (
-                  <TableRow key={partner.id}>
-                    <TableCell>
-                      <Avatar src={partner.logo.url} alt={partner.name} />
-                    </TableCell>
-                    <TableCell>
-                      <Link to={`/updatepartner/${partner.id}`}>
-                        {partner.name}
-                      </Link>
-                    </TableCell>
-                    <TableCell>
-                      {partner.sponsorship ? (
-                        <FaCheckSquare color="#4d88ff" />
-                      ) : (
-                        <FaSquare color="#dbdbdb" />
-                      )}
-                    </TableCell>
-                    <TableCell>{partner.site}</TableCell>
-                    <TableCell>{partner.regionalAgent}</TableCell>
-                    <TableCell>{partner.agentWhatsapp}</TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <CustomTable
+          label="Parceiros"
+          headCells={[
+            {
+              id: 'id',
+              numeric: true,
+              disablePadding: false,
+              label: 'Id',
+            },
+            {
+              id: 'logo',
+              numeric: false,
+              disablePadding: false,
+              label: 'Logo',
+              type: 'image',
+            },
+            {
+              id: 'name',
+              numeric: false,
+              disablePadding: false,
+              label: 'Nome',
+              type: 'link',
+            },
+            {
+              id: 'sponsorship',
+              numeric: false,
+              disablePadding: false,
+              label: 'Patrocinador',
+              type: 'bool',
+            },
+            {
+              id: 'site',
+              numeric: false,
+              disablePadding: false,
+              label: 'Site',
+            },
+            {
+              id: 'regionalAgent',
+              numeric: false,
+              disablePadding: false,
+              label: 'Agente Regional',
+            },
+            {
+              id: 'agentWhatsapp',
+              numeric: false,
+              disablePadding: false,
+              label: 'Whatsapp Agente',
+            },
+          ]}
+          rows={partners.map((partner) => ({
+            id: partner.id,
+            logo: {
+              src: partner.logo ? partner.logo.url : '',
+              alt: partner.name,
+            },
+            name: { href: `/updatepartner/${partner.id}`, label: partner.name },
+            sponsorship: partner.sponsorship,
+            site: partner.site,
+            regionalAgent: partner.regionalAgent,
+            agentWhatsapp: partner.agentWhatsapp,
+          }))}
+        />
       )}
     </>
   );

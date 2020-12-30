@@ -231,7 +231,7 @@ function UpdateStore({ match }) {
                 },
                 {
                   id: 'price',
-                  numeric: false,
+                  numeric: true,
                   disablePadding: false,
                   label: 'Preço',
                 },
