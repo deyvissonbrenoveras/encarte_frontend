@@ -1,17 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { FaCheckSquare, FaSquare } from 'react-icons/fa';
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Paper,
-  Typography,
-} from '@material-ui/core';
 import { loadUsersRequest } from '../../../store/modules/user/actions';
 import CustomTable from '../../../components/CustomTable';
 
