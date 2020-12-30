@@ -64,7 +64,6 @@ function* loadProductRequest({ payload }) {
 }
 function* disassociateProductsFromStore({ payload }) {
   const { storeId, products, successCb } = payload;
-  console.tron.log(payload);
   try {
     yield call(
       api.put,
