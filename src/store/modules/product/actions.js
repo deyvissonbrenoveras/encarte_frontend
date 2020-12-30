@@ -19,6 +19,13 @@ export function updateProductRequest(id, product, removeStores, addStores) {
   };
 }
 
+export function disassociateProductsFromStore(storeId, products, successCb) {
+  return {
+    type: '@product/DISASSOCIATE_PRODUCTS_REQUEST',
+    payload: { storeId, products, successCb },
+  };
+}
+
 export function loadRequest(id) {
   return {
     type: '@product/LOAD_PRODUCT_REQUEST',

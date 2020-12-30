@@ -36,7 +36,7 @@ function* updateProductRequest({ payload }) {
     if (removeStores && removeStores.length > 0) {
       yield call(
         api.put,
-        `products_stores/`,
+        `products_stores`,
         { stores: removeStores },
         { params: { productId: id } }
       );
@@ -62,8 +62,33 @@ function* loadProductRequest({ payload }) {
     );
   }
 }
+function* disassociateProductsFromStore({ payload }) {
+  const { storeId, products, successCb } = payload;
+  console.tron.log(payload);
+  try {
+    yield call(
+      api.put,
+      `products_stores`,
+      { products },
+      { params: { storeId } }
+    );
+    toast.success(`${products.length} produto(s) desassociado(s) da loja`);
+    successCb();
+  } catch (err) {
+    yield put(productFailure());
+    toast.error(
+      err.response.data
+        ? err.response.data.error
+        : 'Erro ao desassociar os produtos da loja'
+    );
+  }
+}
 export default all([
   takeLatest('@product/ADD_REQUEST', addProductRequest),
   takeLatest('@product/UPDATE_REQUEST', updateProductRequest),
   takeLatest('@product/LOAD_PRODUCT_REQUEST', loadProductRequest),
+  takeLatest(
+    '@product/DISASSOCIATE_PRODUCTS_REQUEST',
+    disassociateProductsFromStore
+  ),
 ]);

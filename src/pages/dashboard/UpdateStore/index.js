@@ -23,7 +23,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { FaCheckSquare, FaSquare } from 'react-icons/fa';
+import CustomTable from '../../../components/CustomTable';
 import AddButton from '../../../components/AddButton';
 import api from '../../../services/api';
 import Input from '../../../components/Input';
@@ -32,6 +32,7 @@ import Img from '../../../components/Img';
 import LoadingIcon from '../../../components/LoadingIcon';
 
 import { updateStoreRequest } from '../../../store/modules/store/actions';
+import { disassociateProductsFromStore } from '../../../store/modules/product/actions';
 
 const useStyles = makeStyles({
   root: {
@@ -45,9 +46,8 @@ function UpdateStore({ match }) {
   const [store, setStore] = useState({});
   const [tabIndex, setTabIndex] = useState(0);
   const formRef = useRef(null);
-
-  useEffect(() => {
-    async function getStore() {
+  function getStore() {
+    async function execGetStore() {
       setLoading(true);
 
       try {
@@ -60,8 +60,9 @@ function UpdateStore({ match }) {
         setLoading(false);
       }
     }
-    getStore();
-  }, [tabIndex, id]);
+    execGetStore();
+  }
+  useEffect(getStore, [tabIndex, id]);
   async function submitHandle(data) {
     try {
       formRef.current.setErrors({});
@@ -204,53 +205,78 @@ function UpdateStore({ match }) {
             </Form>
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
-            <TableContainer component={Paper}>
-              <AddButton to="/newproduct" />
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Imagem</TableCell>
-                    <TableCell>Nome</TableCell>
-                    <TableCell>Preço</TableCell>
-                    <TableCell>Destaque</TableCell>
-                    <TableCell>Categoria</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {loading ? (
-                    <LoadingIcon />
-                  ) : (
-                    store &&
-                    store.products &&
-                    store.products.map((product) => (
-                      <TableRow key={product.id}>
-                        <TableCell>
-                          <Avatar src={product.image.url} alt={product.name} />
-                        </TableCell>
-                        <TableCell>
-                          <Link to={`/updateproduct/${product.id}`}>
-                            {product.name}
-                          </Link>
-                        </TableCell>
-                        <TableCell>{product.price}</TableCell>
-                        <TableCell>
-                          {product.featured ? (
-                            <FaCheckSquare color="#4d88ff" />
-                          ) : (
-                            <FaSquare color="#dbdbdb" />
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {product.category
-                            ? product.category.name
-                            : 'Sem categoria'}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <CustomTable
+              label="Produtos"
+              selectionEnabled
+              headCells={[
+                {
+                  id: 'id',
+                  numeric: true,
+                  disablePadding: false,
+                  label: 'Id',
+                },
+                {
+                  id: 'image',
+                  numeric: false,
+                  disablePadding: false,
+                  label: 'Imagem',
+                  type: 'image',
+                },
+                {
+                  id: 'name',
+                  numeric: false,
+                  disablePadding: false,
+                  label: 'Nome',
+                  type: 'link',
+                },
+                {
+                  id: 'price',
+                  numeric: false,
+                  disablePadding: false,
+                  label: 'Preço',
+                },
+                {
+                  id: 'featured',
+                  numeric: false,
+                  disablePadding: false,
+                  label: 'Destaque',
+                  type: 'bool',
+                },
+                {
+                  id: 'category',
+                  numeric: false,
+                  disablePadding: false,
+                  label: 'Categoria',
+                },
+              ]}
+              rows={
+                store.products &&
+                store.products.map((product) => ({
+                  id: product.id,
+                  image: {
+                    src: product.image ? product.image.url : '',
+                    alt: product.name,
+                  },
+                  name: {
+                    href: `/updateproduct/${product.id}`,
+                    label: product.name,
+                  },
+                  price: product.price,
+                  featured: product.featured,
+                  category: product.category
+                    ? product.category.name
+                    : 'Sem categoria',
+                }))
+              }
+              actionLabel="Desvincular produtos"
+              actionCallback={(selected) => {
+                dispatch(
+                  disassociateProductsFromStore(id, selected, () => {
+                    getStore();
+                  })
+                );
+              }}
+            />
           </TabPanel>
           <TabPanel value={tabIndex} index={2}>
             <TableContainer component={Paper}>

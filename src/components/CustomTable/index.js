@@ -33,14 +33,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import Avatar from '@material-ui/core/Avatar';
-
+import Button from '@material-ui/core/Button';
 import { FaCheckSquare, FaSquare } from 'react-icons/fa';
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -83,6 +80,7 @@ function EnhancedTableHead(props) {
     onRequestSort,
     headCells,
     dense,
+    selectionEnabled,
   } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -91,14 +89,17 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
-        </TableCell>
+        {selectionEnabled && (
+          <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{ 'aria-label': 'select all desserts' }}
+            />
+          </TableCell>
+        )}
+
         {headCells.map((headCell) => {
           return (
             <TableCell
@@ -130,15 +131,20 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  classes: PropTypes.shape.isRequired,
+  classes: PropTypes.instanceOf(Object),
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
-  headCells: PropTypes.element.isRequired,
+  headCells: PropTypes.instanceOf(Array).isRequired,
   dense: PropTypes.bool.isRequired,
+  selectionEnabled: PropTypes.bool.isRequired,
+};
+
+EnhancedTableHead.defaultProps = {
+  classes: {},
 };
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -163,7 +169,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, label } = props;
+  const { numSelected, label, actionLabel, actionCallback } = props;
 
   return (
     <Toolbar
@@ -191,18 +197,17 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+      {numSelected > 0 && (
+        <Button
+          variant="contained"
+          startIcon={<DeleteIcon />}
+          size="small"
+          onClick={() => {
+            actionCallback();
+          }}
+        >
+          {actionLabel}
+        </Button>
       )}
     </Toolbar>
   );
@@ -211,6 +216,8 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
+  actionLabel: PropTypes.string.isRequired,
+  actionCallback: PropTypes.func.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -237,7 +244,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ label, headCells, rows }) {
+export default function EnhancedTable({
+  label,
+  headCells,
+  rows,
+  actionLabel,
+  actionCallback,
+  selectionEnabled,
+}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -254,19 +268,19 @@ export default function EnhancedTable({ label, headCells, rows }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -294,7 +308,7 @@ export default function EnhancedTable({ label, headCells, rows }) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -302,7 +316,14 @@ export default function EnhancedTable({ label, headCells, rows }) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} label={label} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          label={label}
+          actionLabel={actionLabel}
+          actionCallback={() => {
+            actionCallback(selected);
+          }}
+        />
         <TableContainer>
           <Table
             className={classes.table}
@@ -320,30 +341,36 @@ export default function EnhancedTable({ label, headCells, rows }) {
               rowCount={rows.length}
               headCells={headCells}
               dense={dense}
+              selectionEnabled={selectionEnabled}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) =>
+                        selectionEnabled && handleClick(event, row.id)
+                      }
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
+                      {selectionEnabled && (
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={isItemSelected}
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </TableCell>
+                      )}
+
                       {/* <TableCell
                         component="th"
                         id={labelId}
@@ -355,7 +382,7 @@ export default function EnhancedTable({ label, headCells, rows }) {
                       {headCells.map((headCell) => {
                         if (headCell.type === 'image') {
                           return (
-                            <TableCell align="left">
+                            <TableCell align="left" key={headCell.id}>
                               {!dense && (
                                 <Avatar
                                   src={row[headCell.id].src}
@@ -367,7 +394,7 @@ export default function EnhancedTable({ label, headCells, rows }) {
                         }
                         if (headCell.type === 'bool') {
                           return (
-                            <TableCell align="left">
+                            <TableCell align="left" key={headCell.id}>
                               {row[headCell.id] ? (
                                 <FaCheckSquare color="#4d88ff" />
                               ) : (
@@ -378,7 +405,7 @@ export default function EnhancedTable({ label, headCells, rows }) {
                         }
                         if (headCell.type === 'link') {
                           return (
-                            <TableCell align="left">
+                            <TableCell align="left" key={headCell.id}>
                               <Link to={row[headCell.id].href}>
                                 {row[headCell.id].label}
                               </Link>
@@ -386,7 +413,9 @@ export default function EnhancedTable({ label, headCells, rows }) {
                           );
                         }
                         return (
-                          <TableCell align="left">{row[headCell.id]}</TableCell>
+                          <TableCell align="left" key={headCell.id}>
+                            {row[headCell.id]}
+                          </TableCell>
                         );
                       })}
                       {/* <TableCell align="right">{row.calories}</TableCell>
@@ -425,8 +454,16 @@ export default function EnhancedTable({ label, headCells, rows }) {
 
 EnhancedTable.propTypes = {
   label: PropTypes.string.isRequired,
-  headCells: PropTypes.element.isRequired,
-  rows: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-  ).isRequired,
+  headCells: PropTypes.instanceOf(Array).isRequired,
+  rows: PropTypes.instanceOf(Array),
+  actionLabel: PropTypes.string,
+  actionCallback: PropTypes.func,
+  selectionEnabled: PropTypes.bool,
+};
+
+EnhancedTable.defaultProps = {
+  actionLabel: '',
+  actionCallback: () => {},
+  rows: [],
+  selectionEnabled: false,
 };

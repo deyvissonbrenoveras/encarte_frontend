@@ -31,6 +31,10 @@ export default function product(state = INITIAL_STATE, action) {
         draft.product = action.payload.product;
         draft.loading = false;
       });
+    case '@product/DISASSOCIATE_PRODUCTS_REQUEST':
+      return produce(state, (draft) => {
+        draft.loading = true;
+      });
     default:
       return state;
   }
