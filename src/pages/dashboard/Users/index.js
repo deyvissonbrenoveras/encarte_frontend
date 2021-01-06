@@ -77,49 +77,6 @@ function Users() {
           }))}
         />
       )}
-      {/* <Typography align="center" variant="h5">
-        Categorias
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>Nome</TableCell>
-              <TableCell>E-mail</TableCell>
-              <TableCell>Ativo</TableCell>
-              <TableCell>Privilégio</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell>
-                  <LoadingIcon />
-                </TableCell>
-              </TableRow>
-            ) : (
-              users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.id}</TableCell>
-                  <TableCell>
-                    <Link to={`/updateuser/${user.id}`}>{user.name}</Link>
-                  </TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    {user.active ? (
-                      <FaCheckSquare color="#4d88ff" />
-                    ) : (
-                      <FaSquare color="#dbdbdb" />
-                    )}
-                  </TableCell>
-                  <TableCell>{renderPrivilegeSwitch(user.privilege)}</TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer> */}
     </>
   );
 }
