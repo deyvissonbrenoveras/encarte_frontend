@@ -32,7 +32,7 @@ import {
 } from '@material-ui/icons';
 import PrivilegeEnum from '../../../util/PrivilegeEnum';
 
-import logo from '../../../assets/logo.png';
+import logo from '../../../assets/logo.webp';
 import useStyles from './styles';
 
 import { signOut } from '../../../store/modules/auth/actions';

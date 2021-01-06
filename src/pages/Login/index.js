@@ -8,7 +8,7 @@ import Input from '../../components/Input';
 
 import { signInRequest } from '../../store/modules/auth/actions';
 
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.webp';
 import LoadingIcon from '../../components/LoadingIcon';
 
 function Login() {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import { Store, ShoppingCart, Info } from '@material-ui/icons';
 import { useStyles } from './styles';
-import logo from '../../../assets/logo.png';
+import logo from '../../../assets/logo.webp';
 import history from '../../../services/history';
 
 function ShowcaseLayout({ children, match }) {
