@@ -53,29 +53,33 @@ function Store({ match }) {
         return { ...pdt, formattedPrice: formatPrice(pdt.price) };
       });
 
-      categories = products.reduce((cat, product) => {
-        if (product.category) {
-          let exists = false;
-          for (let i = 0; i < cat.length; i += 1) {
-            if (cat[i].id === product.category.id) {
-              exists = true;
+      categories = products
+        .reduce((cat, product) => {
+          if (product.category) {
+            let exists = false;
+            for (let i = 0; i < cat.length; i += 1) {
+              if (cat[i].id === product.category.id) {
+                exists = true;
+              }
+            }
+            if (!exists) {
+              cat.push(product.category);
             }
           }
-          if (!exists) {
-            cat.push(product.category);
-          }
-        }
-        return cat;
-      }, []);
+          return cat;
+        }, [])
+        .sort((a, b) => a.name.localeCompare(b.name));
       categories.push({ id: null, name: 'Outros produtos' });
     }
     categories =
       categories &&
       categories.map((cat) => {
         const editingCategory = { ...cat };
-        editingCategory.products = products.filter(
-          (prod) => (prod.category ? prod.category.id : null) === cat.id
-        );
+        editingCategory.products = products
+          .filter(
+            (prod) => (prod.category ? prod.category.id : null) === cat.id
+          )
+          .sort((a, b) => a.name.localeCompare(b.name));
 
         return editingCategory;
       });
