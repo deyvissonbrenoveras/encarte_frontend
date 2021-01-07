@@ -160,7 +160,19 @@ function Store({ match }) {
                   </CardActionArea>
                 )}
               </Card>
-
+              {store.shelfLife && (
+                <Typography
+                  className={classes.shelfLife}
+                  align="right"
+                  variant="caption"
+                  display="block"
+                  gutterBottom
+                >
+                  {`PREÇOS VÁLIDOS ATÉ ${new Date(
+                    store.shelfLife
+                  ).toLocaleDateString('pt-BR')}`}
+                </Typography>
+              )}
               {store.partners &&
                 store.partners.filter((partner) => !partner.sponsorship)
                   .length > 0 && (
@@ -445,6 +457,18 @@ function Store({ match }) {
                     <Typography variant="caption" display="block" gutterBottom>
                       IMAGENS MERAMENTE ILUSTRATIVAS**
                     </Typography>
+                    {store.shelfLife && (
+                      <Typography
+                        className={classes.shelfLife}
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        {`PREÇOS VÁLIDOS ATÉ ${new Date(
+                          store.shelfLife
+                        ).toLocaleDateString('pt-BR')}`}
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid item xs={12} sm={6} className={classes.footerInfo}>
                     {store.address && store.city && (

@@ -8,7 +8,7 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
 
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
-  const [shrink, setShrink] = useState(!!defaultValue);
+  const [shrink, setShrink] = useState(type === 'date' ? true : !!defaultValue);
   useEffect(() => {
     // const path = rest.type === 'checkbox' ? 'checked' : 'value';
     registerField({
@@ -19,11 +19,18 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
       },
       clearValue: (ref, value) => {
         ref.value = '';
-        setShrink(!!value);
+        if (type !== 'date') {
+          setShrink(!!value);
+        }
       },
       setValue: (ref, value) => {
-        ref.value = value || '';
-        setShrink(!!value);
+        ref.value =
+          value && type === 'date'
+            ? new Date(value).toISOString().split('T')[0]
+            : value || '';
+        if (type !== 'date') {
+          setShrink(!!value);
+        }
       },
     });
   }, [fieldName, registerField, name]);
@@ -41,13 +48,13 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
       if (!inputValue) setShrink(false);
     }
 
-    if (input) {
+    if (input && type !== 'date') {
       input.addEventListener('focus', handlerFocusEvent);
       input.addEventListener('blur', handlerBlurEvent);
     }
 
     return () => {
-      if (input) {
+      if (input && type !== 'date') {
         input.removeEventListener('focus', handlerFocusEvent);
         input.removeEventListener('blur', handlerBlurEvent);
       }

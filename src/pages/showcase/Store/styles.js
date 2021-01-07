@@ -36,6 +36,10 @@ export default makeStyles((theme) => ({
       height: theme.spacing(10),
     },
   },
+  shelfLife: {
+    padding: theme.spacing(1),
+    fontSize: 12,
+  },
   partnerList: {
     padding: theme.spacing(0.8),
     overflow: 'scroll',

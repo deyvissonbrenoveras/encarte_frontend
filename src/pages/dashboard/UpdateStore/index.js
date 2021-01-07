@@ -194,6 +194,11 @@ function UpdateStore({ match }) {
                     placeholder="Insira o Facebook"
                     label="Facebook:"
                   />
+                  <Input
+                    name="shelfLife"
+                    label="Data de validade do e-ncarte:"
+                    type="date"
+                  />
                 </Grid>
 
                 <Box m={2} width="100%" textAlign="right">

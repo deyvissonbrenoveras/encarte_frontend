@@ -7,7 +7,6 @@ import { Form } from '@unform/web';
 import { Grid, Box, Button, Typography } from '@material-ui/core';
 import Input from '../../../components/Input';
 import Img from '../../../components/Img';
-
 import { addStoreRequest } from '../../../store/modules/store/actions';
 
 function NewStore() {
@@ -101,6 +100,11 @@ function NewStore() {
             name="facebook"
             placeholder="Insira o Facebook"
             label="Facebook:"
+          />
+          <Input
+            name="shelfLife"
+            label="Data de validade do e-ncarte:"
+            type="date"
           />
         </Grid>
 
