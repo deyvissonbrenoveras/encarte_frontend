@@ -174,9 +174,7 @@ function Store({ match }) {
                   display="block"
                   gutterBottom
                 >
-                  {`PREÇOS VÁLIDOS ATÉ ${new Date(
-                    store.shelfLife
-                  ).toLocaleDateString('pt-BR')}`}
+                  {`PREÇOS VÁLIDOS ATÉ ${store.shelfLife}`}
                 </Typography>
               )}
               {store.partners &&
@@ -470,9 +468,7 @@ function Store({ match }) {
                         display="block"
                         gutterBottom
                       >
-                        {`PREÇOS VÁLIDOS ATÉ ${new Date(
-                          store.shelfLife
-                        ).toLocaleDateString('pt-BR')}`}
+                        {`PREÇOS VÁLIDOS ATÉ ${store.shelfLife}`}
                       </Typography>
                     )}
                   </Grid>
