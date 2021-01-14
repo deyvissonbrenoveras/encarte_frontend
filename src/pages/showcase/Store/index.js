@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { MetaTags } from 'react-meta-tags';
+import { format, parseISO } from 'date-fns';
 import { toast } from 'react-toastify';
 import {
   Grid,
@@ -84,7 +85,12 @@ function Store({ match }) {
         return editingCategory;
       });
 
-    return { ...showcase, products, categories };
+    // shelfLife formatting
+
+    const shelfLife = showcase.shelfLife
+      ? format(parseISO(showcase.shelfLife.split('T')[0]), 'dd/MM/yyyy')
+      : null;
+    return { ...showcase, products, categories, shelfLife };
   }, [showcase]);
 
   function slugify(str) {
@@ -160,7 +166,17 @@ function Store({ match }) {
                   </CardActionArea>
                 )}
               </Card>
-
+              {store.shelfLife && (
+                <Typography
+                  className={classes.shelfLife}
+                  align="right"
+                  variant="caption"
+                  display="block"
+                  gutterBottom
+                >
+                  {`PREÇOS VÁLIDOS ATÉ ${store.shelfLife}`}
+                </Typography>
+              )}
               {store.partners &&
                 store.partners.filter((partner) => !partner.sponsorship)
                   .length > 0 && (
@@ -445,6 +461,16 @@ function Store({ match }) {
                     <Typography variant="caption" display="block" gutterBottom>
                       IMAGENS MERAMENTE ILUSTRATIVAS**
                     </Typography>
+                    {store.shelfLife && (
+                      <Typography
+                        className={classes.shelfLife}
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        {`PREÇOS VÁLIDOS ATÉ ${store.shelfLife}`}
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid item xs={12} sm={6} className={classes.footerInfo}>
                     {store.address && store.city && (
