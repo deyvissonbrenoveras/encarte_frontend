@@ -33,7 +33,7 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
         }
       },
     });
-  }, [fieldName, registerField, name]);
+  }, [fieldName, registerField, name, type]);
 
   useEffect(() => {
     const input = inputRef.current;
@@ -59,7 +59,7 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
         input.removeEventListener('blur', handlerBlurEvent);
       }
     };
-  }, [inputRef]);
+  }, [inputRef, type]);
 
   return (
     <>
