@@ -154,7 +154,7 @@ function Store({ match }) {
                     {store.name}
                   </Typography>
                 </CardContent>
-                {store.cover && (
+                {store.logo && (
                   <CardActionArea>
                     <CardMedia
                       className={classes.media}
@@ -396,7 +396,7 @@ function Store({ match }) {
                 <Grid container>
                   <Grid item xs={12}>
                     <Card className={classes.cover}>
-                      {store.cover && (
+                      {store.logo && (
                         <CardActionArea>
                           <CardMedia
                             className={classes.media}
