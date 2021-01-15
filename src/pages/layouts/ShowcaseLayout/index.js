@@ -9,7 +9,6 @@ import history from '../../../services/history';
 
 function ShowcaseLayout({ children, match }) {
   ReactGA.initialize('UA-156689102-1');
-  console.tron.log(window.location.hostname);
   if (window.location.hostname.includes('e-ncarte.com')) {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
