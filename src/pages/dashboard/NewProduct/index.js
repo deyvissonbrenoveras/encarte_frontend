@@ -117,7 +117,12 @@ function NewProduct() {
               multiline
               rows={4}
             />
-            <Select name="categoryId" options={categoryOptions} isClearable />
+            <Select
+              name="categoryId"
+              placeholder="Categoria:"
+              options={categoryOptions}
+              isClearable
+            />
           </Grid>
           <Grid item xs={12} md={7}>
             <Checkbox name="stores" options={choiceOptions} label="Lojas" />
