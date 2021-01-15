@@ -2,11 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import { Store, ShoppingCart, Info } from '@material-ui/icons';
+import ReactGA from 'react-ga';
 import { useStyles } from './styles';
 import logo from '../../../assets/logo.webp';
 import history from '../../../services/history';
 
 function ShowcaseLayout({ children, match }) {
+  ReactGA.initialize('UA-156689102-1');
+  console.tron.log(window.location.hostname);
+  if (window.location.hostname.includes('e-ncarte.com')) {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
   const { url } = match.params;
   const classes = useStyles();
   return (
