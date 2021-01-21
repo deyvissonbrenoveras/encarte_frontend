@@ -26,6 +26,7 @@ import { loadRequest } from '../../../store/modules/showcase/actions';
 import history from '../../../services/history';
 
 import useStyles from './styles';
+import PriceTypeEnum from '../../../util/PriceTypeEnum';
 
 function Store({ match }) {
   const { url } = match.params;
@@ -129,7 +130,50 @@ function Store({ match }) {
       setProductsFound(products);
     }
   }
+  function ProductItemPrice(params) {
+    const { product } = params;
 
+    switch (product.priceType) {
+      case PriceTypeEnum.DEFAULT:
+        return (
+          <div className={classes.productPrice}>{product.formattedPrice}</div>
+        );
+      case PriceTypeEnum.SPECIAL_OFFER:
+        return (
+          <div className={classes.specialOfferProductPrice}>
+            OFERTA ESPECIAL
+          </div>
+        );
+      case PriceTypeEnum.FEATURED:
+        return (
+          <div className={classes.featuredPrice}>{product.formattedPrice}</div>
+        );
+      default:
+        return (
+          <div className={classes.productPrice}>{product.formattedPrice}</div>
+        );
+    }
+  }
+  function ProductItem(params) {
+    const { product } = params;
+
+    return (
+      <CardActionArea className={classes.productCard}>
+        <CardMedia
+          className={classes.productImage}
+          component="img"
+          alt={product.name}
+          image={product.image && product.image.url}
+          title={product.name}
+        />
+
+        <div className={classes.productContent}>
+          <div>{product.name}</div>
+          <ProductItemPrice product={product} />
+        </div>
+      </CardActionArea>
+    );
+  }
   return (
     <>
       <MetaTags>
@@ -316,22 +360,7 @@ function Store({ match }) {
                             );
                           }}
                         >
-                          <CardActionArea className={classes.productCard}>
-                            <CardMedia
-                              className={classes.productImage}
-                              component="img"
-                              alt={product.name}
-                              image={product.image && product.image.url}
-                              title={product.name}
-                            />
-
-                            <div className={classes.productContent}>
-                              <div>{product.name}</div>
-                              <div className={classes.productPrice}>
-                                {product.formattedPrice}
-                              </div>
-                            </div>
-                          </CardActionArea>
+                          <ProductItem product={product} />
                         </Card>
                       </Grid>
                     ))
@@ -364,26 +393,7 @@ function Store({ match }) {
                                       );
                                     }}
                                   >
-                                    <CardActionArea
-                                      className={classes.productCard}
-                                    >
-                                      <CardMedia
-                                        className={classes.productImage}
-                                        component="img"
-                                        alt={product.name}
-                                        image={
-                                          product.image && product.image.url
-                                        }
-                                        title={product.name}
-                                      />
-
-                                      <div className={classes.productContent}>
-                                        <div>{product.name}</div>
-                                        <div className={classes.productPrice}>
-                                          {product.formattedPrice}
-                                        </div>
-                                      </div>
-                                    </CardActionArea>
+                                    <ProductItem product={product} />
                                   </Card>
                                 </Grid>
                               ))}

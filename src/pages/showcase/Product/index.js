@@ -13,7 +13,7 @@ import {
 
 import { Add, Remove, AddShoppingCart } from '@material-ui/icons';
 import NotFound from '../../../components/NotFound';
-
+import PriceTypeEnum from '../../../util/PriceTypeEnum';
 import history from '../../../services/history';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
@@ -41,7 +41,32 @@ function Product({ match }) {
       setAmount(1);
     }
   }, [showcase, productId]);
+  function ProductItemPrice(params) {
+    const { product: prod } = params;
 
+    switch (prod.priceType) {
+      case PriceTypeEnum.DEFAULT:
+        return (
+          <div className={classes.productDefaultPrice}>
+            {prod.formattedPrice}
+          </div>
+        );
+      case PriceTypeEnum.SPECIAL_OFFER:
+        return (
+          <div className={classes.specialOfferProductPrice}>
+            OFERTA ESPECIAL
+          </div>
+        );
+      case PriceTypeEnum.FEATURED:
+        return (
+          <div className={classes.featuredPrice}>{prod.formattedPrice}</div>
+        );
+      default:
+        return (
+          <div className={classes.productPrice}>{prod.formattedPrice}</div>
+        );
+    }
+  }
   useEffect(() => {
     async function getProduct() {
       try {
@@ -99,8 +124,10 @@ function Product({ match }) {
               <CardContent className={classes.cardContent}>
                 <div className={classes.productName}>{product.name}</div>
                 <div className={classes.productPrice}>
-                  {product.formattedPrice}
+                  <div>Preço:</div>
+                  <ProductItemPrice product={product} />
                 </div>
+
                 <div className={classes.productDescription}>
                   {product.description}
                 </div>
@@ -124,7 +151,10 @@ function Product({ match }) {
                   <Add />
                 </IconButton>
               </div>
-              <div>{total || product.formattedPrice}</div>
+              <div>
+                {product.priceType !== PriceTypeEnum.SPECIAL_OFFER &&
+                  (total || product.formattedPrice)}
+              </div>
               <IconButton onClick={handleAddProduct}>
                 <AddShoppingCart />
               </IconButton>

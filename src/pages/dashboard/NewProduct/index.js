@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
 import { Typography, Grid, Button, Box } from '@material-ui/core';
+import PriceTypeEnum from '../../../util/PriceTypeEnum';
 import Input from '../../../components/Input';
 import CheckboxInput from '../../../components/CheckboxInput';
 // import Textarea from '../../../components/Textarea';
@@ -15,6 +16,7 @@ import Img from '../../../components/Img';
 // import { SaveButton } from '../../../components/Buttons';
 import { addProductRequest } from '../../../store/modules/product/actions';
 import Checkbox from '../../../components/Checkbox';
+import RadioGroup from '../../../components/RadioInputGroup';
 import Select from '../../../components/Select';
 import api from '../../../services/api';
 import LoadingIcon from '../../../components/LoadingIcon';
@@ -60,10 +62,22 @@ function NewProduct() {
           .max(100, 'Máximo de 100 caracteres')
           .required('O nome é obrigatório'),
         description: Yup.string().max(1000, 'Máximo de 1000 caracteres'),
-        price: Yup.number('Preço inválido')
-          .typeError('Preço inválido')
-          .positive('Números negativos não são permitidos')
-          .required('O preço é obrigatório'),
+        priceType: Yup.number()
+          .min(PriceTypeEnum.DEFAULT)
+          .max(PriceTypeEnum.SPECIAL_OFFER)
+          .notRequired(),
+        price: Yup.number().when('priceType', {
+          is: PriceTypeEnum.SPECIAL_OFFER,
+          then: Yup.number().nullable().notRequired(),
+          otherwise: Yup.number('Preço inválido')
+            .typeError('Preço inválido')
+            .positive('Números negativos não são permitidos')
+            .required('O preço é obrigatório'),
+        }),
+        // price: Yup.number('Preço inválido')
+        //   .typeError('Preço inválido')
+        //   .positive('Números negativos não são permitidos')
+        //   .required('O preço é obrigatório'),
         featured: Yup.boolean(),
         stores: Yup.array().min(1, 'Selecione pelo menos uma loja'),
         categoryId: Yup.number().positive().nullable(true),
@@ -103,6 +117,18 @@ function NewProduct() {
               name="name"
               placeholder="Insira o nome do produto"
               label="Nome:"
+            />
+            <RadioGroup
+              name="priceType"
+              label="Tipo de preço"
+              options={[
+                { label: 'Padrão', value: PriceTypeEnum.DEFAULT },
+                { label: 'Destacado', value: PriceTypeEnum.FEATURED },
+                {
+                  label: 'Oferta especial',
+                  value: PriceTypeEnum.SPECIAL_OFFER,
+                },
+              ]}
             />
             <Input
               type="number"

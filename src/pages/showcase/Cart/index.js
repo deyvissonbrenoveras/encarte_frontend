@@ -22,6 +22,8 @@ import {
   removeProduct,
   changeAmount,
 } from '../../../store/modules/cart/actions';
+import PriceTypeEnum from '../../../util/PriceTypeEnum';
+
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 
@@ -62,9 +64,15 @@ function Cart({ match }) {
     let buyList = await cart.reduce((list, product, index) => {
       let text = `${list} %0A%0A ${index + 1}: Id ${product.id} `;
       text += `%0AProduto: ${product.name}`;
-      text += `%0APreço: ${product.formattedPrice}`;
+      text += `%0APreço: ${
+        product.priceType === PriceTypeEnum.SPECIAL_OFFER
+          ? 'OFERTA ESPECIAL'
+          : product.formattedPrice
+      }`;
       text += `%0AQuantidade: ${product.amount}`;
-      text += `%0ASubtotal: ${product.total}`;
+      if (product.priceType !== PriceTypeEnum.SPECIAL_OFFER) {
+        text += `%0ASubtotal: ${product.total}`;
+      }
       return text;
     }, 'Lista de compras e-ncarte:');
     buyList += `%0A%0ATotal: ${total}`;
@@ -78,7 +86,30 @@ function Cart({ match }) {
     }, 0);
     setTotal(formatPrice(newTotal));
   }, [cart]);
+  function ProductItemPrice(params) {
+    const { product: prod } = params;
 
+    switch (prod.priceType) {
+      case PriceTypeEnum.DEFAULT:
+        return (
+          <div className={classes.productPrice}>{prod.formattedPrice}</div>
+        );
+      case PriceTypeEnum.SPECIAL_OFFER:
+        return (
+          <div className={classes.specialOfferProductPrice}>
+            OFERTA ESPECIAL
+          </div>
+        );
+      case PriceTypeEnum.FEATURED:
+        return (
+          <div className={classes.featuredPrice}>{prod.formattedPrice}</div>
+        );
+      default:
+        return (
+          <div className={classes.productPrice}>{prod.formattedPrice}</div>
+        );
+    }
+  }
   return (
     <Grid container justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6}>
@@ -114,9 +145,17 @@ function Cart({ match }) {
                       <CardContent className={classes.content}>
                         <div className={classes.productInfo}>
                           <div>{product.name}</div>
-                          <div className={classes.productPrice}>
-                            {product.formattedPrice}
-                          </div>
+                          {/* {product.priceType === PriceTypeEnum.SPECIAL_OFFER ? (
+                            <div className={classes.specialOfferProductPrice}>
+                              OFERTA ESPECIAL
+                            </div>
+                          ) : (
+                            <div className={classes.productPrice}>
+                              {product.formattedPrice}
+                            </div>
+                          )} */}
+                          <ProductItemPrice product={product} />
+
                           <div className={classes.amountArea}>
                             <IconButton
                               onClick={() => {
@@ -146,8 +185,14 @@ function Cart({ match }) {
                           </div>
                         </div>
                         <div className={classes.subTotal}>
-                          <div>Subtotal:</div>
-                          <div>{product.total}</div>
+                          {product.priceType !==
+                            PriceTypeEnum.SPECIAL_OFFER && (
+                            <>
+                              <div>Subtotal:</div>
+                              <div>{product.total}</div>
+                            </>
+                          )}
+
                           <IconButton
                             onClick={() => {
                               handleRemove(product.id);

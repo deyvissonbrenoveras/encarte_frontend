@@ -2,17 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-
 import * as Yup from 'yup';
 
 import { Form } from '@unform/web';
 import { Typography, Grid, Button, Box } from '@material-ui/core';
+import PriceTypeEnum from '../../../util/PriceTypeEnum';
 import Input from '../../../components/Input';
 import CheckboxInput from '../../../components/CheckboxInput';
 import Img from '../../../components/Img';
 import Checkbox from '../../../components/Checkbox';
 import Select from '../../../components/Select';
-
+import RadioGroup from '../../../components/RadioInputGroup';
 import { updateProductRequest } from '../../../store/modules/product/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
 import api from '../../../services/api';
@@ -50,6 +50,7 @@ function UpdateProduct({ match }) {
         const productResponse = await api.get(`products/${id}`);
         setLoadingProduct(false);
         formRef.current.setData(productResponse.data);
+        console.tron.log(productResponse.data);
         setStores(productResponse.data.stores);
       } catch (err) {
         toast.error('Houve um erro ao carregar o usuário');
@@ -113,6 +114,16 @@ function UpdateProduct({ match }) {
             placeholder="Insira o nome do produto"
             label="Nome:"
           />
+          <RadioGroup
+            name="priceType"
+            label="Tipo de preço"
+            options={[
+              { label: 'Padrão', value: PriceTypeEnum.DEFAULT },
+              { label: 'Destacado', value: PriceTypeEnum.FEATURED },
+              { label: 'Oferta especial', value: PriceTypeEnum.SPECIAL_OFFER },
+            ]}
+          />
+
           <Input
             type="number"
             name="price"

@@ -62,11 +62,43 @@ export default makeStyles((theme) => ({
     },
   },
   productPrice: {
+    alignSelf: 'flex-start',
     marginTop: theme.spacing(0.5),
     color: theme.palette.encarte,
     fontSize: 14,
     [theme.breakpoints.down('xs')]: {
       fontSize: 12,
+    },
+  },
+  featuredPrice: {
+    textAlign: 'center',
+    alignSelf: 'flex-start',
+    padding: theme.spacing(0.5),
+    color: '#ff0000',
+    backgroundColor: 'yellow',
+    transform: 'skewX(-10deg)',
+    borderRadius: 4,
+    margin: theme.spacing(0.3),
+    marginLeft: theme.spacing(1),
+    border: '1px solid #e3e3e3',
+    fontWeight: 'bold',
+  },
+  specialOfferProductPrice: {
+    color: '#ff0000',
+    fontWeight: 'bold',
+    padding: theme.spacing(0.5),
+    backgroundColor: 'yellow',
+    transform: 'skewX(-10deg)',
+    margin: theme.spacing(0.3),
+    marginLeft: theme.spacing(1),
+    fontSize: 14,
+    borderRadius: 4,
+    border: '1px solid #e3e3e3',
+    wordWrap: 'break-word',
+    textAlign: 'center',
+
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 9,
     },
   },
   amountArea: {
