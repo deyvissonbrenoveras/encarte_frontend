@@ -15,6 +15,9 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
       name,
       ref: inputRef.current,
       getValue: (ref) => {
+        if (type === 'number' && ref.value === '') {
+          return null;
+        }
         return type === 'date' && !ref.value ? null : ref.value;
       },
       clearValue: (ref, value) => {
