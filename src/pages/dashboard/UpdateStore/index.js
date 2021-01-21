@@ -82,7 +82,8 @@ function UpdateStore({ match }) {
         facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
         logoId: Yup.number().required('Selecione uma logo'),
         coverId: Yup.number(),
-        shelfLife: Yup.date('Data inválida').nullable(),
+        shelfLifeStart: Yup.date('Data inválida').nullable(),
+        shelfLifeEnd: Yup.date('Data inválida').nullable(),
       });
       await schema.validate(data, {
         abortEarly: false,
@@ -196,8 +197,13 @@ function UpdateStore({ match }) {
                     label="Facebook:"
                   />
                   <Input
-                    name="shelfLife"
-                    label="Data de validade do e-ncarte:"
+                    name="shelfLifeStart"
+                    label="Data início da validade do e-ncarte:"
+                    type="date"
+                  />
+                  <Input
+                    name="shelfLifeEnd"
+                    label="Data fim da validade do e-ncarte:"
                     type="date"
                   />
                 </Grid>

@@ -86,12 +86,16 @@ function Store({ match }) {
         return editingCategory;
       });
 
-    // shelfLife formatting
-
-    const shelfLife = showcase.shelfLife
-      ? format(parseISO(showcase.shelfLife.split('T')[0]), 'dd/MM/yyyy')
+    // shelfLifeEnd formatting
+    const shelfLifeStart = showcase.shelfLifeStart
+      ? format(parseISO(showcase.shelfLifeStart.split('T')[0]), 'dd/MM/yyyy')
       : null;
-    return { ...showcase, products, categories, shelfLife };
+
+    const shelfLifeEnd = showcase.shelfLifeEnd
+      ? format(parseISO(showcase.shelfLifeEnd.split('T')[0]), 'dd/MM/yyyy')
+      : null;
+
+    return { ...showcase, products, categories, shelfLifeStart, shelfLifeEnd };
   }, [showcase]);
 
   function slugify(str) {
@@ -154,6 +158,23 @@ function Store({ match }) {
         );
     }
   }
+  function ShelfLife(params) {
+    const { shelfLifeStart, shelfLifeEnd, align } = params;
+    if (!shelfLifeStart || !shelfLifeEnd) {
+      return <></>;
+    }
+    return (
+      <Typography
+        className={classes.shelfLife}
+        align={align}
+        variant="caption"
+        display="block"
+        gutterBottom
+      >
+        {`PREÇOS VÁLIDOS DE ${shelfLifeStart}, ATÉ ${shelfLifeEnd}.`}
+      </Typography>
+    );
+  }
   function ProductItem(params) {
     const { product } = params;
 
@@ -210,17 +231,11 @@ function Store({ match }) {
                   </CardActionArea>
                 )}
               </Card>
-              {store.shelfLife && (
-                <Typography
-                  className={classes.shelfLife}
-                  align="right"
-                  variant="caption"
-                  display="block"
-                  gutterBottom
-                >
-                  {`PREÇOS VÁLIDOS ATÉ ${store.shelfLife}`}
-                </Typography>
-              )}
+              <ShelfLife
+                align="right"
+                shelfLifeStart={store.shelfLifeStart}
+                shelfLifeEnd={store.shelfLifeEnd}
+              />
               {store.partners &&
                 store.partners.filter((partner) => !partner.sponsorship)
                   .length > 0 && (
@@ -471,16 +486,11 @@ function Store({ match }) {
                     <Typography variant="caption" display="block" gutterBottom>
                       IMAGENS MERAMENTE ILUSTRATIVAS**
                     </Typography>
-                    {store.shelfLife && (
-                      <Typography
-                        className={classes.shelfLife}
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                      >
-                        {`PREÇOS VÁLIDOS ATÉ ${store.shelfLife}`}
-                      </Typography>
-                    )}
+                    <ShelfLife
+                      align="center"
+                      shelfLifeStart={store.shelfLifeStart}
+                      shelfLifeEnd={store.shelfLifeEnd}
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6} className={classes.footerInfo}>
                     {store.address && store.city && (
