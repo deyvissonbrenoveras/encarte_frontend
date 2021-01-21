@@ -85,6 +85,7 @@ export default makeStyles((theme) => ({
   },
   specialOfferProductPrice: {
     color: '#ff0000',
+    alignSelf: 'flex-start',
     fontWeight: 'bold',
     padding: theme.spacing(0.5),
     backgroundColor: 'yellow',
