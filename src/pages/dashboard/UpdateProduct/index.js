@@ -50,7 +50,6 @@ function UpdateProduct({ match }) {
         const productResponse = await api.get(`products/${id}`);
         setLoadingProduct(false);
         formRef.current.setData(productResponse.data);
-        console.tron.log(productResponse.data);
         setStores(productResponse.data.stores);
       } catch (err) {
         toast.error('Houve um erro ao carregar o usuário');
