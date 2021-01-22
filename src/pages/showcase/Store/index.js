@@ -265,7 +265,7 @@ function Store({ match }) {
                           <Avatar
                             alt={partner.name}
                             src={partner.logo ? partner.logo.url : ''}
-                            className={classes.largeAvatar}
+                            className={classes.partnerAvatar}
                           />
                           <div className={classes.overflow}>{partner.name}</div>
                         </ButtonBase>
@@ -339,7 +339,7 @@ function Store({ match }) {
                           <Avatar
                             alt={partner.name}
                             src={partner.logo ? partner.logo.url : ''}
-                            className={classes.largeAvatar}
+                            className={classes.sponsorshipAvatar}
                           />
                           <div className={classes.overflow}>{partner.name}</div>
                         </ButtonBase>

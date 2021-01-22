@@ -14,31 +14,50 @@ export default makeStyles((theme) => ({
     // maxHeight: 150,
   },
   media: {
-    maxHeight: 150,
+    maxHeight: 200,
     objectFit: 'contain',
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: 100,
+    },
   },
   subtitle: {
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 14,
     letterSpacing: 3,
     textTransform: 'uppercase',
-    marginTop: theme.spacing(1.5),
-    marginLeft: theme.spacing(1),
-    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    margin: theme.spacing(0.2),
     textAlign: 'center',
   },
-  largeAvatar: {
-    width: theme.spacing(8),
-    height: theme.spacing(8),
+  partnerAvatar: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
     marginBottom: theme.spacing(0.3),
     [theme.breakpoints.up('md')]: {
       width: theme.spacing(10),
       height: theme.spacing(10),
     },
+    '& .MuiAvatar-img': {
+      objectFit: 'contain',
+    },
+  },
+  sponsorshipAvatar: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    marginBottom: theme.spacing(0.3),
+    [theme.breakpoints.up('md')]: {
+      width: theme.spacing(10),
+      height: theme.spacing(10),
+    },
+    '& .MuiAvatar-img': {
+      objectFit: 'contain',
+    },
   },
   shelfLife: {
-    padding: theme.spacing(1),
-    fontSize: 12,
+    padding: theme.spacing(0.2),
+    paddingTop: theme.spacing(0.4),
+    paddingBottom: theme.spacing(0.4),
+    fontSize: 10,
   },
   partnerList: {
     padding: theme.spacing(0.8),

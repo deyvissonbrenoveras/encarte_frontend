@@ -18,7 +18,7 @@ function ShowcaseLayout({ children, match }) {
   return (
     <div className={classes.root}>
       <AppBar elevation={0} className={classes.appBar} position="sticky">
-        <Toolbar className={classes.toolbar}>
+        <Toolbar className={classes.toolbar} variant="dense">
           <img className={classes.logo} src={logo} alt="logo" />
           <div className={classes.iconButtons}>
             <IconButton
