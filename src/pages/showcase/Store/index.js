@@ -220,7 +220,11 @@ function Store({ match }) {
                   </Typography>
                 </CardContent>
                 {store.logo && (
-                  <CardActionArea>
+                  <CardActionArea
+                    onClick={() => {
+                      history.push(`/loja/${url}/info`);
+                    }}
+                  >
                     <CardMedia
                       className={classes.media}
                       component="img"
@@ -422,7 +426,11 @@ function Store({ match }) {
                   <Grid item xs={12}>
                     <Card className={classes.cover}>
                       {store.logo && (
-                        <CardActionArea>
+                        <CardActionArea
+                          onClick={() => {
+                            history.push(`/loja/${url}/info`);
+                          }}
+                        >
                           <CardMedia
                             className={classes.media}
                             component="img"
