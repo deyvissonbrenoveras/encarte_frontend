@@ -87,14 +87,14 @@ function NewPartner() {
           <Input name="site" placeholder="Insira o site" label="Site:" />
           <Input
             name="regionalAgent"
-            placeholder="Insira o nome do agente regional"
-            label="Agente regional:"
+            placeholder="Insira o nome do colaborador regional"
+            label="Colaborador regional:"
           />
 
           <Input
             name="agentWhatsapp"
-            placeholder="Insira o Whatsapp do agente regional"
-            label="Whatsapp do agente regional"
+            placeholder="Insira o Whatsapp do colaborador regional"
+            label="Whatsapp do colaborador regional"
           />
           <Input
             name="instagram"
