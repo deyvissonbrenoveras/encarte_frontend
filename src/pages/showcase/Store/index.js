@@ -18,8 +18,8 @@ import {
   InputAdornment,
   IconButton,
 } from '@material-ui/core';
-
 import { Search, Facebook, Instagram, WhatsApp } from '@material-ui/icons';
+import slugify from '../../../util/slugify';
 import NotFound from '../../../components/NotFound';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
@@ -97,28 +97,6 @@ function Store({ match }) {
 
     return { ...showcase, products, categories, shelfLifeStart, shelfLifeEnd };
   }, [showcase]);
-
-  function slugify(str) {
-    const map = {
-      '-': ' ',
-      // eslint-disable-next-line no-dupe-keys
-      '-': '_',
-      a: 'á|à|ã|â|À|Á|Ã|Â',
-      e: 'é|è|ê|É|È|Ê',
-      i: 'í|ì|î|Í|Ì|Î',
-      o: 'ó|ò|ô|õ|Ó|Ò|Ô|Õ',
-      u: 'ú|ù|û|ü|Ú|Ù|Û|Ü',
-      c: 'ç|Ç',
-      n: 'ñ|Ñ',
-    };
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const pattern in map) {
-      str = str.replace(new RegExp(map[pattern], 'g'), pattern);
-    }
-
-    return str;
-  }
 
   function handleSearch(e) {
     if (e.target.value.length === 0) {

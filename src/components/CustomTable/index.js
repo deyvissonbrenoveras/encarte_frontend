@@ -20,7 +20,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -38,16 +37,22 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { Search } from '@material-ui/icons';
 import { FaCheckSquare, FaSquare } from 'react-icons/fa';
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
+import { useStyles, useToolbarStyles } from './styles';
+
+import slugify from '../../util/slugify';
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
+  const bValue = b[orderBy] && b[orderBy].label ? b[orderBy].label : b[orderBy];
+  const aValue = a[orderBy] && a[orderBy].label ? a[orderBy].label : a[orderBy];
+
+  if (bValue < aValue) {
     return -1;
   }
-  if (b[orderBy] > a[orderBy]) {
+  if (bValue > aValue) {
     return 1;
   }
   return 0;
@@ -147,26 +152,6 @@ EnhancedTableHead.defaultProps = {
   classes: {},
 };
 
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
-
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, label, actionLabel, actionCallback } = props;
@@ -220,30 +205,6 @@ EnhancedTableToolbar.propTypes = {
   actionCallback: PropTypes.func.isRequired,
 };
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  paper: {
-    width: '100%',
-    marginBottom: theme.spacing(2),
-  },
-  table: {
-    minWidth: 750,
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-}));
-
 export default function EnhancedTable({
   label,
   headCells,
@@ -259,7 +220,35 @@ export default function EnhancedTable({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [searchResult, setSearchResult] = React.useState(null);
 
+  function handleSearch(e) {
+    if (e.target.value.length === 0) {
+      setSearchResult(null);
+    } else {
+      const searchValue = slugify(e.target.value).toUpperCase();
+      const items = rows.filter((row) => {
+        const result = Object.entries(row).filter((prop) => {
+          if (typeof prop[1] === 'object') {
+            const objectArray = Object.entries(prop[1])[1];
+            const match = objectArray.filter((obj) => {
+              return slugify(obj).toUpperCase().includes(searchValue);
+            });
+            if (match.length > 0) {
+              return true;
+            }
+          } else if (typeof prop[1] === 'string') {
+            return slugify(prop[1]).toUpperCase().includes(searchValue);
+          } else if (typeof prop[1] === 'number') {
+            return prop[1] === Number(searchValue);
+          }
+          return false;
+        });
+        return result.length > 0;
+      });
+      setSearchResult(items);
+    }
+  }
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -324,6 +313,19 @@ export default function EnhancedTable({
             actionCallback(selected);
           }}
         />
+        <TextField
+          onChange={handleSearch}
+          className={classes.searchInput}
+          label="Buscar"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search />
+              </InputAdornment>
+            ),
+          }}
+        />
         <TableContainer>
           <Table
             className={classes.table}
@@ -344,7 +346,10 @@ export default function EnhancedTable({
               selectionEnabled={selectionEnabled}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(
+                searchResult !== null ? searchResult : rows,
+                getComparator(order, orderBy)
+              )
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id);
@@ -434,7 +439,7 @@ export default function EnhancedTable({
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, 50, 100, 500]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
