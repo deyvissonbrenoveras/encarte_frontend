@@ -65,9 +65,6 @@ function Cart({ match }) {
   function handleAddAmount(productId, amount) {
     dispatch(changeAmount(store.id, productId, amount));
   }
-  useEffect(() => {
-    console.tron.log(cart);
-  }, [cart]);
   async function handleSend() {
     let buyList = await cart.reduce((list, product, index) => {
       let text = `${list} %0A%0A ${index + 1}: Id ${product.id} `;
