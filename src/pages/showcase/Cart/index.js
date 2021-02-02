@@ -2,6 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import {
+  Document,
+  Page,
+  Text,
+  View,
+  PDFDownloadLink,
+} from '@react-pdf/renderer';
+import {
   Grid,
   Paper,
   Card,
@@ -17,7 +24,7 @@ import {
   Delete,
   WhatsApp,
 } from '@material-ui/icons';
-import useStyles from './styles';
+import useStyles, { pdfStyles } from './styles';
 import {
   removeProduct,
   changeAmount,
@@ -30,7 +37,6 @@ import { loadRequest } from '../../../store/modules/showcase/actions';
 function Cart({ match }) {
   const dispatch = useDispatch();
   const { url } = match.params;
-
   const classes = useStyles();
   const store = useSelector((state) => state.showcase.showcase);
   const cart = useSelector((state) => {
@@ -59,7 +65,9 @@ function Cart({ match }) {
   function handleAddAmount(productId, amount) {
     dispatch(changeAmount(store.id, productId, amount));
   }
-
+  useEffect(() => {
+    console.tron.log(cart);
+  }, [cart]);
   async function handleSend() {
     let buyList = await cart.reduce((list, product, index) => {
       let text = `${list} %0A%0A ${index + 1}: Id ${product.id} `;
@@ -205,6 +213,7 @@ function Cart({ match }) {
                     </Card>
                   </Grid>
                 ))}
+
               <div className={classes.total}>
                 Valor Total: {total}
                 {store.whatsapp && (
@@ -213,6 +222,47 @@ function Cart({ match }) {
                   </button>
                 )}
               </div>
+
+              <PDFDownloadLink
+                className={classes.pdfListLink}
+                document={
+                  <Document>
+                    <Page size="A4" style={pdfStyles.page} wrap>
+                      <View style={pdfStyles.title}>
+                        <Text>Lista de compras e-ncarte</Text>
+                      </View>
+                      {cart &&
+                        cart.map((product, index) => (
+                          <View style={pdfStyles.section}>
+                            <Text style={pdfStyles.item}>
+                              {`Produto ${index + 1}: ${product.name}`}
+                            </Text>
+                            <Text
+                              style={pdfStyles.item}
+                            >{`Quantidade: ${product.amount}`}</Text>
+                            <Text style={pdfStyles.item}>{`Preço: ${
+                              product.priceType === PriceTypeEnum.SPECIAL_OFFER
+                                ? 'OFERTA ESPECIAL'
+                                : product.formattedPrice
+                            }`}</Text>
+                            {product.priceType !==
+                              PriceTypeEnum.SPECIAL_OFFER && (
+                              <Text
+                                style={pdfStyles.item}
+                              >{`Subtotal: ${product.total}`}</Text>
+                            )}
+                          </View>
+                        ))}
+                      <View style={pdfStyles.title}>
+                        <Text>{`Total: ${total}`}</Text>
+                      </View>
+                    </Page>
+                  </Document>
+                }
+                fileName={`Lista de compras e-ncarte - ${store.name}`}
+              >
+                Baixar Lista de compras
+              </PDFDownloadLink>
             </>
           )}
         </Paper>

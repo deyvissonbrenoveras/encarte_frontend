@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { StyleSheet } from '@react-pdf/renderer';
 
 export default makeStyles((theme) => ({
   paper: {
@@ -194,4 +195,31 @@ export default makeStyles((theme) => ({
       border: 'none',
     },
   },
+  pdfListLink: {
+    // padding: 15,
+    margin: '15px 0 0 15px',
+    display: 'block',
+  },
 }));
+
+export const pdfStyles = StyleSheet.create({
+  page: {
+    alignItems: 'flex-start',
+  },
+  title: {
+    textAlign: 'center',
+    padding: 10,
+    fontSize: 20,
+  },
+  section: {
+    fontSize: 14,
+    margin: 5,
+    padding: 5,
+  },
+  item: {
+    margin: 2,
+  },
+  image: {
+    width: 50,
+  },
+});
