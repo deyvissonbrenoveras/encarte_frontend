@@ -97,12 +97,9 @@ function Info({ match }) {
         )}
         <h5>Endereço</h5>
         <div className={classes.address}>
-          {showcase.address}
-          {showcase.city}
+          {`${showcase.address}, ${showcase.city}.`}
         </div>
       </Grid>
-      {/* </>
-      )} */}
     </Grid>
   );
 }
