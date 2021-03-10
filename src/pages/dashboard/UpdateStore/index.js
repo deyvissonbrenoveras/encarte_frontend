@@ -28,6 +28,7 @@ import AddButton from '../../../components/AddButton';
 import api from '../../../services/api';
 import Input from '../../../components/Input';
 import Img from '../../../components/Img';
+import CheckboxInput from '../../../components/CheckboxInput';
 
 import LoadingIcon from '../../../components/LoadingIcon';
 
@@ -82,6 +83,7 @@ function UpdateStore({ match }) {
         facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
         logoId: Yup.number().required('Selecione uma logo'),
         coverId: Yup.number(),
+        active: Yup.boolean(),
         shelfLifeStart: Yup.date('Data inválida').nullable(),
         shelfLifeEnd: Yup.date('Data inválida').nullable(),
       });
@@ -156,6 +158,7 @@ function UpdateStore({ match }) {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={5}>
+                  <CheckboxInput name="active" label="Ativo" />
                   <Input
                     name="name"
                     placeholder="Insira o nome da loja"

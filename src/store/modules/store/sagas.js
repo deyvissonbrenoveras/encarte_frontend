@@ -3,9 +3,12 @@ import { toast } from 'react-toastify';
 import api from '../../../services/api';
 import { storeFailure, loadStoresSuccess } from './actions';
 
-export function* loadStoresRequest() {
+export function* loadStoresRequest({ payload }) {
+  const showInactive = payload;
   try {
-    const response = yield call(api.get, 'stores');
+    const response = yield call(api.get, 'stores', {
+      params: { showInactive },
+    });
     yield put(loadStoresSuccess(response.data));
   } catch (err) {
     yield put(storeFailure());

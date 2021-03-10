@@ -14,7 +14,7 @@ function Stores() {
   const profile = useSelector((state) => state.profile.profile);
   useEffect(() => {
     async function getStores() {
-      dispatch(loadStoresRequest());
+      dispatch(loadStoresRequest(true));
     }
     getStores();
   }, [dispatch]);

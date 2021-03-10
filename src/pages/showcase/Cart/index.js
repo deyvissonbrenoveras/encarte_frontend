@@ -150,17 +150,7 @@ function Cart({ match }) {
                       <CardContent className={classes.content}>
                         <div className={classes.productInfo}>
                           <div>{product.name}</div>
-                          {/* {product.priceType === PriceTypeEnum.SPECIAL_OFFER ? (
-                            <div className={classes.specialOfferProductPrice}>
-                              OFERTA ESPECIAL
-                            </div>
-                          ) : (
-                            <div className={classes.productPrice}>
-                              {product.formattedPrice}
-                            </div>
-                          )} */}
                           <ProductItemPrice product={product} />
-
                           <div className={classes.amountArea}>
                             <IconButton
                               onClick={() => {

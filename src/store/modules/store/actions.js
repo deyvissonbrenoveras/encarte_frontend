@@ -1,6 +1,7 @@
-export function loadStoresRequest() {
+export function loadStoresRequest(showInactive = false) {
   return {
     type: '@store/LOAD_STORES_REQUEST',
+    payload: showInactive,
   };
 }
 export function loadStoresSuccess(stores) {
