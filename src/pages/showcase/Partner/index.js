@@ -43,7 +43,6 @@ function Info({ match }) {
   useEffect(() => {
     if (showcase && showcase.partners) {
       const part = showcase.partners.filter((ptr) => ptr.id === partnerId)[0];
-      console.tron.log(part);
       setPartner(part);
     }
   }, [showcase, partnerId]);
