@@ -14,7 +14,7 @@ import Img from '../../../components/Img';
 import CheckboxInput from '../../../components/CheckboxInput';
 import Checkbox from '../../../components/Checkbox';
 import LoadingIcon from '../../../components/LoadingIcon';
-
+import HtmlEditor from '../../../components/HtmlEditor';
 import { updatePartnerRequest } from '../../../store/modules/partner/actions';
 
 function UpdatePartner({ match }) {
@@ -63,6 +63,7 @@ function UpdatePartner({ match }) {
         facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
         regionalAgent: Yup.string().max(50, 'Máximo de 50 caracteres'),
         sponsorship: Yup.boolean(),
+        customizableField: Yup.string(),
       });
       await schema.validate(data, {
         abortEarly: false,
@@ -126,6 +127,7 @@ function UpdatePartner({ match }) {
           </Grid>
           <Grid item xs={12} md={7}>
             <Checkbox name="stores" options={choiceOptions} label="Lojas" />
+            <HtmlEditor name="customizableField" />
           </Grid>
           <Box m={2} width="100%" textAlign="right">
             <Button variant="contained" color="primary" type="submit">

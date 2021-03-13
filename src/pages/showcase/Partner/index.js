@@ -43,6 +43,7 @@ function Info({ match }) {
   useEffect(() => {
     if (showcase && showcase.partners) {
       const part = showcase.partners.filter((ptr) => ptr.id === partnerId)[0];
+      console.tron.log(part);
       setPartner(part);
     }
   }, [showcase, partnerId]);
@@ -138,6 +139,11 @@ function Info({ match }) {
                 </div>
               </>
             )}
+            <div
+              className={classes.customizableField}
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: partner.customizableField }}
+            />
           </>
         )}
       </Grid>

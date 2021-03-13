@@ -12,6 +12,7 @@ import Input from '../../../components/Input';
 import Img from '../../../components/Img';
 import CheckboxInput from '../../../components/CheckboxInput';
 import Checkbox from '../../../components/Checkbox';
+import HtmlEditor from '../../../components/HtmlEditor';
 
 import { addPartnerRequest } from '../../../store/modules/partner/actions';
 
@@ -53,6 +54,7 @@ function NewPartner() {
         regionalAgent: Yup.string().max(50, 'Máximo de 50 caracteres'),
         sponsorship: Yup.boolean(),
         stores: Yup.array().min(1, 'Selecione pelo menos uma loja'),
+        customizableField: Yup.string(),
       });
       await schema.validate(data, {
         abortEarly: false,
@@ -109,6 +111,7 @@ function NewPartner() {
         </Grid>
         <Grid item xs={12} md={7}>
           <Checkbox name="stores" options={choiceOptions} label="Lojas" />
+          <HtmlEditor name="customizableField" />
         </Grid>
         <Box m={2} width="100%" textAlign="right">
           <Button variant="contained" color="primary" type="submit">

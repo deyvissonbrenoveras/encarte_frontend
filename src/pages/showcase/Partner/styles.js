@@ -57,4 +57,8 @@ export default makeStyles((theme) => ({
     color: theme.palette.stoke,
     padding: theme.spacing(1),
   },
+  customizableField: {
+    marginTop: 20,
+    marginBottom: 500,
+  },
 }));
