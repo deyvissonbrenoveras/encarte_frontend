@@ -138,11 +138,13 @@ function Info({ match }) {
                 </div>
               </>
             )}
-            <div
-              className={classes.customizableField}
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={{ __html: partner.customizableField }}
-            />
+            {partner.customizableField && (
+              <div
+                className={classes.customizableField}
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={{ __html: partner.customizableField }}
+              />
+            )}
           </>
         )}
       </Grid>
