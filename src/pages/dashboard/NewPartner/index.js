@@ -12,7 +12,6 @@ import Input from '../../../components/Input';
 import Img from '../../../components/Img';
 import CheckboxInput from '../../../components/CheckboxInput';
 import Checkbox from '../../../components/Checkbox';
-import HtmlEditor from '../../../components/HtmlEditor';
 
 import { addPartnerRequest } from '../../../store/modules/partner/actions';
 
@@ -46,9 +45,7 @@ function NewPartner() {
           .max(100, 'Máximo de 100 caracteres')
           .required('O nome é obrigatório'),
         site: Yup.string().max(2048, 'Máximo de 2048 caracteres'),
-        agentWhatsapp: Yup.number('Whatsapp inválido').typeError(
-          'Whatsapp inválido'
-        ),
+        agentWhatsapp: Yup.string().nullable().notRequired(),
         instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
         facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
         regionalAgent: Yup.string().max(50, 'Máximo de 50 caracteres'),
@@ -111,7 +108,13 @@ function NewPartner() {
         </Grid>
         <Grid item xs={12} md={7}>
           <Checkbox name="stores" options={choiceOptions} label="Lojas" />
-          <HtmlEditor name="customizableField" />
+          <Input
+            name="customizableField"
+            placeholder="Insira o código html..."
+            label="Campo Personalizável"
+            multiline
+            rows={8}
+          />
         </Grid>
         <Box m={2} width="100%" textAlign="right">
           <Button variant="contained" color="primary" type="submit">
