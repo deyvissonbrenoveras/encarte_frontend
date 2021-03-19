@@ -127,7 +127,7 @@ function UpdatePartner({ match }) {
           </Grid>
           <Grid item xs={12} md={7}>
             <Checkbox name="stores" options={choiceOptions} label="Lojas" />
-            <HtmlEditor name="customizableField" />
+            <HtmlEditor name="customizableField" label="Campo personalizável" />
           </Grid>
           <Box m={2} width="100%" textAlign="right">
             <Button variant="contained" color="primary" type="submit">

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
 import { Editor } from '@tinymce/tinymce-react';
 
-function HtmlEditor({ name }) {
+import useStyles from './styles';
+
+function HtmlEditor({ name, label }) {
+  const classes = useStyles();
   const inputRef = useRef(null);
   const { fieldName, registerField } = useField(name);
   const [html, setHtml] = useState(null);
@@ -26,29 +29,32 @@ function HtmlEditor({ name }) {
     });
   }, [fieldName, registerField, name]);
   return (
-    <>
-      <Editor
-        apiKey="vnfij7wr5ewnmbkqvjmkdefw0hy651yx4unub1km04zhhug0"
-        ref={inputRef}
-        init={{
-          height: 300,
-          menubar: true,
-          plugins: [
-            'advlist autolink lists link image charmap print preview anchor',
-            'searchreplace visualblocks code fullscreen',
-            'insertdatetime media table paste code help wordcount',
-          ],
-          toolbar:
-            'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-          branding: false,
-        }}
-        onInit={() => {
-          if (inputRef.current) {
-            inputRef.current.editor.setContent(html);
-          }
-        }}
-      />
-    </>
+    <div>
+      <label>{label}</label>
+      <div className={classes.htmlEditor}>
+        <Editor
+          apiKey="vnfij7wr5ewnmbkqvjmkdefw0hy651yx4unub1km04zhhug0"
+          ref={inputRef}
+          init={{
+            height: 300,
+            menubar: true,
+            plugins: [
+              'advlist autolink lists link image charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen',
+              'insertdatetime media table paste code help wordcount',
+            ],
+            toolbar:
+              'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+            branding: false,
+          }}
+          onInit={() => {
+            if (inputRef.current) {
+              inputRef.current.editor.setContent(html);
+            }
+          }}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -56,4 +62,5 @@ export default HtmlEditor;
 
 HtmlEditor.propTypes = {
   name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
