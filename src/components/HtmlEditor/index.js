@@ -43,7 +43,9 @@ function HtmlEditor({ name }) {
           branding: false,
         }}
         onInit={() => {
-          inputRef.current.editor.setContent(html);
+          if (inputRef.current) {
+            inputRef.current.editor.setContent(html);
+          }
         }}
       />
     </>
