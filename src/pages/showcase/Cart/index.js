@@ -11,10 +11,15 @@ import {
 import {
   Grid,
   Paper,
+  Box,
   Card,
   CardMedia,
   IconButton,
   CardContent,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -23,11 +28,13 @@ import {
   Add,
   Delete,
   WhatsApp,
+  DeleteForever,
 } from '@material-ui/icons';
 import useStyles, { pdfStyles } from './styles';
 import {
   removeProduct,
   changeAmount,
+  clearCart,
 } from '../../../store/modules/cart/actions';
 import PriceTypeEnum from '../../../util/PriceTypeEnum';
 
@@ -36,6 +43,8 @@ import { loadRequest } from '../../../store/modules/showcase/actions';
 
 function Cart({ match }) {
   const dispatch = useDispatch();
+  const [clearCartModalVisible, setClearCartModalVisible] = useState(false);
+
   const { url } = match.params;
   const classes = useStyles();
   const store = useSelector((state) => state.showcase.showcase);
@@ -84,6 +93,7 @@ function Cart({ match }) {
     window.open(
       `https://api.whatsapp.com/send?phone=${store.whatsapp}&text=${buyList}`
     );
+    setClearCartModalVisible(true);
   }
   useEffect(() => {
     const newTotal = cart.reduce((accumulator, currentProduct) => {
@@ -126,6 +136,21 @@ function Cart({ match }) {
             </div>
           ) : (
             <>
+              <Box className={classes.stickyTop} width="100%" textAlign="right">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => {
+                    setClearCartModalVisible(false);
+                    dispatch(clearCart(store.id));
+                  }}
+                  startIcon={<DeleteForever />}
+                >
+                  Limpar carrinho
+                </Button>
+              </Box>
+
               {cart &&
                 cart.map((product) => (
                   <Grid
@@ -254,6 +279,39 @@ function Cart({ match }) {
           )}
         </Paper>
       </Grid>
+      <Dialog
+        open={clearCartModalVisible}
+        onClose={() => {}}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Deseja limpar o carrinho?
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setClearCartModalVisible(false);
+            }}
+            color="default"
+            variant="contained"
+          >
+            Manter o carrinho
+          </Button>
+          <Button
+            onClick={() => {
+              setClearCartModalVisible(false);
+              dispatch(clearCart(store.id));
+            }}
+            color="primary"
+            variant="contained"
+            startIcon={<DeleteForever />}
+            autoFocus
+          >
+            Limpar o carrinho
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 }

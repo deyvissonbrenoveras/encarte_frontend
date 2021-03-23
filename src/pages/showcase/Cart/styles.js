@@ -17,6 +17,14 @@ export default makeStyles((theme) => ({
       fontSize: 100,
     },
   },
+  stickyTop: {
+    position: 'sticky',
+    top: 55,
+    marginBottom: 10,
+    [theme.breakpoints.down('xs')]: {
+      top: 40,
+    },
+  },
   cardGrid: {
     padding: theme.spacing(0.5),
   },

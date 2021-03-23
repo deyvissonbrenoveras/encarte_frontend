@@ -18,3 +18,9 @@ export function changeAmount(storeId, productId, amount) {
     payload: { storeId, productId, amount },
   };
 }
+export function clearCart(storeId) {
+  return {
+    type: '@cart/CLEAR',
+    payload: { storeId },
+  };
+}
