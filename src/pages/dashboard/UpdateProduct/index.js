@@ -24,20 +24,33 @@ function UpdateProduct({ match }) {
 
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [stores, setStores] = useState([]);
-  const [choiceOptions, setChoiceOptions] = useState([]);
+  const [partners, setPartners] = useState([]);
+
+  const [storeChoiceOptions, setStoreChoiceOptions] = useState([]);
+  const [partnerChoiceOptions, setPartnerChoiceOptions] = useState([]);
+
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   useEffect(() => {
     async function getData() {
       try {
-        const storesResponse = await api.get('stores');
-        const options = storesResponse.data.map((store) => ({
+        const storeResponse = await api.get('stores');
+        const storeOptions = storeResponse.data.map((store) => ({
           id: store.id,
           value: store.id,
           label: store.name,
           url: store.logo ? store.logo.url : null,
         }));
-        setChoiceOptions(options);
+        setStoreChoiceOptions(storeOptions);
+
+        const partnerResponse = await api.get('partners');
+        const partnerOptions = partnerResponse.data.map((partner) => ({
+          id: partner.id,
+          value: partner.id,
+          label: partner.name,
+          url: partner.logo ? partner.logo.url : null,
+        }));
+        setPartnerChoiceOptions(partnerOptions);
 
         const categoriesResponse = await api.get('categories');
         setCategoryOptions(
@@ -51,8 +64,10 @@ function UpdateProduct({ match }) {
         setLoadingProduct(false);
         formRef.current.setData(productResponse.data);
         setStores(productResponse.data.stores);
+
+        setPartners(productResponse.data.partners);
       } catch (err) {
-        toast.error('Houve um erro ao carregar o usuário');
+        toast.error('Houve um erro ao carregar o produto');
       }
     }
     getData();
@@ -77,6 +92,7 @@ function UpdateProduct({ match }) {
       await schema.validate(data, {
         abortEarly: false,
       });
+
       const productStores = stores.map((store) => Number(store.id));
 
       const removeStores = productStores.filter(
@@ -86,7 +102,26 @@ function UpdateProduct({ match }) {
       const addStores = data.stores.filter((store) => {
         return !productStores.includes(store);
       });
-      dispatch(updateProductRequest(id, data, removeStores, addStores));
+
+      const productPartners = partners.map((partner) => Number(partner.id));
+
+      const removePartners = productPartners.filter(
+        (partner) => !data.partners.includes(partner)
+      );
+
+      const addPartners = data.partners.filter((partner) => {
+        return !productPartners.includes(partner);
+      });
+      dispatch(
+        updateProductRequest(
+          id,
+          data,
+          removeStores,
+          addStores,
+          removePartners,
+          addPartners
+        )
+      );
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {
@@ -103,7 +138,7 @@ function UpdateProduct({ match }) {
       <Typography variant="h5">Editar Produto</Typography>
       {loadingProduct && <LoadingIcon />}
 
-      <Grid container justify="space-around" xs={12}>
+      <Grid container justify="space-around">
         <Grid item xs={12} md={4}>
           <Img name="image" submitName="fileId" label="Imagem:" />
           <CheckboxInput name="featured" label="Destaque" />
@@ -144,7 +179,12 @@ function UpdateProduct({ match }) {
           />
         </Grid>
         <Grid item xs={12} md={7}>
-          <Checkbox name="stores" options={choiceOptions} label="Lojas" />
+          <Checkbox name="stores" options={storeChoiceOptions} label="Lojas" />
+          <Checkbox
+            name="partners"
+            options={partnerChoiceOptions}
+            label="Parceiros"
+          />
         </Grid>
         <Box m={2} width="100%" textAlign="right">
           <Button variant="contained" color="primary" type="submit">

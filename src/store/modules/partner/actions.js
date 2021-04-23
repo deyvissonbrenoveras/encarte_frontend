@@ -17,3 +17,13 @@ export function partnerFailure() {
     type: '@partner/FAILURE',
   };
 }
+export function disassociateProductsFromPartner(
+  partnerId,
+  products,
+  successCb
+) {
+  return {
+    type: '@partner/DISASSOCIATE_PRODUCTS_REQUEST',
+    payload: { partnerId, products, successCb },
+  };
+}

@@ -18,6 +18,10 @@ export default function partner(state = INITIAL_STATE, action) {
       return produce(state, (draft) => {
         draft.loading = false;
       });
+    case '@partner/DISASSOCIATE_PRODUCTS_REQUEST':
+      return produce(state, (draft) => {
+        draft.loading = true;
+      });
     default:
       return state;
   }

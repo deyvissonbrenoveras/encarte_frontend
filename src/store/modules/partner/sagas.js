@@ -43,7 +43,31 @@ function* updatePartnerRequest({ payload }) {
     );
   }
 }
+function* disassociateProductsFromPartner({ payload }) {
+  const { partnerId, products, successCb } = payload;
+  try {
+    yield call(
+      api.put,
+      `products_partners`,
+      { products },
+      { params: { partnerId } }
+    );
+    toast.success(`${products.length} produto(s) desassociado(s) do parceiro`);
+    successCb();
+  } catch (err) {
+    yield put(partnerFailure());
+    toast.error(
+      err.response.data
+        ? err.response.data.error
+        : 'Erro ao desassociar os produtos do parceiro'
+    );
+  }
+}
 export default all([
   takeLatest('@partner/ADD_REQUEST', addPartnerRequest),
   takeLatest('@partner/UPDATE_REQUEST', updatePartnerRequest),
+  takeLatest(
+    '@partner/DISASSOCIATE_PRODUCTS_REQUEST',
+    disassociateProductsFromPartner
+  ),
 ]);

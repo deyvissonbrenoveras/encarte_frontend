@@ -9,9 +9,13 @@ function* addProductRequest({ payload, successCb }) {
     const response = yield call(api.post, 'products', payload);
     const { id } = response.data;
     toast.success('O produto foi cadastrado com sucesso');
-    const { stores } = payload;
+    const { stores, partners } = payload;
+
     yield call(api.post, `products_stores/${id}`, { stores });
     toast.success('O produto foi vinculado às lojas selecionadas');
+
+    yield call(api.post, `products_partners/${id}`, { partners });
+    toast.success('O produto foi vinculado aos parceiros selecionados');
     successCb();
   } catch (err) {
     yield put(productFailure());
@@ -24,7 +28,14 @@ function* addProductRequest({ payload, successCb }) {
 }
 
 function* updateProductRequest({ payload }) {
-  const { id, product, removeStores, addStores } = payload;
+  const {
+    id,
+    product,
+    removeStores,
+    addStores,
+    removePartners,
+    addPartners,
+  } = payload;
   try {
     yield call(api.put, `products/${id}`, product);
     toast.success('O produto foi editado com sucesso');
@@ -41,6 +52,22 @@ function* updateProductRequest({ payload }) {
         { params: { productId: id } }
       );
       toast.success('Algumas lojas foram removidas');
+    }
+
+    if (addPartners && addPartners.length > 0) {
+      yield call(api.post, `products_partners/${id}`, {
+        partners: addPartners,
+      });
+      toast.success('Novos parceiros adicionados');
+    }
+    if (removePartners && removePartners.length > 0) {
+      yield call(
+        api.put,
+        `products_partners`,
+        { partners: removePartners },
+        { params: { productId: id } }
+      );
+      toast.success('Alguns parceiros foram removidos');
     }
     yield put(loadRequest(id));
   } catch (err) {

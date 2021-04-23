@@ -12,10 +12,24 @@ export function productFailure() {
   };
 }
 
-export function updateProductRequest(id, product, removeStores, addStores) {
+export function updateProductRequest(
+  id,
+  product,
+  removeStores,
+  addStores,
+  removePartners,
+  addPartners
+) {
   return {
     type: '@product/UPDATE_REQUEST',
-    payload: { id, product, removeStores, addStores },
+    payload: {
+      id,
+      product,
+      removeStores,
+      addStores,
+      removePartners,
+      addPartners,
+    },
   };
 }
 

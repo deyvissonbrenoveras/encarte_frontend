@@ -24,20 +24,33 @@ import LoadingIcon from '../../../components/LoadingIcon';
 function NewProduct() {
   const dispatch = useDispatch();
   const formRef = useRef(null);
-  const [choiceOptions, setChoiceOptions] = useState([]);
+
+  const [storeChoiceOptions, setStoreChoiceOptions] = useState([]);
+  const [partnerChoiceOptions, setPartnerChoiceOptions] = useState([]);
+
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function getData() {
       try {
-        const response = await api.get('stores');
-        const options = response.data.map((store) => ({
+        const storeResponse = await api.get('stores');
+        const storeOptions = storeResponse.data.map((store) => ({
           id: store.id,
           value: store.id,
           label: store.name,
           url: store.logo ? store.logo.url : null,
         }));
-        setChoiceOptions(options);
+        setStoreChoiceOptions(storeOptions);
+
+        const partnerResponse = await api.get('partners');
+        const partnerOptions = partnerResponse.data.map((partner) => ({
+          id: partner.id,
+          value: partner.id,
+          label: partner.name,
+          url: partner.logo ? partner.logo.url : null,
+        }));
+        setPartnerChoiceOptions(partnerOptions);
+
         const categoriesResponse = await api.get('categories');
         setCategoryOptions(
           categoriesResponse.data.map((category) => ({
@@ -151,7 +164,16 @@ function NewProduct() {
             />
           </Grid>
           <Grid item xs={12} md={7}>
-            <Checkbox name="stores" options={choiceOptions} label="Lojas" />
+            <Checkbox
+              name="stores"
+              options={storeChoiceOptions}
+              label="Lojas"
+            />
+            <Checkbox
+              name="partners"
+              options={partnerChoiceOptions}
+              label="Parceiros"
+            />
           </Grid>
           <Box m={2} width="100%" textAlign="right">
             <Button variant="contained" color="primary" type="submit">
