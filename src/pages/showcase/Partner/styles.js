@@ -160,12 +160,14 @@ export default makeStyles((theme) => ({
   productModalStoreImage: {
     width: 60,
     height: 60,
+    '& .MuiAvatar-img': {
+      objectFit: 'contain',
+    },
   },
   overflow: {
     maxWidth: 80,
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
+    height: 30,
+    fontSize: 12,
   },
   customizableField: {
     marginTop: 20,
