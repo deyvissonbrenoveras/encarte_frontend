@@ -92,7 +92,7 @@ function NewProduct() {
         //   .positive('Números negativos não são permitidos')
         //   .required('O preço é obrigatório'),
         featured: Yup.boolean(),
-        stores: Yup.array().min(1, 'Selecione pelo menos uma loja'),
+        stores: Yup.array().notRequired(),
         categoryId: Yup.number().positive().nullable(true),
       });
       await schema.validate(data, {

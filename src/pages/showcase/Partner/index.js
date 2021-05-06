@@ -233,7 +233,6 @@ function Info({ match }) {
                           <h2 className={classes.productModalName}>
                             {productModal.name}
                           </h2>
-                          <div>{productModal.description}</div>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           {productModal.stores &&
