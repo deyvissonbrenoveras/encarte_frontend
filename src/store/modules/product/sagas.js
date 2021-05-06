@@ -11,11 +11,15 @@ function* addProductRequest({ payload, successCb }) {
     toast.success('O produto foi cadastrado com sucesso');
     const { stores, partners } = payload;
 
-    yield call(api.post, `products_stores/${id}`, { stores });
-    toast.success('O produto foi vinculado às lojas selecionadas');
+    if (stores && stores.length > 0) {
+      yield call(api.post, `products_stores/${id}`, { stores });
+      toast.success('O produto foi vinculado às lojas selecionadas');
+    }
+    if (partners && partners.length > 0) {
+      yield call(api.post, `products_partners/${id}`, { partners });
+      toast.success('O produto foi vinculado aos parceiros selecionados');
+    }
 
-    yield call(api.post, `products_partners/${id}`, { partners });
-    toast.success('O produto foi vinculado aos parceiros selecionados');
     successCb();
   } catch (err) {
     yield put(productFailure());
