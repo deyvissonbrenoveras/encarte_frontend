@@ -96,9 +96,7 @@ function Info({ match }) {
             {partner.regionalAgent && (
               <>
                 <h5>Contato</h5>
-                <div className={classes.contact}>
-                  {partner.regionalAgent}, {partner.agentWhatsapp}.
-                </div>
+                <div className={classes.contact}>{partner.regionalAgent}</div>
               </>
             )}
             {(partner.facebook ||
