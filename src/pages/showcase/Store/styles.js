@@ -58,6 +58,7 @@ export default makeStyles((theme) => ({
     paddingTop: theme.spacing(0.4),
     paddingBottom: theme.spacing(0.4),
     fontSize: 10,
+    fontWeight: 'bold',
   },
   partnerList: {
     padding: theme.spacing(0.8),

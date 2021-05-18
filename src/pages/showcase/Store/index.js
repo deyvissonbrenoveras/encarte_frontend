@@ -149,7 +149,7 @@ function Store({ match }) {
         display="block"
         gutterBottom
       >
-        {`PREÇOS VÁLIDOS DE ${shelfLifeStart}, ATÉ ${shelfLifeEnd}.`}
+        {`PREÇOS VÁLIDOS DE ${shelfLifeStart} ATÉ ${shelfLifeEnd}.`}
       </Typography>
     );
   }
@@ -192,11 +192,6 @@ function Store({ match }) {
           <>
             <Grid item xs={12} md={8}>
               <Card className={classes.cover}>
-                <CardContent className={classes.name}>
-                  <Typography variant="h6" component="h2">
-                    {store.name}
-                  </Typography>
-                </CardContent>
                 {store.logo && (
                   <CardActionArea
                     onClick={() => {
