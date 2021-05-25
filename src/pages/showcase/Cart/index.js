@@ -37,7 +37,7 @@ import {
   clearCart,
 } from '../../../store/modules/cart/actions';
 import PriceTypeEnum from '../../../util/PriceTypeEnum';
-
+import LoadingIcon from '../../../components/LoadingIcon';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 
@@ -48,6 +48,7 @@ function Cart({ match }) {
   const { url } = match.params;
   const classes = useStyles();
   const store = useSelector((state) => state.showcase.showcase);
+  const loading = useSelector((state) => state.showcase.loading);
   const cart = useSelector((state) => {
     return state.cart.cart.filter((crt) => crt.storeId === store.id)[0]
       ? state.cart.cart.filter((crt) => crt.storeId === store.id)[0].products
@@ -125,7 +126,9 @@ function Cart({ match }) {
         );
     }
   }
-  return (
+  return loading ? (
+    <LoadingIcon />
+  ) : (
     <Grid container justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6}>
         <Paper className={classes.paper}>
