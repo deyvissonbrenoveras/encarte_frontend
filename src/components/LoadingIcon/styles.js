@@ -5,6 +5,8 @@ export const Container = styled.div`
   margin: 10px auto;
   display: flex;
   align-items: center;
+  height: 80vh;
+  justify-content: center;
   font-size: 16px;
   span {
     animation-name: color;
