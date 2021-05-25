@@ -27,6 +27,7 @@ import {
 } from '@material-ui/icons';
 import slugify from '../../../util/slugify';
 import NotFound from '../../../components/NotFound';
+import LoadingIcon from '../../../components/LoadingIcon';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import history from '../../../services/history';
@@ -42,6 +43,7 @@ function Store({ match }) {
   const classes = useStyles();
   const notFound = useSelector((state) => state.showcase.notFound);
   const showcase = useSelector((state) => state.showcase.showcase);
+  const loading = useSelector((state) => state.showcase.loading);
   const [productsFound, setProductsFound] = useState(null);
   useEffect(() => {
     async function getData() {
@@ -197,7 +199,9 @@ function Store({ match }) {
       </CardActionArea>
     );
   }
-  return (
+  return loading ? (
+    <LoadingIcon />
+  ) : (
     <>
       <MetaTags>
         <title>e-ncarte {store.name}</title>
