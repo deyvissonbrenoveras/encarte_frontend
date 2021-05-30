@@ -120,15 +120,17 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(0.5),
   },
   productCard: {
-    height: 64,
+    height: 90,
     display: 'flex',
     alignItems: 'center',
     paddingLeft: theme.spacing(0.5),
+    cursor: 'default',
   },
   productImage: {
     maxWidth: 43,
     maxHeight: 60,
     objectFit: 'contain',
+    cursor: 'pointer',
   },
   productContent: {
     display: 'flex',
@@ -140,6 +142,18 @@ export default makeStyles((theme) => ({
     width: '100%',
     height: '100%',
     padding: theme.spacing(1),
+    '& a': {
+      color: '#000',
+      '&:hover': {
+        color: theme.palette.stoke,
+      },
+    },
+    '& .MuiButtonBase-root': {
+      padding: 0,
+    },
+    '& svg': {
+      fontSize: 18,
+    },
   },
   productPrice: {
     color: theme.palette.encarte,

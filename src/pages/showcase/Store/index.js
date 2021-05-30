@@ -18,9 +18,16 @@ import {
   InputAdornment,
   IconButton,
 } from '@material-ui/core';
-import { Search, Facebook, Instagram, WhatsApp } from '@material-ui/icons';
+import {
+  Search,
+  Facebook,
+  Instagram,
+  WhatsApp,
+  AddShoppingCart,
+} from '@material-ui/icons';
 import slugify from '../../../util/slugify';
 import NotFound from '../../../components/NotFound';
+import LoadingIcon from '../../../components/LoadingIcon';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import history from '../../../services/history';
@@ -28,12 +35,15 @@ import history from '../../../services/history';
 import useStyles from './styles';
 import PriceTypeEnum from '../../../util/PriceTypeEnum';
 
+import { addProduct } from '../../../store/modules/cart/actions';
+
 function Store({ match }) {
   const { url } = match.params;
   const dispatch = useDispatch();
   const classes = useStyles();
   const notFound = useSelector((state) => state.showcase.notFound);
   const showcase = useSelector((state) => state.showcase.showcase);
+  const loading = useSelector((state) => state.showcase.loading);
   const [productsFound, setProductsFound] = useState(null);
   useEffect(() => {
     async function getData() {
@@ -153,6 +163,9 @@ function Store({ match }) {
       </Typography>
     );
   }
+  function productClick(product) {
+    history.push(`/loja/${store.url}/produto/${product.id}`);
+  }
   function ProductItem(params) {
     const { product } = params;
 
@@ -164,16 +177,31 @@ function Store({ match }) {
           alt={product.name}
           image={product.image && product.image.url}
           title={product.name}
+          onClick={() => {
+            productClick(product);
+          }}
         />
 
         <div className={classes.productContent}>
-          <div>{product.name}</div>
+          <a href={`/loja/${store.url}/produto/${product.id}`}>
+            {product.name}
+          </a>
           <ProductItemPrice product={product} />
+          <IconButton
+            onClick={() => {
+              toast.success('O produto foi adicionado ao carrinho.');
+              dispatch(addProduct(showcase.id, product, 1));
+            }}
+          >
+            <AddShoppingCart color="primary" />
+          </IconButton>
         </div>
       </CardActionArea>
     );
   }
-  return (
+  return loading ? (
+    <LoadingIcon />
+  ) : (
     <>
       <MetaTags>
         <title>e-ncarte {store.name}</title>
@@ -345,13 +373,7 @@ function Store({ match }) {
                         className={classes.cardGrid}
                         key={product.id}
                       >
-                        <Card
-                          onClick={() => {
-                            history.push(
-                              `/loja/${store.url}/produto/${product.id}`
-                            );
-                          }}
-                        >
+                        <Card>
                           <ProductItem product={product} />
                         </Card>
                       </Grid>
@@ -378,13 +400,7 @@ function Store({ match }) {
                                   className={classes.cardGrid}
                                   key={product.id}
                                 >
-                                  <Card
-                                    onClick={() => {
-                                      history.push(
-                                        `/loja/${store.url}/produto/${product.id}`
-                                      );
-                                    }}
-                                  >
+                                  <Card>
                                     <ProductItem product={product} />
                                   </Card>
                                 </Grid>
