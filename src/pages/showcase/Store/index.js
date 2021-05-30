@@ -373,13 +373,7 @@ function Store({ match }) {
                         className={classes.cardGrid}
                         key={product.id}
                       >
-                        <Card
-                          onClick={() => {
-                            history.push(
-                              `/loja/${store.url}/produto/${product.id}`
-                            );
-                          }}
-                        >
+                        <Card>
                           <ProductItem product={product} />
                         </Card>
                       </Grid>
