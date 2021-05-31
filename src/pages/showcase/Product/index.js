@@ -18,6 +18,7 @@ import history from '../../../services/history';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import { addProduct } from '../../../store/modules/cart/actions';
+import LoadingIcon from '../../../components/LoadingIcon';
 import useStyles from './styles';
 
 function Product({ match }) {
@@ -26,7 +27,7 @@ function Product({ match }) {
   const { url } = match.params;
   const productId = Number(match.params.productId);
   const [product, setProduct] = useState(null);
-  const showcase = useSelector((state) => state.showcase.showcase);
+  const { showcase, loading } = useSelector((state) => state.showcase);
   const [amount, setAmount] = useState(1);
   const [total, setTotal] = useState(null);
   useEffect(() => {
@@ -104,7 +105,9 @@ function Product({ match }) {
       setTotal(formatPrice(amount * product.price));
     }
   }, [amount, product]);
-  return (
+  return loading ? (
+    <LoadingIcon />
+  ) : (
     <Grid container justify="center">
       {!product ? (
         <NotFound />
