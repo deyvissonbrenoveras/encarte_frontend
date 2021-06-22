@@ -45,7 +45,7 @@ function Routes() {
     <Suspense fallback={<LoadingIcon />}>
       <Switch>
         {/* MAIN */}
-        <Route path="/lojas" component={StoresMain} layout={MainLayout} />
+        <Route exact path="/lojas" component={StoresMain} layout={MainLayout} />
         {/* AUTH */}
         <Route path="/login" component={Login} layout={AuthLayout} />
         <Route path="/signup" component={Signup} layout={AuthLayout} />

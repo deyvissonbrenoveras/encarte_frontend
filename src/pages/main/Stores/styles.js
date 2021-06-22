@@ -2,6 +2,21 @@ import { makeStyles } from '@material-ui/core';
 import { darken } from 'polished';
 
 export default makeStyles((theme) => ({
+  logo: {
+    height: 50,
+  },
+  subtitle: {
+    fontSize: 20,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+    margin: '10px 5px',
+  },
+  search: {
+    margin: theme.spacing(2),
+    display: 'flex',
+    justifyContent: ' center',
+  },
   storeCard: {
     // width: '100%',
     height: 120,
