@@ -11,6 +11,7 @@ const DashboardLayout = lazy(() => import('../pages/layouts/DashboardLayout'));
 const ShowcaseLayout = lazy(() => import('../pages/layouts/ShowcaseLayout'));
 
 // MAIN
+const IndexMain = lazy(() => import('../pages/main/Index'));
 const StoresMain = lazy(() => import('../pages/main/Stores'));
 // AUTH
 const Login = lazy(() => import('../pages/Login'));
@@ -45,6 +46,7 @@ function Routes() {
     <Suspense fallback={<LoadingIcon />}>
       <Switch>
         {/* MAIN */}
+        <Route exact path="/" component={IndexMain} layout={MainLayout} />
         <Route exact path="/lojas" component={StoresMain} layout={MainLayout} />
         {/* AUTH */}
         <Route path="/login" component={Login} layout={AuthLayout} />
