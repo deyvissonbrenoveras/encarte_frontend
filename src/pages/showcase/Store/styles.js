@@ -185,6 +185,9 @@ export default makeStyles((theme) => ({
     borderRadius: 4,
     border: '1px solid #e3e3e3',
   },
+  addCartButton: {
+    marginRight: 10,
+  },
   footer: {
     backgroundImage: `url(${footerImage})`,
     backgroundRepeat: 'no-repeat',

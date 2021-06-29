@@ -192,6 +192,7 @@ function Store({ match }) {
               toast.success('O produto foi adicionado ao carrinho.');
               dispatch(addProduct(showcase.id, product, 1));
             }}
+            className={classes.addCartButton}
           >
             <AddShoppingCart color="primary" />
           </IconButton>
