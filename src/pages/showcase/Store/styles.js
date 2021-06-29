@@ -80,10 +80,13 @@ export default makeStyles((theme) => ({
     },
   },
   overflow: {
-    maxWidth: 80,
+    maxWidth: 100,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    whiteSpace: 'nowrap',
+    whiteSpace: 'initial',
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
   },
   productGrid: {
     padding: theme.spacing(0.2),
