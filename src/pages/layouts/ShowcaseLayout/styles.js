@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { darken, makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,6 +10,11 @@ export const useStyles = makeStyles((theme) => ({
     height: 35,
     [theme.breakpoints.up('sm')]: {
       height: 50,
+    },
+  },
+  logoButton: {
+    '&:hover': {
+      backgroundColor: `${darken('#efefef', 0.02)}`,
     },
   },
   logo: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Button } from '@material-ui/core';
 import { Store, ShoppingCart, Info } from '@material-ui/icons';
 import ReactGA from 'react-ga';
 import { useStyles } from './styles';
@@ -19,7 +19,14 @@ function ShowcaseLayout({ children, match }) {
     <div className={classes.root}>
       <AppBar elevation={0} className={classes.appBar} position="sticky">
         <Toolbar className={classes.toolbar} variant="dense">
-          <img className={classes.logo} src={logo} alt="logo" />
+          <Button
+            className={classes.logoButton}
+            onClick={() => {
+              history.push('/');
+            }}
+          >
+            <img className={classes.logo} src={logo} alt="logo" />
+          </Button>
           <div className={classes.iconButtons}>
             <IconButton
               onClick={() => {
