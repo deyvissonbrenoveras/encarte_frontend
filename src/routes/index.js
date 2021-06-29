@@ -5,9 +5,14 @@ import Route from './Route';
 import PrivilegeEnum from '../util/PrivilegeEnum';
 import LoadingIcon from '../components/LoadingIcon';
 // LAYOUTS
+const MainLayout = lazy(() => import('../pages/layouts/MainLayout'));
 const AuthLayout = lazy(() => import('../pages/layouts/AuthLayout'));
 const DashboardLayout = lazy(() => import('../pages/layouts/DashboardLayout'));
 const ShowcaseLayout = lazy(() => import('../pages/layouts/ShowcaseLayout'));
+
+// MAIN
+const IndexMain = lazy(() => import('../pages/main/Index'));
+const StoresMain = lazy(() => import('../pages/main/Stores'));
 // AUTH
 const Login = lazy(() => import('../pages/Login'));
 const Signup = lazy(() => import('../pages/Signup'));
@@ -40,6 +45,9 @@ function Routes() {
   return (
     <Suspense fallback={<LoadingIcon />}>
       <Switch>
+        {/* MAIN */}
+        <Route exact path="/" component={IndexMain} layout={MainLayout} />
+        <Route exact path="/lojas" component={StoresMain} layout={MainLayout} />
         {/* AUTH */}
         <Route path="/login" component={Login} layout={AuthLayout} />
         <Route path="/signup" component={Signup} layout={AuthLayout} />
