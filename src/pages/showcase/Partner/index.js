@@ -25,9 +25,10 @@ import {
 
 import history from '../../../services/history';
 
-import { loadRequest } from '../../../store/modules/showcase/actions';
+import { loadPartnerRequest } from '../../../store/modules/partner/actions';
 import useStyles from './styles';
 import NotFound from '../../../components/NotFound';
+import LoadingIcon from '../../../components/LoadingIcon';
 
 function Info({ match }) {
   const classes = useStyles();
@@ -36,27 +37,25 @@ function Info({ match }) {
   const { url } = match.params;
   const partnerId = Number(match.params.partnerId);
 
-  const [partner, setPartner] = useState({});
   const [productModal, setProductModal] = useState(null);
   const [modalOpen, setModalOpen] = useState(true);
-  const showcase = useSelector((state) => state.showcase.showcase);
+
+  // const showcase = useSelector((state) => state.showcase.showcase);
+  const { partner, loading } = useSelector((state) => state.partner);
+
   useEffect(() => {
     async function getPartner() {
       try {
-        dispatch(loadRequest(url));
+        dispatch(loadPartnerRequest(partnerId));
       } catch (error) {
         toast.error('Houve um erro ao carregar o parceiro');
       }
     }
     getPartner();
   }, [dispatch, url]);
-  useEffect(() => {
-    if (showcase && showcase.partners) {
-      const part = showcase.partners.filter((ptr) => ptr.id === partnerId)[0];
-      setPartner(part);
-    }
-  }, [showcase, partnerId]);
-  return (
+  return loading ? (
+    <LoadingIcon />
+  ) : (
     <Grid container justify="center">
       <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>
         {!partner ? (

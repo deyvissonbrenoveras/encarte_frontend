@@ -80,10 +80,13 @@ export default makeStyles((theme) => ({
     },
   },
   overflow: {
-    maxWidth: 80,
+    maxWidth: 100,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    whiteSpace: 'nowrap',
+    whiteSpace: 'initial',
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
   },
   productGrid: {
     padding: theme.spacing(0.2),
@@ -181,6 +184,9 @@ export default makeStyles((theme) => ({
     margin: theme.spacing(0.3),
     borderRadius: 4,
     border: '1px solid #e3e3e3',
+  },
+  addCartButton: {
+    marginRight: 10,
   },
   footer: {
     backgroundImage: `url(${footerImage})`,

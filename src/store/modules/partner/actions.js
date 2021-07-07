@@ -5,7 +5,18 @@ export function addPartnerRequest(partner, successCb) {
     successCb,
   };
 }
-
+export function loadPartnerRequest(id) {
+  return {
+    type: '@partner/LOAD_REQUEST',
+    payload: { id },
+  };
+}
+export function loadSuccess(payload) {
+  return {
+    type: '@partner/LOAD_SUCCESS',
+    payload,
+  };
+}
 export function updatePartnerRequest(id, partner, removeStores, addStores) {
   return {
     type: '@partner/UPDATE_REQUEST',

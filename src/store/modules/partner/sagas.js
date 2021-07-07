@@ -2,7 +2,7 @@ import { all, takeLatest, call, put } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import api from '../../../services/api';
 
-import { partnerFailure } from './actions';
+import { partnerFailure, loadSuccess } from './actions';
 
 function* addPartnerRequest({ payload, successCb }) {
   try {
@@ -19,6 +19,20 @@ function* addPartnerRequest({ payload, successCb }) {
       err.response.data
         ? err.response.data.error
         : 'Erro ao cadastrar o parceiro'
+    );
+  }
+}
+function* loadPartnerRequest({ payload }) {
+  try {
+    const { id } = payload;
+    const response = yield call(api.get, `partners/${id}`);
+    yield put(loadSuccess(response.data));
+  } catch (err) {
+    yield put(partnerFailure());
+    toast.error(
+      err.response.data
+        ? err.response.data.error
+        : 'Erro ao carregar o parceiro'
     );
   }
 }
@@ -65,6 +79,7 @@ function* disassociateProductsFromPartner({ payload }) {
 }
 export default all([
   takeLatest('@partner/ADD_REQUEST', addPartnerRequest),
+  takeLatest('@partner/LOAD_REQUEST', loadPartnerRequest),
   takeLatest('@partner/UPDATE_REQUEST', updatePartnerRequest),
   takeLatest(
     '@partner/DISASSOCIATE_PRODUCTS_REQUEST',
