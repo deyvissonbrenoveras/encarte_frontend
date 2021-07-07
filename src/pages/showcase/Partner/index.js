@@ -40,7 +40,6 @@ function Info({ match }) {
   const [productModal, setProductModal] = useState(null);
   const [modalOpen, setModalOpen] = useState(true);
 
-  // const showcase = useSelector((state) => state.showcase.showcase);
   const { partner, loading } = useSelector((state) => state.partner);
 
   useEffect(() => {
@@ -52,7 +51,7 @@ function Info({ match }) {
       }
     }
     getPartner();
-  }, [dispatch, url]);
+  }, [dispatch, url, partnerId]);
   return loading ? (
     <LoadingIcon />
   ) : (
