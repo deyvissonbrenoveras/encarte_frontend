@@ -221,7 +221,7 @@ function Store({ match }) {
           <>
             <Grid item xs={12} md={8}>
               <Card className={classes.cover}>
-                {store.logo && (
+                {store.cover && (
                   <CardActionArea
                     onClick={() => {
                       history.push(`/loja/${url}/info`);
@@ -231,7 +231,7 @@ function Store({ match }) {
                       className={classes.media}
                       component="img"
                       alt={store.name}
-                      image={store.logo && store.logo.url}
+                      image={store.cover && store.cover.url}
                       title={store.name}
                     />
                   </CardActionArea>
@@ -415,7 +415,7 @@ function Store({ match }) {
                 <Grid container>
                   <Grid item xs={12}>
                     <Card className={classes.cover}>
-                      {store.logo && (
+                      {store.cover && (
                         <CardActionArea
                           onClick={() => {
                             history.push(`/loja/${url}/info`);
@@ -425,7 +425,7 @@ function Store({ match }) {
                             className={classes.media}
                             component="img"
                             alt={store.name}
-                            image={store.logo && store.logo.url}
+                            image={store.cover && store.cover.url}
                             title={store.name}
                           />
                         </CardActionArea>
