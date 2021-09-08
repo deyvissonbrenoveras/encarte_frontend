@@ -6,7 +6,6 @@ import {
   CardActionArea,
   CardContent,
   Box,
-  Button,
   Typography,
 } from '@material-ui/core';
 import { DeleteForever } from '@material-ui/icons';
