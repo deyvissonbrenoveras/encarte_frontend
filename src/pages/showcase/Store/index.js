@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MetaTags } from 'react-meta-tags';
 import { format, parseISO } from 'date-fns';
 import { toast } from 'react-toastify';
+import Carousel from 'react-material-ui-carousel';
 import {
   Grid,
   Card,
@@ -200,6 +201,76 @@ function Store({ match }) {
       </CardActionArea>
     );
   }
+
+  function CarouselProduct({ product }) {
+    return (
+      <div
+        onClick={() => {
+          productClick(product);
+        }}
+        className={classes.carouselProduct}
+      >
+        <img src={product.image.url} alt={product.name} />
+        <div className={classes.carouselProductInfo}>
+          <div className={classes.carouselProductName}>{product.name}</div>
+          <div className={classes.carouselProductPrice}>
+            {product.formattedPrice}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function CarouselComponent({ featuredProducts }) {
+    let carouselItems = [];
+    store.cover &&
+      carouselItems.push(
+        <div className={classes.carouselAdvertisementItem}>
+          <img
+            className={classes.carouselAdvertisementImg}
+            src={store.cover ? store.cover.url : ''}
+            alt="cover"
+          />
+        </div>
+      );
+    let productsItems = [];
+    if (featuredProducts) {
+      for (let i = 0; i < featuredProducts.length; i += 2) {
+        productsItems.push(
+          featuredProducts.length - i === 1 ? (
+            <div className={classes.carouselItem}>
+              <CarouselProduct product={featuredProducts[i]} />
+            </div>
+          ) : (
+            <div className={classes.carouselItem}>
+              <CarouselProduct product={featuredProducts[i]} />
+              <CarouselProduct product={featuredProducts[i + 1]} />
+            </div>
+          )
+        );
+      }
+    }
+    carouselItems = [...carouselItems, ...productsItems];
+
+    store.secondaryCover &&
+      carouselItems.push(
+        <div className={classes.carouselAdvertisementItem}>
+          <img
+            className={classes.carouselAdvertisementImg}
+            src={store.secondaryCover ? store.secondaryCover.url : ''}
+            alt="secondary cover"
+          />
+        </div>
+      );
+    return (
+      <Carousel
+        className={classes.carousel}
+        interval={3000} /*autoPlay={false}*/
+      >
+        {carouselItems && carouselItems}
+      </Carousel>
+    );
+  }
   return loading ? (
     <LoadingIcon />
   ) : (
@@ -220,28 +291,6 @@ function Store({ match }) {
         ) : (
           <>
             <Grid item xs={12} md={8}>
-              <Card className={classes.cover}>
-                {store.cover && (
-                  <CardActionArea
-                    onClick={() => {
-                      history.push(`/loja/${url}/info`);
-                    }}
-                  >
-                    <CardMedia
-                      className={classes.media}
-                      component="img"
-                      alt={store.name}
-                      image={store.cover && store.cover.url}
-                      title={store.name}
-                    />
-                  </CardActionArea>
-                )}
-              </Card>
-              <ShelfLife
-                align="right"
-                shelfLifeStart={store.shelfLifeStart}
-                shelfLifeEnd={store.shelfLifeEnd}
-              />
               {store.partners &&
                 store.partners.filter((partner) => !partner.sponsorship)
                   .length > 0 && (
@@ -249,7 +298,6 @@ function Store({ match }) {
                     Parceiros
                   </Typography>
                 )}
-
               <ul className={classes.partnerList}>
                 {store.partners &&
                   store.partners
@@ -274,47 +322,18 @@ function Store({ match }) {
                       </li>
                     ))}
               </ul>
+              <ShelfLife
+                align="right"
+                shelfLifeStart={store.shelfLifeStart}
+                shelfLifeEnd={store.shelfLifeEnd}
+              />
 
-              {store.products &&
-                store.products.filter((product) => product.featured).length >
-                  0 && (
-                  <Typography component="h2" className={classes.subtitle}>
-                    Produtos em destaque
-                  </Typography>
-                )}
-
-              <Grid container justify="space-around">
-                {store.products &&
-                  store.products
-                    .filter((product) => product.featured)
-                    .map((product) => (
-                      <Grid
-                        item
-                        xs={4}
-                        className={classes.productGrid}
-                        key={product.id}
-                      >
-                        <Card
-                          className={classes.featuredProductCard}
-                          onClick={() => {
-                            history.push(
-                              `/loja/${store.url}/produto/${product.id}`
-                            );
-                          }}
-                        >
-                          <CardActionArea className={classes.productCardArea}>
-                            <CardMedia
-                              component="img"
-                              className={classes.featuredProductImage}
-                              alt={product.name}
-                              image={product.image.url}
-                              title={product.name}
-                            />
-                          </CardActionArea>
-                        </Card>
-                      </Grid>
-                    ))}
-              </Grid>
+              <CarouselComponent
+                featuredProducts={
+                  store.products &&
+                  store.products.filter((product) => product.featured)
+                }
+              />
 
               {store.partners &&
                 store.partners.filter((partner) => partner.sponsorship).length >

@@ -26,5 +26,6 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-console': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    endOfLine: 'auto'
   },
 };

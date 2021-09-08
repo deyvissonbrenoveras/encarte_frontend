@@ -82,7 +82,8 @@ function UpdateStore({ match }) {
         instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
         facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
         logoId: Yup.number().required('Selecione uma logo'),
-        coverId: Yup.number(),
+        coverId: Yup.number().nullable(),
+        secondaryCoverId: Yup.number().nullable(),
         active: Yup.boolean(),
         shelfLifeStart: Yup.date('Data inválida').nullable(),
         shelfLifeEnd: Yup.date('Data inválida').nullable(),
@@ -90,6 +91,7 @@ function UpdateStore({ match }) {
       await schema.validate(data, {
         abortEarly: false,
       });
+      console.log(data);
       dispatch(updateStoreRequest(id, data));
     } catch (err) {
       const validationErrors = {};
@@ -147,15 +149,30 @@ function UpdateStore({ match }) {
           <TabPanel value={tabIndex} index={0}>
             <Form ref={formRef} onSubmit={submitHandle}>
               <Grid container justify="space-around">
-                <Grid item xs={12} md={5}>
-                  <Img name="logo" submitName="logoId" label="Logo:" />
-                </Grid>
-                <Grid item xs={12} md={5}>
-                  <Img
-                    name="cover"
-                    submitName="coverId"
-                    label="Imagem da campanha:"
-                  />
+                <Grid
+                  container
+                  justify="space-around"
+                  style={{ marginBottom: 20 }}
+                >
+                  <Grid item xs={12} lg={3} style={{ margin: 10 }}>
+                    <Img name="logo" submitName="logoId" label="Logo:" />
+                  </Grid>
+                  <Grid item xs={12} lg={3} style={{ margin: 10 }}>
+                    <Img
+                      name="cover"
+                      submitName="coverId"
+                      label="Imagem da campanha:"
+                      showRemoveButton
+                    />
+                  </Grid>
+                  <Grid item xs={12} lg={3} style={{ margin: 10 }}>
+                    <Img
+                      name="secondaryCover"
+                      submitName="secondaryCoverId"
+                      label="Imagem secundária da campanha:"
+                      showRemoveButton
+                    />
+                  </Grid>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={5}>
                   <CheckboxInput name="active" label="Ativo" />

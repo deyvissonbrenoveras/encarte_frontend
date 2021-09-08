@@ -5,13 +5,15 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
+  Box,
+  Button,
   Typography,
 } from '@material-ui/core';
+import { DeleteForever } from '@material-ui/icons';
 import api from '../../services/api';
 import useStyles from './styles';
 
-const ImageInput = ({ name, submitName, label, ...rest }) => {
+const ImageInput = ({ name, submitName, label, showRemoveButton, ...rest }) => {
   const inputRef = useRef();
 
   const { registerField, error, defaultValue } = useField(submitName);
@@ -40,46 +42,61 @@ const ImageInput = ({ name, submitName, label, ...rest }) => {
   }, [imgRegisterField, name]);
 
   useEffect(() => {
-    if (inputRef.current) {
-      registerField({
-        name: submitName,
-        ref: inputRef.current,
-        path: 'dataset.file',
-        clearValue(ref) {
-          ref.value = '';
-          setPreview('');
-        },
-        setValue() {},
-      });
-    }
+    registerField({
+      name: submitName,
+      ref: inputRef.current,
+      getValue(ref) {
+        return ref.dataset.file || null;
+      },
+      clearValue(ref) {
+        ref.value = '';
+        setPreview('');
+      },
+      setValue() {},
+    });
   }, [inputRef, registerField, submitName]);
+
   const classes = useStyles();
+
   return (
-    <Card className={classes.root} onClick={() => inputRef.current.click()}>
-      <CardActionArea>
-        <CardContent className={classes.content}>
-          <Typography gutterBottom variant="h6">
-            {label}
-          </Typography>
-          <input
-            type="file"
-            id={submitName}
-            accept="image/*"
-            data-file={file}
-            ref={inputRef}
-            onChange={handleChange}
-            {...rest}
-          />
-        </CardContent>
-        <CardMedia
-          component="div"
-          className={classes.media}
-          image={preview || ''}
-          title={label || ''}
-        />
-      </CardActionArea>
-      {error && <span className={classes.error}>{error}</span>}
-    </Card>
+    <div>
+      <Card className={classes.root} onClick={() => inputRef.current.click()}>
+        <CardActionArea className={classes.actionArea}>
+          <CardContent className={classes.content}>
+            <Typography gutterBottom variant="h6">
+              {label}
+            </Typography>
+            <input
+              type="file"
+              id={submitName}
+              accept="image/*"
+              data-file={file}
+              ref={inputRef}
+              onChange={handleChange}
+              {...rest}
+            />
+          </CardContent>
+          {preview && (
+            <img src={preview} alt={label || ''} className={classes.media} />
+          )}
+        </CardActionArea>
+        {error && <span className={classes.error}>{error}</span>}
+      </Card>
+
+      {showRemoveButton && preview && (
+        <Box width="100%" textAlign="right">
+          <button
+            style={{ background: 'none', border: 'none' }}
+            onClick={() => {
+              setFile(null);
+              setPreview(null);
+            }}
+          >
+            <DeleteForever style={{ width: 22, color: '#ff0000' }} />
+          </button>
+        </Box>
+      )}
+    </div>
   );
 };
 
