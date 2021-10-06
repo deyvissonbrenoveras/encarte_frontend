@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, lighten, darken } from '@material-ui/core';
 import footerImage from '../../../assets/footerImage.webp';
 
 export default makeStyles((theme) => ({
@@ -25,9 +25,10 @@ export default makeStyles((theme) => ({
     fontSize: 14,
     letterSpacing: 3,
     textTransform: 'uppercase',
-    marginTop: theme.spacing(1),
-    margin: theme.spacing(0.2),
+    paddingTop: theme.spacing(1),
+    padding: theme.spacing(0.2),
     textAlign: 'center',
+    color: (props) => props.tertiaryColor || '#000',
   },
   carousel: {
     margin: '20px 0',
@@ -79,6 +80,7 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+    color: (props) => props.tertiaryColor || '#000',
   },
   carouselProductName: {
     fontSize: 26,
@@ -105,7 +107,6 @@ export default makeStyles((theme) => ({
   partnerAvatar: {
     width: theme.spacing(7),
     height: theme.spacing(7),
-    marginBottom: theme.spacing(0.3),
     [theme.breakpoints.up('md')]: {
       width: theme.spacing(10),
       height: theme.spacing(10),
@@ -133,15 +134,26 @@ export default makeStyles((theme) => ({
     fontSize: 10,
     fontWeight: 'bold',
   },
+  partnerContainer: {
+    background: (props) => props.primaryColor || '#efefef',
+    background: (props) => {
+      const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
+      return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
+    },
+    borderBottom: (props) =>
+      `2px solid ${darken(props.secondaryColor || theme.palette.encarte, 0.4)}`,
+  },
   partnerList: {
     padding: theme.spacing(0.8),
-    overflow: 'scroll',
+    // overflowY: 'scroll',
+    overflowX: 'scroll',
     // width: '100%',
     display: 'flex',
     [theme.breakpoints.up('sm')]: {
       justifyContent: 'space-around',
     },
     textAlign: 'center',
+    color: (props) => props.tertiaryColor || '#000',
     '& .MuiButtonBase-root': {
       marginLeft: theme.spacing(3),
       display: 'flex',
@@ -150,6 +162,7 @@ export default makeStyles((theme) => ({
       justifyContent: 'center',
       fontSize: 12,
       letterSpacing: 1,
+      textTransform: 'uppercase',
     },
   },
   overflow: {
@@ -232,34 +245,39 @@ export default makeStyles((theme) => ({
     },
   },
   productPrice: {
-    color: theme.palette.encarte,
+    color: (props) => props.tertiaryColor || theme.palette.encarte,
     fontSize: 14,
     fontWeight: 'bold',
   },
   featuredPrice: {
     padding: theme.spacing(0.5),
-    color: '#ff0000',
+    color: (props) => props.tertiaryColor || '#ff0000',
     fontSize: 14,
-    backgroundColor: 'yellow',
+    backgroundColor: (props) => props.primaryColor || 'yellow',
     transform: 'skewX(-10deg)',
     borderRadius: 4,
     margin: theme.spacing(0.3),
-    border: '1px solid #e3e3e3',
+    border: (props) =>
+      `1px solid ${lighten(props.tertiaryColor || '#e3e3e3', 0.7)}`,
     fontWeight: 'bold',
   },
   specialOfferProductPrice: {
-    color: '#ff0000',
+    color: (props) => props.tertiaryColor || '#ff0000',
     fontSize: 13,
     fontWeight: 'bold',
     padding: theme.spacing(0.5),
-    backgroundColor: 'yellow',
+    backgroundColor: (props) => props.primaryColor || 'yellow',
     transform: 'skewX(-10deg)',
     margin: theme.spacing(0.3),
     borderRadius: 4,
-    border: '1px solid #e3e3e3',
+    border: (props) =>
+      `1px solid ${lighten(props.tertiaryColor || '#e3e3e3', 0.7)}`,
   },
   addCartButton: {
     marginRight: 10,
+    '& svg': {
+      color: (props) => props.secondaryColor,
+    },
   },
   footer: {
     backgroundImage: `url(${footerImage})`,
@@ -269,7 +287,8 @@ export default makeStyles((theme) => ({
     height: 400,
     marginTop: theme.spacing(5),
     paddingTop: theme.spacing(2),
-    borderTop: `2px solid ${theme.palette.encarte}`,
+    borderTop: (props) =>
+      `2px solid ${darken(props.secondaryColor || theme.palette.encarte, 0.4)}`,
     '& .MuiCardContent-root': {
       display: 'flex',
       justifyContent: 'center',

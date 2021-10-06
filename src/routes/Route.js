@@ -8,6 +8,7 @@ function RouteWrapper({
   component: Component,
   layout: Layout,
   privilegeRequired,
+  showSearchBar,
   ...rest
 }) {
   const signed = useSelector((state) => state.auth.signed);
@@ -24,7 +25,7 @@ function RouteWrapper({
     <Route
       {...rest}
       render={(props) => (
-        <Layout {...props}>
+        <Layout {...props} showSearchBar={showSearchBar}>
           <Component {...props} />
         </Layout>
       )}

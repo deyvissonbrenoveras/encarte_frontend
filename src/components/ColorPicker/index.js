@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
 import useStyles from './styles';
 import { useField } from '@unform/core';
+import { ClickAwayListener, Portal } from '@material-ui/core';
 
 function ColorPicker({ name, label }) {
   const pickerRef = useRef(null);
@@ -34,7 +35,9 @@ function ColorPicker({ name, label }) {
   }
 
   function handleClick() {
-    setShowPicker(!showPicker);
+    setTimeout(() => {
+      setShowPicker(!showPicker);
+    }, 100);
   }
 
   return (
@@ -48,14 +51,25 @@ function ColorPicker({ name, label }) {
           onClick={handleClick}
         ></button>
       </div>
-      <SketchPicker
-        color={color}
-        onChange={handleChangeComplete}
-        disableAlpha
-        ref={pickerRef}
-        display={false}
-        className={classes.colorPicker}
-      />
+      <ClickAwayListener
+        onClickAway={() => {
+          if (showPicker) {
+            setShowPicker(false);
+          }
+        }}
+      >
+        <SketchPicker
+          color={color}
+          onChange={handleChangeComplete}
+          disableAlpha
+          ref={pickerRef}
+          display={false}
+          className={classes.colorPicker}
+          onClick={(e) => {
+            console.log(e.target);
+          }}
+        />
+      </ClickAwayListener>
 
       {error && <div className={classes.error}>{error}</div>}
     </div>
