@@ -69,6 +69,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
                   </InputAdornment>
                 ),
               }}
+              style={{ backgroundColor: primaryColor }}
             />
           )}
           <div className={classes.actionContainer}>

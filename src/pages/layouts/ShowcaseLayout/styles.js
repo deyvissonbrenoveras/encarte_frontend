@@ -61,14 +61,22 @@ export const useStyles = makeStyles((theme) => ({
     },
     '& .MuiInputBase-root': {
       height: 30,
+      backgroundColor: '#fff',
     },
     '& .MuiFormLabel-root': {
       fontSize: 12,
+    },
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: (props) => props.secondaryColor || '#fff',
+    },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: (props) => props.secondaryColor || '#fff',
     },
     [theme.breakpoints.down('xs')]: {
       order: 2,
     },
   },
+  outlinedSearchInput: {},
   actionContainer: {
     [theme.breakpoints.up('sm')]: {
       marginLeft: 'auto',

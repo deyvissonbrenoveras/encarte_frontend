@@ -15,17 +15,16 @@ import {
   Typography,
   Avatar,
   ButtonBase,
-  TextField,
-  InputAdornment,
   IconButton,
+  Button,
 } from '@material-ui/core';
 import {
-  Search,
   Facebook,
   Instagram,
   WhatsApp,
   AddShoppingCart,
 } from '@material-ui/icons';
+import logo from '../../../assets/logo.webp';
 import slugify from '../../../util/slugify';
 import NotFound from '../../../components/NotFound';
 import LoadingIcon from '../../../components/LoadingIcon';
@@ -41,12 +40,12 @@ import { addProduct } from '../../../store/modules/cart/actions';
 function Store({ match }) {
   const { url } = match.params;
   const dispatch = useDispatch();
+  const YEAR = new Date().getFullYear();
   const notFound = useSelector((state) => state.showcase.notFound);
   const showcase = useSelector((state) => state.showcase.showcase);
   const loading = useSelector((state) => state.showcase.loading);
   const search = useSelector((state) => state.search.search);
   const { primaryColor, secondaryColor, tertiaryColor } = showcase;
-
   const classes = useStyles({ primaryColor, secondaryColor, tertiaryColor });
 
   const [productsFound, setProductsFound] = useState(null);
@@ -194,7 +193,7 @@ function Store({ match }) {
             {product.name}
           </a>
           <ProductItemPrice product={product} />
-          <IconButton
+          {/* <IconButton
             onClick={() => {
               toast.success('O produto foi adicionado ao carrinho.');
               dispatch(addProduct(showcase.id, product, 1));
@@ -202,8 +201,21 @@ function Store({ match }) {
             className={classes.addCartButton}
           >
             <AddShoppingCart color="primary" />
-          </IconButton>
+          </IconButton> */}
         </div>
+        <Button
+          variant="contained"
+          color="#000"
+          size="small"
+          onClick={() => {
+            toast.success('O produto foi adicionado ao carrinho.');
+            dispatch(addProduct(showcase.id, product, 1));
+          }}
+          startIcon={<AddShoppingCart />}
+          className={classes.buyProductButton}
+        >
+          Carrinho
+        </Button>
       </CardActionArea>
     );
   }
@@ -302,7 +314,7 @@ function Store({ match }) {
                 justify="center"
                 className={classes.partnerContainer}
               >
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} sm={8}>
                   {store.partners &&
                     store.partners.filter((partner) => !partner.sponsorship)
                       .length > 0 && (
@@ -336,11 +348,6 @@ function Store({ match }) {
                           </li>
                         ))}
                   </ul>
-                  <ShelfLife
-                    align="right"
-                    shelfLifeStart={store.shelfLifeStart}
-                    shelfLifeEnd={store.shelfLifeEnd}
-                  />
                 </Grid>
               </Grid>
               {!search && (
@@ -355,9 +362,8 @@ function Store({ match }) {
                   </Grid>
                 </Grid>
               )}
-
               <Grid container justify="center">
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} sm={10} lg={8}>
                   {store.partners &&
                     store.partners.filter((partner) => partner.sponsorship)
                       .length > 0 && (
@@ -392,6 +398,11 @@ function Store({ match }) {
                           </li>
                         ))}
                   </ul>
+                  <ShelfLife
+                    align="center"
+                    shelfLifeStart={store.shelfLifeStart}
+                    shelfLifeEnd={store.shelfLifeEnd}
+                  />
                   <Grid container className={classes.productsContainer}>
                     {productsFound !== null
                       ? productsFound.map((product) => (
@@ -427,6 +438,7 @@ function Store({ match }) {
                                       xs={12}
                                       sm={6}
                                       md={4}
+                                      lg={3}
                                       className={classes.cardGrid}
                                       key={product.id}
                                     >
@@ -443,25 +455,24 @@ function Store({ match }) {
                 </Grid>
               </Grid>
               <footer className={classes.footer}>
-                <Grid container>
+                <Grid container justify="center">
                   <Grid item xs={12}>
-                    <Card className={classes.cover}>
+                    <div className={classes.footerStoreCard}>
                       {store.cover && (
-                        <CardActionArea
+                        <div
                           onClick={() => {
                             history.push(`/loja/${url}/info`);
                           }}
+                          className={classes.footerCardAction}
                         >
-                          <CardMedia
+                          <img
                             className={classes.media}
-                            component="img"
                             alt={store.name}
-                            image={store.cover && store.cover.url}
-                            title={store.name}
+                            src={store.cover && store.cover.url}
                           />
-                        </CardActionArea>
+                        </div>
                       )}
-                      <CardContent>
+                      <div>
                         {showcase.facebook && (
                           <IconButton
                             onClick={() => {
@@ -508,49 +519,38 @@ function Store({ match }) {
                             />
                           </IconButton>
                         )}
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   </Grid>
                   <Grid item xs={12} className={classes.footerInfo}>
-                    <Typography variant="caption" display="block" gutterBottom>
-                      IMAGENS MERAMENTE ILUSTRATIVAS**
-                    </Typography>
+                    <div>IMAGENS MERAMENTE ILUSTRATIVAS**</div>
                     <ShelfLife
                       align="center"
                       shelfLifeStart={store.shelfLifeStart}
                       shelfLifeEnd={store.shelfLifeEnd}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6} className={classes.footerInfo}>
+                  <Grid item xs={12} md={6} className={classes.footerInfo}>
                     {store.address && store.city && (
                       <>
-                        <Typography
-                          variant="overline"
-                          display="block"
-                          gutterBottom
-                        >
-                          Endereço: {store.address}
-                        </Typography>
-                        <Typography
-                          variant="overline"
-                          display="block"
-                          gutterBottom
-                        >
-                          {store.city}.
-                        </Typography>{' '}
+                        <div>Endereço: {store.address}</div>
+                        <div>{store.city}.</div>
                       </>
                     )}
                   </Grid>
-                  <Grid item xs={12} sm={6} className={classes.footerInfo}>
-                    {store.phone && (
-                      <Typography
-                        variant="overline"
-                        display="block"
-                        gutterBottom
-                      >
-                        Contato: {store.phone}
-                      </Typography>
-                    )}
+                  <Grid item xs={12} md={6} className={classes.footerInfo}>
+                    {store.phone && <div>Contato: {store.phone}</div>}
+                  </Grid>
+
+                  <Grid item xs={12} className={classes.encarteFooter}>
+                    <div>Página desenvolvida por:</div>
+                    <img
+                      src={logo}
+                      alt="e-ncarte logo"
+                      className={classes.encarteFooterLogo}
+                    />
+                    <div>© {YEAR} e-ncarte publicidade digital</div>
+                    <div></div>
                   </Grid>
                 </Grid>
               </footer>
