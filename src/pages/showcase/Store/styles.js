@@ -57,10 +57,10 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'column',
     cursor: 'pointer',
-    maxHeight: 450,
+    height: 300,
     '& img': {
-      maxWidth: 250,
-      maxHeight: 250,
+      maxWidth: 160,
+      maxHeight: 160,
       [theme.breakpoints.down('sm')]: {
         maxWidth: 150,
         maxHeight: 150,
