@@ -46,8 +46,9 @@ function Cart({ match }) {
   const [clearCartModalVisible, setClearCartModalVisible] = useState(false);
 
   const { url } = match.params;
-  const classes = useStyles();
   const store = useSelector((state) => state.showcase.showcase);
+  const { primaryColor, secondaryColor, tertiaryColor } = store;
+  const classes = useStyles({ primaryColor, secondaryColor, tertiaryColor });
   const loading = useSelector((state) => state.showcase.loading);
   const cart = useSelector((state) => {
     return state.cart.cart.filter((crt) => crt.storeId === store.id)[0]
