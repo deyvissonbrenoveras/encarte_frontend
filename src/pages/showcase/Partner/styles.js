@@ -1,15 +1,22 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, lighten } from '@material-ui/core';
 
 export default makeStyles((theme) => ({
   grid: {
     padding: theme.spacing(0.5),
   },
   cover: {},
-  cardArea: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // maxHeight: 150,
+  backgroundLogoContainer: {
+    background: (props) => props.primaryColor || '#efefef',
+    background: (props) => {
+      const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
+      return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
+    },
+    textAlign: 'center',
+  },
+  logoContainer: {
+    padding: theme.spacing(2),
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
   },
   media: {
     maxHeight: 180,

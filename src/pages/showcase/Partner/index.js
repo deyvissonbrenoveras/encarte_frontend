@@ -26,12 +26,12 @@ import {
 import history from '../../../services/history';
 
 import { loadPartnerRequest } from '../../../store/modules/partner/actions';
+import { loadRequest } from '../../../store/modules/showcase/actions';
 import useStyles from './styles';
 import NotFound from '../../../components/NotFound';
 import LoadingIcon from '../../../components/LoadingIcon';
 
 function Info({ match }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const { url } = match.params;
@@ -41,10 +41,15 @@ function Info({ match }) {
   const [modalOpen, setModalOpen] = useState(true);
 
   const { partner, loading } = useSelector((state) => state.partner);
+  const showcase = useSelector((state) => state.showcase.showcase);
+  const loadingShowcase = useSelector((state) => state.showcase.loading);
+  const { primaryColor, secondaryColor, tertiaryColor } = showcase;
+  const classes = useStyles({ primaryColor, secondaryColor, tertiaryColor });
 
   useEffect(() => {
     async function getPartner() {
       try {
+        dispatch(loadRequest(url));
         dispatch(loadPartnerRequest(partnerId));
       } catch (error) {
         toast.error('Houve um erro ao carregar o parceiro');
@@ -52,7 +57,7 @@ function Info({ match }) {
     }
     getPartner();
   }, [dispatch, url, partnerId]);
-  return loading ? (
+  return loading || loadingShowcase ? (
     <LoadingIcon />
   ) : (
     <Grid container justify="center">
@@ -61,7 +66,7 @@ function Info({ match }) {
           <NotFound />
         ) : (
           <>
-            <Card>
+            {/* <Card>
               <CardActionArea className={classes.cardArea}>
                 <CardMedia
                   className={classes.media}
@@ -72,7 +77,18 @@ function Info({ match }) {
                 />
               </CardActionArea>
               <CardContent className={classes.cardContent} />
-            </Card>
+            </Card> */}
+            <Grid item xs={12}>
+              <div className={classes.backgroundLogoContainer}>
+                <div className={classes.logoContainer}>
+                  <img
+                    className={classes.media}
+                    alt={partner.name}
+                    src={partner.logo && partner.logo.url}
+                  />
+                </div>
+              </div>
+            </Grid>
             <h2 className={classes.partnerName}>{partner.name}</h2>
             {partner.site && (
               <>
