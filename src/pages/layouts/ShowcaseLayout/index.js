@@ -16,10 +16,12 @@ import { useStyles } from './styles';
 import logo from '../../../assets/logo.webp';
 import history from '../../../services/history';
 import { updateSearch } from '../../../store/modules/search/actions';
+import LoadingIcon from '../../../components/LoadingIcon';
 
 function ShowcaseLayout({ children, match, showSearchBar }) {
   const dispatch = useDispatch();
   const showcase = useSelector((state) => state.showcase.showcase);
+  const loading = useSelector((state) => state.showcase.loading);
   const cart = useSelector((state) => {
     return state.cart.cart.filter((crt) => crt.storeId === showcase.id)[0]
       ? state.cart.cart.filter((crt) => crt.storeId === showcase.id)[0].products
@@ -49,43 +51,44 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
 
   return (
     <div className={classes.root}>
-      <AppBar elevation={0} className={classes.appBar} position="static">
-        <Toolbar className={classes.toolbar} variant="dense">
-          {showSearchBar && (
-            <TextField
-              size="small"
-              variant="outlined"
-              onChange={(e) => {
-                dispatch(updateSearch(e.target.value));
-              }}
-              className={classes.searchInput}
-              // label="Busque por produtos"
-              placeholder="Busque por produtos"
-              //fullWidth
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-              style={{ backgroundColor: primaryColor }}
-            />
-          )}
-          <div className={classes.actionContainer}>
-            <Button
-              className={classes.logoButton}
-              onClick={() => {
-                history.push('/');
-              }}
-            >
-              <img
-                className={classes.showcaseLogo}
-                src={showcase.logo && showcase.logo.url}
-                alt="logo"
+      {!loading && (
+        <AppBar elevation={0} className={classes.appBar} position="static">
+          <Toolbar className={classes.toolbar} variant="dense">
+            {showSearchBar && (
+              <TextField
+                size="small"
+                variant="outlined"
+                onChange={(e) => {
+                  dispatch(updateSearch(e.target.value));
+                }}
+                className={classes.searchInput}
+                // label="Busque por produtos"
+                placeholder="Busque por produtos"
+                //fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <Search />
+                    </InputAdornment>
+                  ),
+                }}
+                style={{ backgroundColor: primaryColor }}
               />
-            </Button>
-            {/* <input
+            )}
+            <div className={classes.actionContainer}>
+              <Button
+                className={classes.logoButton}
+                onClick={() => {
+                  history.push('/');
+                }}
+              >
+                <img
+                  className={classes.showcaseLogo}
+                  src={showcase.logo && showcase.logo.url}
+                  alt="logo"
+                />
+              </Button>
+              {/* <input
             type="text"
             placeholder="Busque por nome ou descrição do produto"
             onChange={(e) => {
@@ -93,8 +96,8 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
             }}
           /> */}
 
-            <div className={classes.iconButtons}>
-              {/* <Button
+              <div className={classes.iconButtons}>
+                {/* <Button
               className={classes.logoButton}
               onClick={() => {
                 history.push('/');
@@ -102,38 +105,39 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
             >
               <img className={classes.logo} src={logo} alt="logo" />
             </Button> */}
-              <IconButton
-                onClick={() => {
-                  history.push(`/loja/${url}`);
-                }}
-              >
-                <Store className={classes.icon} />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  history.push(`/loja/${url}/info`);
-                }}
-              >
-                <Info className={classes.icon} />
-              </IconButton>
-
-              <IconButton
-                onClick={() => {
-                  history.push(`/loja/${url}/carrinho`);
-                }}
-              >
-                <Badge
-                  badgeContent={cartItemsCount}
-                  color="primary"
-                  className={classes.iconBadge}
+                <IconButton
+                  onClick={() => {
+                    history.push(`/loja/${url}`);
+                  }}
                 >
-                  <ShoppingCart className={classes.icon} />
-                </Badge>
-              </IconButton>
+                  <Store className={classes.icon} />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    history.push(`/loja/${url}/info`);
+                  }}
+                >
+                  <Info className={classes.icon} />
+                </IconButton>
+
+                <IconButton
+                  onClick={() => {
+                    history.push(`/loja/${url}/carrinho`);
+                  }}
+                >
+                  <Badge
+                    badgeContent={cartItemsCount}
+                    color="primary"
+                    className={classes.iconBadge}
+                  >
+                    <ShoppingCart className={classes.icon} />
+                  </Badge>
+                </IconButton>
+              </div>
             </div>
-          </div>
-        </Toolbar>
-      </AppBar>
+          </Toolbar>
+        </AppBar>
+      )}
       {children}
     </div>
   );
