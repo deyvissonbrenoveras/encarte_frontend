@@ -22,12 +22,13 @@ import LoadingIcon from '../../../components/LoadingIcon';
 import useStyles from './styles';
 
 function Product({ match }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const { url } = match.params;
   const productId = Number(match.params.productId);
   const [product, setProduct] = useState(null);
   const { showcase, loading } = useSelector((state) => state.showcase);
+  const { primaryColor, secondaryColor, tertiaryColor } = showcase;
+  const classes = useStyles({ primaryColor, secondaryColor, tertiaryColor });
   const [amount, setAmount] = useState(1);
   const [total, setTotal] = useState(null);
   useEffect(() => {

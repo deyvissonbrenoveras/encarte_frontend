@@ -24,7 +24,6 @@ export default makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: theme.palette.stoke,
   },
   productPrice: {
     padding: theme.spacing(4),
@@ -32,6 +31,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     height: 46,
     fontSize: 19,
+    fontWeight: 'bold',
     border: `1px solid ${theme.palette.greyBorder}`,
     borderRadius: 3,
     display: 'flex',
@@ -40,14 +40,14 @@ export default makeStyles((theme) => ({
     color: '#000',
   },
   productDefaultPrice: {
-    color: theme.palette.encarte,
+    color: (props) => props.tertiaryColor || theme.palette.encarte,
     padding: theme.spacing(0.5),
     margin: theme.spacing(0.3),
   },
   featuredPrice: {
     padding: theme.spacing(0.5),
-    color: '#ff0000',
-    backgroundColor: 'yellow',
+    color: (props) => props.tertiaryColor || '#ff0000',
+    backgroundColor: (props) => props.primaryColor || 'yellow',
     transform: 'skewX(-10deg)',
     borderRadius: 4,
     margin: theme.spacing(0.3),
@@ -56,10 +56,10 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   specialOfferProductPrice: {
-    color: '#ff0000',
+    color: (props) => props.tertiaryColor || '#ff0000',
     fontWeight: 'bold',
     padding: theme.spacing(0.5),
-    backgroundColor: 'yellow',
+    backgroundColor: (props) => props.primaryColor || 'yellow',
     transform: 'skewX(-10deg)',
     margin: theme.spacing(0.3),
     marginLeft: theme.spacing(1),
@@ -92,7 +92,7 @@ export default makeStyles((theme) => ({
     },
   },
   addProduct: {
-    backgroundColor: '#fff',
+    backgroundColor: (props) => props.primaryColor || '#fff',
     width: '95%',
     position: 'sticky',
     bottom: 10,
@@ -103,11 +103,11 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    color: theme.palette.encarte,
+    color: (props) => props.secondaryColor || theme.palette.encarte,
     fontSize: 17,
     '& svg': {
       fontSize: 30,
-      color: theme.palette.encarte,
+      color: (props) => props.secondaryColor || theme.palette.encarte,
       [theme.breakpoints.down('xs')]: {
         fontSize: 15,
       },
@@ -115,8 +115,11 @@ export default makeStyles((theme) => ({
     margin: '0 auto',
   },
   productAmount: {
+    backgroundColor: (props) => props.primaryColor || 'none',
+    color: (props) => props.secondaryColor || '#000',
     width: 50,
     textAlign: 'center',
+    fontWeight: 'bold',
     outline: 'none',
     border: 'none',
     [theme.breakpoints.down('xs')]: {
