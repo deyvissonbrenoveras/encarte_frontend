@@ -19,6 +19,8 @@ export default makeStyles((theme) => ({
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
   },
   media: {
+    width: '100%',
+    maxWidth: 600,
     maxHeight: 180,
     objectFit: 'contain',
   },
@@ -40,6 +42,8 @@ export default makeStyles((theme) => ({
       `2px solid ${props.secondaryColor || theme.palette.greyBorder}`,
     borderRadius: 10,
     padding: theme.spacing(0.5),
+    display: 'flex',
+    alignItems: 'center',
   },
   address: {
     width: '100%',
