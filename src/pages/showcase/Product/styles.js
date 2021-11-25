@@ -102,8 +102,9 @@ export default makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     display: 'flex',
     justifyContent: 'space-around',
+    fontWeight: 'bold',
     alignItems: 'center',
-    color: (props) => props.secondaryColor || theme.palette.encarte,
+    color: (props) => props.tertiaryColor || theme.palette.encarte,
     fontSize: 17,
     '& svg': {
       fontSize: 30,
@@ -116,7 +117,7 @@ export default makeStyles((theme) => ({
   },
   productAmount: {
     backgroundColor: (props) => props.primaryColor || 'none',
-    color: (props) => props.secondaryColor || '#000',
+    color: (props) => props.tertiaryColor || '#000',
     width: 50,
     textAlign: 'center',
     fontWeight: 'bold',
