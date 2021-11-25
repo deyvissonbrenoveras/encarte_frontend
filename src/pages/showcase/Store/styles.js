@@ -128,8 +128,7 @@ export default makeStyles((theme) => ({
     },
   },
   shelfLife: {
-    fontSize: 12,
-    color: (props) => props.secondaryColor || '#000',
+    fontSize: 14,
     fontWeight: 'bold',
   },
   partnerContainer: {
@@ -210,12 +209,30 @@ export default makeStyles((theme) => ({
   productsContainer: {
     padding: theme.spacing(3),
   },
-  categoryName: {
-    color: '#616161',
-    letterSpacing: 3,
+  categoryContainer: {
     marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(5),
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(2),
+
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+    },
+  },
+  categoryName: {
+    color: (props) => props.tertiaryColor || '#616161',
+    background: (props) => lighten(props.secondaryColor || '#fff', 0.75),
+    display: 'inline-block',
+    justifySelf: 'center',
+    textAlign: 'center',
+    letterSpacing: 3,
+
+    padding: theme.spacing(1),
+    borderRadius: 6,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '100%',
+    },
   },
   cardGrid: {
     padding: theme.spacing(0.5),
@@ -275,7 +292,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     fontSize: 17,
     backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.3),
-    color: (props) => props.secondaryColor || '#000',
+    color: (props) => props.tertiaryColor || '#000',
     fontWeight: 'bold',
     position: 'absolute',
     bottom: 0,
@@ -285,7 +302,7 @@ export default makeStyles((theme) => ({
     },
     '& .MuiSvgIcon-root': {
       fontSize: 26,
-      color: (props) => props.secondaryColor || '#000',
+      color: (props) => props.tertiaryColor || '#000',
     },
   },
   productPrice: {
@@ -297,7 +314,7 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(0.5),
     color: (props) => props.tertiaryColor || '#ff0000',
     fontSize: 19,
-    backgroundColor: (props) => props.primaryColor || 'yellow',
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
     transform: 'skewX(-10deg)',
     borderRadius: 4,
     margin: theme.spacing(0.3),
@@ -310,7 +327,7 @@ export default makeStyles((theme) => ({
     fontSize: 19,
     fontWeight: 'bold',
     padding: theme.spacing(0.5),
-    backgroundColor: (props) => props.primaryColor || 'yellow',
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
     transform: 'skewX(-10deg)',
     margin: theme.spacing(0.3),
     borderRadius: 4,
@@ -324,10 +341,10 @@ export default makeStyles((theme) => ({
     },
   },
   footer: {
-    // backgroundColor: (props) => props.primaryColor || 'none',
+    color: '#fff',
     width: '100%',
     height: 400,
-    marginTop: theme.spacing(5),
+    marginTop: 300,
     borderTop: (props) =>
       `2px solid ${darken(props.secondaryColor || theme.palette.encarte, 0.4)}`,
     '& .MuiCardContent-root': {
@@ -336,45 +353,60 @@ export default makeStyles((theme) => ({
       padding: 0,
     },
   },
+  showcaseFooter: {
+    backgroundColor: '#2e2e2e',
+    background: '#2e2e2e',
+    background: () => {
+      const gradientColor = lighten('#2e2e2e', 0.15);
+      return `linear-gradient(90deg, ${gradientColor} 11%, #2e2e2e 77%)`;
+    },
+    paddingBottom: theme.spacing(4),
+  },
+  footerStoreContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    paddingTop: theme.spacing(1),
+  },
   footerStoreCard: {
+    padding: theme.spacing(2),
+    maxWidth: '50%',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: 4,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  footerMedia: {
     width: '100%',
-    background: (props) => props.primaryColor || 'none',
-    background: (props) =>
-      `linear-gradient(180deg, ${props.primaryColor} 10%, rgba(255,255,255,1) 80%)`,
+    maxHeight: 200,
+    objectFit: 'contain',
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: 100,
+    },
   },
   footerCardAction: {
     width: '100%',
     textAlign: 'center',
-    // background: (props) => props.primaryColor || 'none',
     cursor: 'pointer',
   },
-  footerCover: {
-    // backgroundColor: (props) => props.primaryColor || 'none',
-  },
+  footerCover: {},
   footerInfo: {
     paddingTop: theme.spacing(2),
     textAlign: 'center',
-    // backgroundColor: (props) => props.primaryColor || 'none',
-    // color: (props) => props.tertiaryColor || '#000',
     fontSize: 17,
   },
   encarteFooter: {
-    backgroundColor: '#fff',
     height: 150,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
     fontSize: 15,
-    marginTop: theme.spacing(8),
     paddingTop: theme.spacing(15),
     paddingBottom: theme.spacing(15),
-    borderTop: (props) =>
-      `2px solid ${lighten(props.primaryColor || '#000', 0.8)}`,
+    borderTop: '2px solid #fff',
+    background: '#262626',
   },
   encarteFooterLogo: {
     maxWidth: 200,

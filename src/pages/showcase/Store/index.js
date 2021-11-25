@@ -1,5 +1,5 @@
 /* eslint-disable guard-for-in */
-import React, { useEffect, useMemo, useState, Consumer } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { MetaTags } from 'react-meta-tags';
@@ -11,7 +11,6 @@ import {
   Card,
   CardActionArea,
   CardMedia,
-  CardContent,
   Typography,
   Avatar,
   ButtonBase,
@@ -48,6 +47,7 @@ function Store({ match }) {
   const { primaryColor, secondaryColor, tertiaryColor } = showcase;
   const classes = useStyles({ primaryColor, secondaryColor, tertiaryColor });
 
+  const [store, setStore] = useState({});
   const [productsFound, setProductsFound] = useState(null);
   useEffect(() => {
     async function getData() {
@@ -60,7 +60,7 @@ function Store({ match }) {
     getData();
   }, [dispatch, url]);
 
-  const store = useMemo(() => {
+  useEffect(() => {
     // Filter all categories
     let categories;
     let products;
@@ -85,7 +85,7 @@ function Store({ match }) {
           return cat;
         }, [])
         .sort((a, b) => a.name.localeCompare(b.name));
-      categories.push({ id: null, name: 'Outros produtos' });
+      categories.push({ id: 0, name: 'Outros produtos' });
     }
     categories =
       categories &&
@@ -109,7 +109,13 @@ function Store({ match }) {
       ? format(parseISO(showcase.shelfLifeEnd.split('T')[0]), 'dd/MM/yyyy')
       : null;
 
-    return { ...showcase, products, categories, shelfLifeStart, shelfLifeEnd };
+    setStore({
+      ...showcase,
+      products,
+      categories,
+      shelfLifeStart,
+      shelfLifeEnd,
+    });
   }, [showcase]);
   useEffect(() => {
     if (store.products) {
@@ -153,13 +159,14 @@ function Store({ match }) {
     }
   }
   function ShelfLife(params) {
-    const { shelfLifeStart, shelfLifeEnd, align } = params;
+    const { shelfLifeStart, shelfLifeEnd, align, color } = params;
     if (!shelfLifeStart || !shelfLifeEnd) {
       return <></>;
     }
     return (
       <Typography
         className={classes.shelfLife}
+        color={color}
         align={align}
         variant="caption"
         display="block"
@@ -402,6 +409,7 @@ function Store({ match }) {
                     align="center"
                     shelfLifeStart={store.shelfLifeStart}
                     shelfLifeEnd={store.shelfLifeEnd}
+                    color={tertiaryColor}
                   />
                   <Grid container className={classes.productsContainer}>
                     {productsFound !== null
@@ -425,12 +433,19 @@ function Store({ match }) {
                             category.products &&
                             category.products.length > 0 && (
                               <Grid item xs={12} key={category.id}>
-                                <Typography
-                                  variant="h5"
-                                  className={classes.categoryName}
+                                <Grid
+                                  container
+                                  className={classes.categoryContainer}
                                 >
-                                  {category.name.toUpperCase()}
-                                </Typography>
+                                  <Grid item m xs={12} md={6}>
+                                    <Typography
+                                      variant="h5"
+                                      className={classes.categoryName}
+                                    >
+                                      {category.name.toUpperCase()}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
                                 <Grid container>
                                   {category.products.map((product) => (
                                     <Grid
@@ -455,8 +470,12 @@ function Store({ match }) {
                 </Grid>
               </Grid>
               <footer className={classes.footer}>
-                <Grid container justify="center">
-                  <Grid item xs={12}>
+                <Grid
+                  container
+                  justify="center"
+                  className={classes.showcaseFooter}
+                >
+                  <Grid item xs={12} className={classes.footerStoreContainer}>
                     <div className={classes.footerStoreCard}>
                       {store.cover && (
                         <div
@@ -466,7 +485,7 @@ function Store({ match }) {
                           className={classes.footerCardAction}
                         >
                           <img
-                            className={classes.media}
+                            className={classes.footerMedia}
                             alt={store.name}
                             src={store.cover && store.cover.url}
                           />
@@ -528,6 +547,7 @@ function Store({ match }) {
                       align="center"
                       shelfLifeStart={store.shelfLifeStart}
                       shelfLifeEnd={store.shelfLifeEnd}
+                      color="#2e2e2e"
                     />
                   </Grid>
                   <Grid item xs={12} md={6} className={classes.footerInfo}>
@@ -541,7 +561,8 @@ function Store({ match }) {
                   <Grid item xs={12} md={6} className={classes.footerInfo}>
                     {store.phone && <div>Contato: {store.phone}</div>}
                   </Grid>
-
+                </Grid>
+                <Grid container justify="center">
                   <Grid item xs={12} className={classes.encarteFooter}>
                     <div>Página desenvolvida por:</div>
                     <img
