@@ -61,23 +61,11 @@ function Info({ match }) {
     <LoadingIcon />
   ) : (
     <Grid container justify="center">
-      <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>
+      <Grid item xs={12} sm={10} md={8} lg={6}>
         {!partner ? (
           <NotFound />
         ) : (
           <>
-            {/* <Card>
-              <CardActionArea className={classes.cardArea}>
-                <CardMedia
-                  className={classes.media}
-                  component="img"
-                  alt={partner.name}
-                  image={partner.logo && partner.logo.url}
-                  title={partner.name}
-                />
-              </CardActionArea>
-              <CardContent className={classes.cardContent} />
-            </Card> */}
             <Grid item xs={12}>
               <div className={classes.backgroundLogoContainer}>
                 <div className={classes.logoContainer}>

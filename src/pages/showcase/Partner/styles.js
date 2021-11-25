@@ -1,9 +1,6 @@
 import { makeStyles, lighten } from '@material-ui/core';
 
 export default makeStyles((theme) => ({
-  grid: {
-    padding: theme.spacing(0.5),
-  },
   cover: {},
   backgroundLogoContainer: {
     background: (props) => props.primaryColor || '#efefef',
