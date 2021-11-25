@@ -143,8 +143,9 @@ function Cart({ match }) {
               <Box className={classes.stickyTop} width="100%" textAlign="right">
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="delete"
                   size="small"
+                  className={classes.clearCart}
                   onClick={() => {
                     setClearCartModalVisible(false);
                     dispatch(clearCart(store.id));
