@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, darken } from '@material-ui/core';
 import { StyleSheet } from '@react-pdf/renderer';
 
 export default makeStyles((theme) => ({
@@ -23,6 +23,13 @@ export default makeStyles((theme) => ({
     marginBottom: 10,
     [theme.breakpoints.down('xs')]: {
       top: 40,
+    },
+  },
+  clearCart: {
+    backgroundColor: '#ba000d',
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: darken('#ba000d', 0.3),
     },
   },
   cardGrid: {
@@ -133,6 +140,7 @@ export default makeStyles((theme) => ({
     textAlign: 'center',
     outline: 'none',
     border: 'none',
+    fontWeight: 'bold',
     [theme.breakpoints.down('xs')]: {
       fontSize: 10,
       width: 20,
@@ -159,7 +167,7 @@ export default makeStyles((theme) => ({
     },
     '& svg': {
       fontSize: 20,
-      color: (props) => props.secondaryColor || theme.palette.encarte,
+      color: '#ba000d',
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: 10,
