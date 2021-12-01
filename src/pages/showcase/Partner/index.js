@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Grid,
   Card,
-  CardContent,
   Typography,
   CardActionArea,
   CardMedia,
@@ -15,13 +14,7 @@ import {
   ButtonBase,
   Box,
 } from '@material-ui/core';
-import {
-  Link as LinkIcon,
-  Facebook,
-  Instagram,
-  WhatsApp,
-  Close,
-} from '@material-ui/icons';
+import { Link as LinkIcon, Close } from '@material-ui/icons';
 
 import history from '../../../services/history';
 
@@ -30,6 +23,7 @@ import { loadRequest } from '../../../store/modules/showcase/actions';
 import useStyles from './styles';
 import NotFound from '../../../components/NotFound';
 import LoadingIcon from '../../../components/LoadingIcon';
+import SocialNetworks from '../../../components/SocialNetworks';
 
 function Info({ match }) {
   const dispatch = useDispatch();
@@ -107,44 +101,11 @@ function Info({ match }) {
               <>
                 <h5>Redes sociais</h5>
                 <div className={classes.socialNetworks}>
-                  {partner.facebook && (
-                    <IconButton
-                      onClick={() => {
-                        window.open(`https://facebook.com/${partner.facebook}`);
-                      }}
-                    >
-                      <Facebook style={{ fill: '#4267B2' }} fontSize="large" />
-                    </IconButton>
-                  )}
-                  {partner.instagram && (
-                    <IconButton
-                      onClick={() => {
-                        window.open(
-                          `https://instagram.com/${partner.instagram}`
-                        );
-                      }}
-                    >
-                      <Instagram style={{ fill: '#C13584' }} fontSize="large" />
-                    </IconButton>
-                  )}
-                  {partner.agentWhatsapp && (
-                    <IconButton
-                      onClick={() => {
-                        window.open(
-                          `https://api.whatsapp.com/send?phone=${partner.agentWhatsapp}`
-                        );
-                      }}
-                    >
-                      <WhatsApp
-                        style={{
-                          fill: 'white',
-                          backgroundColor: '#128C7E',
-                          borderRadius: 10,
-                        }}
-                        fontSize="large"
-                      />
-                    </IconButton>
-                  )}
+                  <SocialNetworks
+                    facebook={partner.facebook}
+                    instagram={partner.instagram}
+                    whatsapp={partner.whatsapp}
+                  />
                 </div>
               </>
             )}

@@ -14,15 +14,9 @@ import {
   Typography,
   Avatar,
   ButtonBase,
-  IconButton,
   Button,
 } from '@material-ui/core';
-import {
-  Facebook,
-  Instagram,
-  WhatsApp,
-  AddShoppingCart,
-} from '@material-ui/icons';
+import { AddShoppingCart } from '@material-ui/icons';
 import logo from '../../../assets/logo.webp';
 import slugify from '../../../util/slugify';
 import NotFound from '../../../components/NotFound';
@@ -35,6 +29,7 @@ import useStyles from './styles';
 import PriceTypeEnum from '../../../util/PriceTypeEnum';
 
 import { addProduct } from '../../../store/modules/cart/actions';
+import SocialNetworks from '../../../components/SocialNetworks';
 
 function Store({ match }) {
   const { url } = match.params;
@@ -228,6 +223,7 @@ function Store({ match }) {
   }
 
   function CarouselProduct({ product }) {
+    console.log(product);
     return (
       <div
         onClick={() => {
@@ -238,9 +234,11 @@ function Store({ match }) {
         <img src={product.image.url} alt={product.name} />
         <div className={classes.carouselProductInfo}>
           <div className={classes.carouselProductName}>{product.name}</div>
-          <div className={classes.carouselProductPrice}>
-            {product.formattedPrice}
-          </div>
+          {product.priceType != PriceTypeEnum.SPECIAL_OFFER && (
+            <div className={classes.carouselProductPrice}>
+              {product.formattedPrice}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -315,6 +313,9 @@ function Store({ match }) {
           <NotFound />
         ) : (
           <>
+            <Grid item xs={12}>
+              <h1 className={classes.showcaseName}>{showcase.name}</h1>
+            </Grid>
             <Grid item xs={12} /*md={8}*/>
               <Grid
                 container
@@ -491,54 +492,11 @@ function Store({ match }) {
                           />
                         </div>
                       )}
-                      <div>
-                        {showcase.facebook && (
-                          <IconButton
-                            onClick={() => {
-                              window.open(
-                                `https://facebook.com/${showcase.facebook}`
-                              );
-                            }}
-                          >
-                            <Facebook
-                              style={{ fill: '#4267B2' }}
-                              fontSize="large"
-                            />
-                          </IconButton>
-                        )}
-                        {showcase.instagram && (
-                          <IconButton
-                            onClick={() => {
-                              window.open(
-                                `https://instagram.com/${showcase.instagram}`
-                              );
-                            }}
-                          >
-                            <Instagram
-                              style={{ fill: '#C13584' }}
-                              fontSize="large"
-                            />
-                          </IconButton>
-                        )}
-                        {showcase.whatsapp && (
-                          <IconButton
-                            onClick={() => {
-                              window.open(
-                                `https://api.whatsapp.com/send?phone=${showcase.whatsapp}`
-                              );
-                            }}
-                          >
-                            <WhatsApp
-                              style={{
-                                fill: 'white',
-                                backgroundColor: '#128C7E',
-                                borderRadius: 10,
-                              }}
-                              fontSize="large"
-                            />
-                          </IconButton>
-                        )}
-                      </div>
+                      <SocialNetworks
+                        facebook={showcase.facebook}
+                        instagram={showcase.instagram}
+                        whatsapp={showcase.whatsapp}
+                      />
                     </div>
                   </Grid>
                   <Grid item xs={12} className={classes.footerInfo}>
@@ -569,6 +527,11 @@ function Store({ match }) {
                       src={logo}
                       alt="e-ncarte logo"
                       className={classes.encarteFooterLogo}
+                    />
+                    <SocialNetworks
+                      facebook="agenciaencarte"
+                      instagram="e_ncarte"
+                      whatsapp="558393609556"
                     />
                     <div>© {YEAR} e-ncarte publicidade digital</div>
                     <div></div>

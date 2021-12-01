@@ -1,10 +1,20 @@
 import { makeStyles, lighten, darken } from '@material-ui/core';
-import footerImage from '../../../assets/footerImage.webp';
 
 export default makeStyles((theme) => ({
   name: {
     textAlign: 'center',
     padding: 0,
+  },
+  showcaseName: {
+    background: (props) => props.primaryColor || '#efefef',
+    background: (props) => {
+      const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
+      return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
+    },
+    fontSize: 20,
+    color: (props) => props.tertiaryColor,
+    textAlign: 'center',
+    padding: '5px 0',
   },
   cover: {},
   cardArea: {
@@ -83,6 +93,8 @@ export default makeStyles((theme) => ({
     color: '#000',
   },
   carouselProductName: {
+    textAlign: 'center',
+    maxWidth: 250,
     fontSize: 26,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
