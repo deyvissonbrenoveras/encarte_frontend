@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, lighten } from '@material-ui/core';
 
 export default makeStyles((theme) => ({
   cover: {},
@@ -47,7 +47,7 @@ export default makeStyles((theme) => ({
   featuredPrice: {
     padding: theme.spacing(0.5),
     color: (props) => props.tertiaryColor || '#ff0000',
-    backgroundColor: (props) => props.primaryColor || 'yellow',
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
     transform: 'skewX(-10deg)',
     borderRadius: 4,
     margin: theme.spacing(0.3),
@@ -59,7 +59,7 @@ export default makeStyles((theme) => ({
     color: (props) => props.tertiaryColor || '#ff0000',
     fontWeight: 'bold',
     padding: theme.spacing(0.5),
-    backgroundColor: (props) => props.primaryColor || 'yellow',
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
     transform: 'skewX(-10deg)',
     margin: theme.spacing(0.3),
     marginLeft: theme.spacing(1),

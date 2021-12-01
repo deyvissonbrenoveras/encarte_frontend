@@ -1,4 +1,4 @@
-import { makeStyles, darken } from '@material-ui/core';
+import { makeStyles, darken, lighten } from '@material-ui/core';
 import { StyleSheet } from '@react-pdf/renderer';
 
 export default makeStyles((theme) => ({
@@ -92,7 +92,7 @@ export default makeStyles((theme) => ({
     alignSelf: 'flex-start',
     padding: theme.spacing(0.5),
     color: (props) => props.tertiaryColor || '#ff0000',
-    backgroundColor: (props) => props.primaryColor || 'yellow',
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
     transform: 'skewX(-10deg)',
     borderRadius: 4,
     margin: theme.spacing(0.3),
@@ -105,7 +105,7 @@ export default makeStyles((theme) => ({
     alignSelf: 'flex-start',
     fontWeight: 'bold',
     padding: theme.spacing(0.5),
-    backgroundColor: (props) => props.primaryColor || 'yellow',
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
     transform: 'skewX(-10deg)',
     margin: theme.spacing(0.3),
     marginLeft: theme.spacing(1),
