@@ -10,7 +10,7 @@ export const useStyles = makeStyles((theme) => ({
       const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
       return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
     },
-    height: 60,
+    minHeight: 60,
   },
   logoButton: {
     margin: 10,
@@ -81,8 +81,8 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: 'auto',
     },
-    position: 'sticky',
-    top: 200,
+    // position: 'sticky',
+    // top: 200,
     display: 'flex',
     flexOrder: 1,
   },

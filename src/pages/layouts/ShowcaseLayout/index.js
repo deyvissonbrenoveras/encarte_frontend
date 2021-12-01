@@ -52,7 +52,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
   return (
     <div className={classes.root}>
       {!loading && (
-        <AppBar elevation={0} className={classes.appBar} position="static">
+        <AppBar elevation={0} className={classes.appBar} position="sticky">
           <Toolbar className={classes.toolbar} variant="dense">
             {showSearchBar && (
               <TextField
@@ -75,6 +75,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
                 style={{ backgroundColor: primaryColor }}
               />
             )}
+
             <div className={classes.actionContainer}>
               <Button
                 className={classes.logoButton}
