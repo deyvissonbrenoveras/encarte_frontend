@@ -35,7 +35,8 @@ export const useStyles = makeStyles((theme) => ({
       height: 14,
       fontSize: 10,
       transform: 'scale(1) translate(60%, -60%)',
-      backgroundColor: (props) => props.tertiaryColor || theme.palette.encarte,
+      color: (props) => props.tertiaryColor,
+      backgroundColor: (props) => props.quaternaryColor || '#fff',
     },
   },
   icon: {

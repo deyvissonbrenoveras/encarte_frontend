@@ -108,6 +108,12 @@ function UpdateStore({ match }) {
             'O valor deve ser um número hexadecimal'
           )
           .required('A cor é obrigatória'),
+        quaternaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
       });
       await schema.validate(data, {
         abortEarly: false,
@@ -224,6 +230,10 @@ function UpdateStore({ match }) {
                   <ColorPicker
                     name="tertiaryColor"
                     label="Selecione a cor terciária:"
+                  />
+                  <ColorPicker
+                    name="quaternaryColor"
+                    label="Selecione a cor quaternária:"
                   />
                 </Grid>
 

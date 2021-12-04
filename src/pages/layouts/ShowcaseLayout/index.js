@@ -38,9 +38,19 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
     setCartItemsCount(count);
   }, [cart]);
 
-  const { primaryColor, secondaryColor, tertiaryColor } = showcase;
+  const {
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+    quaternaryColor,
+  } = showcase;
 
-  const classes = useStyles({ primaryColor, secondaryColor, tertiaryColor });
+  const classes = useStyles({
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+    quaternaryColor,
+  });
 
   ReactGA.initialize('UA-156689102-1');
   if (window.location.hostname.includes('e-ncarte.com')) {
@@ -75,7 +85,6 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
                 style={{ backgroundColor: primaryColor }}
               />
             )}
-
             <div className={classes.actionContainer}>
               <Button
                 className={classes.logoButton}

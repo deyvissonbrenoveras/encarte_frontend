@@ -71,7 +71,7 @@ export default makeStyles((theme) => ({
     fontSize: 17,
     '& svg': {
       fontSize: 30,
-      color: (props) => props.secondaryColor || theme.palette.encarte,
+      color: (props) => props.tertiaryColor || theme.palette.encarte,
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: 10,

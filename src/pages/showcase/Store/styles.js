@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
       return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
     },
     fontSize: 20,
-    color: (props) => props.tertiaryColor,
+    color: (props) => props.quaternaryColor,
     textAlign: 'center',
     padding: '5px 0',
   },
@@ -151,6 +151,16 @@ export default makeStyles((theme) => ({
     },
     borderBottom: (props) =>
       `2px solid ${darken(props.secondaryColor || theme.palette.encarte, 0.4)}`,
+  },
+  partnersTitle: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    letterSpacing: 3,
+    textTransform: 'uppercase',
+    paddingTop: theme.spacing(1),
+    padding: theme.spacing(0.2),
+    textAlign: 'center',
+    color: (props) => props.quaternaryColor || '#000',
   },
   partnerList: {
     backgroundColor: 'rgba(255, 255, 255, 0.6)',

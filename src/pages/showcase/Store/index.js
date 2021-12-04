@@ -30,6 +30,7 @@ import PriceTypeEnum from '../../../util/PriceTypeEnum';
 
 import { addProduct } from '../../../store/modules/cart/actions';
 import SocialNetworks from '../../../components/SocialNetworks';
+import { css } from 'styled-components';
 
 function Store({ match }) {
   const { url } = match.params;
@@ -39,8 +40,18 @@ function Store({ match }) {
   const showcase = useSelector((state) => state.showcase.showcase);
   const loading = useSelector((state) => state.showcase.loading);
   const search = useSelector((state) => state.search.search);
-  const { primaryColor, secondaryColor, tertiaryColor } = showcase;
-  const classes = useStyles({ primaryColor, secondaryColor, tertiaryColor });
+  const {
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+    quaternaryColor,
+  } = showcase;
+  const classes = useStyles({
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+    quaternaryColor,
+  });
 
   const [store, setStore] = useState({});
   const [productsFound, setProductsFound] = useState(null);
@@ -223,7 +234,6 @@ function Store({ match }) {
   }
 
   function CarouselProduct({ product }) {
-    console.log(product);
     return (
       <div
         onClick={() => {
@@ -326,7 +336,10 @@ function Store({ match }) {
                   {store.partners &&
                     store.partners.filter((partner) => !partner.sponsorship)
                       .length > 0 && (
-                      <Typography component="h2" className={classes.subtitle}>
+                      <Typography
+                        component="h2"
+                        className={classes.partnersTitle}
+                      >
                         Parceiros
                       </Typography>
                     )}
