@@ -116,6 +116,30 @@ export default makeStyles((theme) => ({
       fontSize: 10,
     },
   },
+  carouselspecialOfferProductPrice: {
+    color: (props) => props.tertiaryColor || '#ff0000',
+    fontSize: 19,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    lineHeight: 1,
+    padding: theme.spacing(0.5),
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
+    transform: 'skewX(-10deg)',
+    margin: theme.spacing(0.3),
+    borderRadius: 4,
+    border: (props) =>
+      `1px solid ${lighten(props.tertiaryColor || '#e3e3e3', 0.7)}`,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 12,
+      padding: theme.spacing(0.1),
+    },
+  },
+  addCartButton: {
+    marginRight: 10,
+    '& svg': {
+      color: (props) => props.secondaryColor,
+    },
+  },
   partnerAvatar: {
     width: theme.spacing(7),
     height: theme.spacing(7),

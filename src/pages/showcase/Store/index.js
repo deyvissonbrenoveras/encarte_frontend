@@ -244,7 +244,11 @@ function Store({ match }) {
         <img src={product.image.url} alt={product.name} />
         <div className={classes.carouselProductInfo}>
           <div className={classes.carouselProductName}>{product.name}</div>
-          {product.priceType != PriceTypeEnum.SPECIAL_OFFER && (
+          {product.priceType == PriceTypeEnum.SPECIAL_OFFER ? (
+            <div className={classes.carouselspecialOfferProductPrice}>
+              OFERTA ESPECIAL
+            </div>
+          ) : (
             <div className={classes.carouselProductPrice}>
               {product.formattedPrice}
             </div>
