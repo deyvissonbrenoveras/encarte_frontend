@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Form } from '@unform/web';
 import { Grid, Box, Button, Typography } from '@material-ui/core';
 import Input from '../../../components/Input';
+import ColorPicker from '../../../components/ColorPicker';
 import Img from '../../../components/Img';
 import { addStoreRequest } from '../../../store/modules/store/actions';
 
@@ -34,6 +35,30 @@ function NewStore() {
         secondaryCoverId: Yup.number().nullable(),
         shelfLifeStart: Yup.date('Data inválida').nullable(),
         shelfLifeEnd: Yup.date('Data inválida').nullable(),
+        primaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
+        secondaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
+        tertiaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
+        quaternaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
       });
 
       await schema.validate(data, {
@@ -95,6 +120,26 @@ function NewStore() {
             label="Endereço:"
           />
           <Input name="city" placeholder="Insira a cidade" label="Cidade:" />
+          <ColorPicker
+            name="primaryColor"
+            label="Selecione a cor primária:"
+            initialColor="#1D53A5"
+          />
+          <ColorPicker
+            name="secondaryColor"
+            label="Selecione a cor secundária:"
+            initialColor="#B4B4B4"
+          />
+          <ColorPicker
+            name="tertiaryColor"
+            label="Selecione a cor terciária:"
+            initialColor="#000"
+          />
+          <ColorPicker
+            name="quaternaryColor"
+            label="Selecione a cor quaternária:"
+            initialColor="#fff"
+          />
         </Grid>
 
         <Grid item xs={12} sm={6} lg={5}>
