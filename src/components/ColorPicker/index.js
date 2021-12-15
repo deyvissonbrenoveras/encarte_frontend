@@ -4,11 +4,11 @@ import useStyles from './styles';
 import { useField } from '@unform/core';
 import { ClickAwayListener, Portal } from '@material-ui/core';
 
-function ColorPicker({ name, label }) {
+function ColorPicker({ name, label, initialColor = '#fff' }) {
   const pickerRef = useRef(null);
   const { fieldName, registerField, error } = useField(name);
 
-  const [color, setColor] = useState('#fff');
+  const [color, setColor] = useState(initialColor);
   const [showPicker, setShowPicker] = useState(false);
 
   const classes = useStyles({ showPicker });
@@ -20,9 +20,6 @@ function ColorPicker({ name, label }) {
       ref: pickerRef.current,
       getValue: (ref) => {
         return ref.props.color;
-      },
-      clearValue: (ref, value) => {
-        setColor('#fff');
       },
       setValue: (ref, value) => {
         setColor(value);
