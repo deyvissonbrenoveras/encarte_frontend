@@ -58,6 +58,7 @@ function Routes() {
           path="/loja/:url"
           component={Store}
           layout={ShowcaseLayout}
+          showSearchBar
         />
         <Route
           path="/loja/:url/info"

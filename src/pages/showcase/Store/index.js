@@ -1,5 +1,5 @@
 /* eslint-disable guard-for-in */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { MetaTags } from 'react-meta-tags';
@@ -11,21 +11,13 @@ import {
   Card,
   CardActionArea,
   CardMedia,
-  CardContent,
   Typography,
   Avatar,
   ButtonBase,
-  TextField,
-  InputAdornment,
-  IconButton,
+  Button,
 } from '@material-ui/core';
-import {
-  Search,
-  Facebook,
-  Instagram,
-  WhatsApp,
-  AddShoppingCart,
-} from '@material-ui/icons';
+import { AddShoppingCart } from '@material-ui/icons';
+import logo from '../../../assets/logo.webp';
 import slugify from '../../../util/slugify';
 import NotFound from '../../../components/NotFound';
 import LoadingIcon from '../../../components/LoadingIcon';
@@ -37,14 +29,30 @@ import useStyles from './styles';
 import PriceTypeEnum from '../../../util/PriceTypeEnum';
 
 import { addProduct } from '../../../store/modules/cart/actions';
+import SocialNetworks from '../../../components/SocialNetworks';
 
 function Store({ match }) {
   const { url } = match.params;
   const dispatch = useDispatch();
-  const classes = useStyles();
+  const YEAR = new Date().getFullYear();
   const notFound = useSelector((state) => state.showcase.notFound);
   const showcase = useSelector((state) => state.showcase.showcase);
   const loading = useSelector((state) => state.showcase.loading);
+  const search = useSelector((state) => state.search.search);
+  const {
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+    quaternaryColor,
+  } = showcase;
+  const classes = useStyles({
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+    quaternaryColor,
+  });
+
+  const [store, setStore] = useState({});
   const [productsFound, setProductsFound] = useState(null);
   useEffect(() => {
     async function getData() {
@@ -57,7 +65,7 @@ function Store({ match }) {
     getData();
   }, [dispatch, url]);
 
-  const store = useMemo(() => {
+  useEffect(() => {
     // Filter all categories
     let categories;
     let products;
@@ -82,7 +90,7 @@ function Store({ match }) {
           return cat;
         }, [])
         .sort((a, b) => a.name.localeCompare(b.name));
-      categories.push({ id: null, name: 'Outros produtos' });
+      categories.push({ id: 0, name: 'Outros produtos' });
     }
     categories =
       categories &&
@@ -106,23 +114,31 @@ function Store({ match }) {
       ? format(parseISO(showcase.shelfLifeEnd.split('T')[0]), 'dd/MM/yyyy')
       : null;
 
-    return { ...showcase, products, categories, shelfLifeStart, shelfLifeEnd };
+    setStore({
+      ...showcase,
+      products,
+      categories,
+      shelfLifeStart,
+      shelfLifeEnd,
+    });
   }, [showcase]);
-
-  function handleSearch(e) {
-    if (e.target.value.length === 0) {
-      setProductsFound(null);
-    } else {
-      const productSearch = slugify(e.target.value).toUpperCase();
-      const products = store.products.filter((product) => {
-        return (
-          slugify(product.name).toUpperCase().includes(productSearch) ||
-          slugify(product.description).toUpperCase().includes(productSearch)
-        );
-      });
-      setProductsFound(products);
+  useEffect(() => {
+    if (store.products) {
+      if (search && search.length === 0) {
+        setProductsFound(null);
+      } else {
+        const productSearch = slugify(search).toUpperCase();
+        const products = store.products.filter((product) => {
+          return (
+            slugify(product.name).toUpperCase().includes(productSearch) ||
+            slugify(product.description).toUpperCase().includes(productSearch)
+          );
+        });
+        setProductsFound(products);
+      }
     }
-  }
+  }, [search, store.products]);
+
   function ProductItemPrice(params) {
     const { product } = params;
 
@@ -148,13 +164,14 @@ function Store({ match }) {
     }
   }
   function ShelfLife(params) {
-    const { shelfLifeStart, shelfLifeEnd, align } = params;
+    const { shelfLifeStart, shelfLifeEnd, align, color } = params;
     if (!shelfLifeStart || !shelfLifeEnd) {
       return <></>;
     }
     return (
       <Typography
         className={classes.shelfLife}
+        color={color}
         align={align}
         variant="caption"
         display="block"
@@ -188,7 +205,7 @@ function Store({ match }) {
             {product.name}
           </a>
           <ProductItemPrice product={product} />
-          <IconButton
+          {/* <IconButton
             onClick={() => {
               toast.success('O produto foi adicionado ao carrinho.');
               dispatch(addProduct(showcase.id, product, 1));
@@ -196,8 +213,21 @@ function Store({ match }) {
             className={classes.addCartButton}
           >
             <AddShoppingCart color="primary" />
-          </IconButton>
+          </IconButton> */}
         </div>
+        <Button
+          variant="contained"
+          color="#000"
+          size="small"
+          onClick={() => {
+            toast.success('O produto foi adicionado ao carrinho.');
+            dispatch(addProduct(showcase.id, product, 1));
+          }}
+          startIcon={<AddShoppingCart />}
+          className={classes.buyProductButton}
+        >
+          Carrinho
+        </Button>
       </CardActionArea>
     );
   }
@@ -213,9 +243,15 @@ function Store({ match }) {
         <img src={product.image.url} alt={product.name} />
         <div className={classes.carouselProductInfo}>
           <div className={classes.carouselProductName}>{product.name}</div>
-          <div className={classes.carouselProductPrice}>
-            {product.formattedPrice}
-          </div>
+          {product.priceType === PriceTypeEnum.SPECIAL_OFFER ? (
+            <div className={classes.carouselspecialOfferProductPrice}>
+              OFERTA ESPECIAL
+            </div>
+          ) : (
+            <div className={classes.carouselProductPrice}>
+              {product.formattedPrice}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -285,260 +321,236 @@ function Store({ match }) {
         />
         {store.logo && <meta property="og:image" content={store.logo.url} />}
       </MetaTags>
-      <Grid container justify="center" className={classes.teste}>
+      <Grid container justify="center">
         {notFound ? (
           <NotFound />
         ) : (
           <>
-            <Grid item xs={12} md={8}>
-              {store.partners &&
-                store.partners.filter((partner) => !partner.sponsorship)
-                  .length > 0 && (
-                  <Typography component="h2" className={classes.subtitle}>
-                    Parceiros
-                  </Typography>
-                )}
-              <ul className={classes.partnerList}>
-                {store.partners &&
-                  store.partners
-                    .filter((partner) => !partner.sponsorship)
-                    .map((partner) => (
-                      <li key={partner.id}>
-                        <ButtonBase
-                          key={partner.id}
-                          onClick={() => {
-                            history.push(
-                              `/loja/${store.url}/parceiro/${partner.id}`
-                            );
-                          }}
-                        >
-                          <Avatar
-                            alt={partner.name}
-                            src={partner.logo ? partner.logo.url : ''}
-                            className={classes.partnerAvatar}
-                          />
-                          <div className={classes.overflow}>{partner.name}</div>
-                        </ButtonBase>
-                      </li>
-                    ))}
-              </ul>
-              <ShelfLife
-                align="right"
-                shelfLifeStart={store.shelfLifeStart}
-                shelfLifeEnd={store.shelfLifeEnd}
-              />
-
-              <CarouselComponent
-                featuredProducts={
-                  store.products &&
-                  store.products.filter((product) => product.featured)
-                }
-              />
-
-              {store.partners &&
-                store.partners.filter((partner) => partner.sponsorship).length >
-                  0 && (
-                  <Typography component="h2" className={classes.subtitle}>
-                    Patrocinadores
-                  </Typography>
-                )}
-
-              <ul className={classes.partnerList}>
-                {store.partners &&
-                  store.partners
-                    .filter((partner) => partner.sponsorship)
-                    .map((partner) => (
-                      <li key={partner.id}>
-                        <ButtonBase
-                          key={partner.id}
-                          onClick={() => {
-                            history.push(
-                              `/loja/${store.url}/parceiro/${partner.id}`
-                            );
-                          }}
-                        >
-                          <Avatar
-                            alt={partner.name}
-                            src={partner.logo ? partner.logo.url : ''}
-                            className={classes.sponsorshipAvatar}
-                          />
-                          <div className={classes.overflow}>{partner.name}</div>
-                        </ButtonBase>
-                      </li>
-                    ))}
-              </ul>
-              <Grid container className={classes.productsContainer}>
-                <Grid item xs={12} className={classes.search}>
-                  <TextField
-                    onChange={handleSearch}
-                    className={classes.searchInput}
-                    label="Buscar"
-                    fullWidth
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Search />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                {productsFound !== null
-                  ? productsFound.map((product) => (
-                      <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        className={classes.cardGrid}
-                        key={product.id}
+            <Grid item xs={12}>
+              <h1 className={classes.showcaseName}>{showcase.name}</h1>
+            </Grid>
+            <Grid item xs={12} /*md={8}*/>
+              <Grid
+                container
+                justify="center"
+                className={classes.partnerContainer}
+              >
+                <Grid item xs={12} sm={8}>
+                  {store.partners &&
+                    store.partners.filter((partner) => !partner.sponsorship)
+                      .length > 0 && (
+                      <Typography
+                        component="h2"
+                        className={classes.partnersTitle}
                       >
-                        <Card>
-                          <ProductItem product={product} />
-                        </Card>
-                      </Grid>
-                    ))
-                  : store.categories &&
-                    store.categories.map(
-                      (category) =>
-                        category.products &&
-                        category.products.length > 0 && (
-                          <Grid item xs={12} key={category.id}>
-                            <Typography
-                              variant="h5"
-                              className={classes.categoryName}
-                            >
-                              {category.name.toUpperCase()}
-                            </Typography>
-                            <Grid container>
-                              {category.products.map((product) => (
-                                <Grid
-                                  item
-                                  xs={12}
-                                  sm={6}
-                                  md={4}
-                                  className={classes.cardGrid}
-                                  key={product.id}
-                                >
-                                  <Card>
-                                    <ProductItem product={product} />
-                                  </Card>
-                                </Grid>
-                              ))}
-                            </Grid>
-                          </Grid>
-                        )
+                        Parceiros
+                      </Typography>
                     )}
+                  <ul className={classes.partnerList}>
+                    {store.partners &&
+                      store.partners
+                        .filter((partner) => !partner.sponsorship)
+                        .map((partner) => (
+                          <li key={partner.id}>
+                            <ButtonBase
+                              key={partner.id}
+                              onClick={() => {
+                                history.push(
+                                  `/loja/${store.url}/parceiro/${partner.id}`
+                                );
+                              }}
+                            >
+                              <Avatar
+                                alt={partner.name}
+                                src={partner.logo ? partner.logo.url : ''}
+                                className={classes.partnerAvatar}
+                              />
+                              <div className={classes.overflow}>
+                                {partner.name}
+                              </div>
+                            </ButtonBase>
+                          </li>
+                        ))}
+                  </ul>
+                </Grid>
+              </Grid>
+              {!search && (
+                <Grid container justify="center">
+                  <Grid item xs={12} md={8}>
+                    <CarouselComponent
+                      featuredProducts={
+                        store.products &&
+                        store.products.filter((product) => product.featured)
+                      }
+                    />
+                  </Grid>
+                </Grid>
+              )}
+              <Grid container justify="center">
+                <Grid item xs={12} sm={10} lg={8}>
+                  {store.partners &&
+                    store.partners.filter((partner) => partner.sponsorship)
+                      .length > 0 && (
+                      <Typography component="h2" className={classes.subtitle}>
+                        Patrocinadores
+                      </Typography>
+                    )}
+
+                  <ul className={classes.partnerList}>
+                    {store.partners &&
+                      store.partners
+                        .filter((partner) => partner.sponsorship)
+                        .map((partner) => (
+                          <li key={partner.id}>
+                            <ButtonBase
+                              key={partner.id}
+                              onClick={() => {
+                                history.push(
+                                  `/loja/${store.url}/parceiro/${partner.id}`
+                                );
+                              }}
+                            >
+                              <Avatar
+                                alt={partner.name}
+                                src={partner.logo ? partner.logo.url : ''}
+                                className={classes.sponsorshipAvatar}
+                              />
+                              <div className={classes.overflow}>
+                                {partner.name}
+                              </div>
+                            </ButtonBase>
+                          </li>
+                        ))}
+                  </ul>
+                  <ShelfLife
+                    align="center"
+                    shelfLifeStart={store.shelfLifeStart}
+                    shelfLifeEnd={store.shelfLifeEnd}
+                    color={tertiaryColor}
+                  />
+                  <Grid container className={classes.productsContainer}>
+                    {productsFound !== null
+                      ? productsFound.map((product) => (
+                          <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            md={4}
+                            className={classes.cardGrid}
+                            key={product.id}
+                          >
+                            <Card>
+                              <ProductItem product={product} />
+                            </Card>
+                          </Grid>
+                        ))
+                      : store.categories &&
+                        store.categories.map(
+                          (category) =>
+                            category.products &&
+                            category.products.length > 0 && (
+                              <Grid item xs={12} key={category.id}>
+                                <Grid
+                                  container
+                                  className={classes.categoryContainer}
+                                >
+                                  <Grid item m xs={12} md={6}>
+                                    <Typography
+                                      variant="h5"
+                                      className={classes.categoryName}
+                                    >
+                                      {category.name.toUpperCase()}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                                <Grid container>
+                                  {category.products.map((product) => (
+                                    <Grid
+                                      item
+                                      xs={12}
+                                      sm={6}
+                                      md={4}
+                                      lg={3}
+                                      className={classes.cardGrid}
+                                      key={product.id}
+                                    >
+                                      <Card>
+                                        <ProductItem product={product} />
+                                      </Card>
+                                    </Grid>
+                                  ))}
+                                </Grid>
+                              </Grid>
+                            )
+                        )}
+                  </Grid>
+                </Grid>
               </Grid>
               <footer className={classes.footer}>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <Card className={classes.cover}>
+                <Grid
+                  container
+                  justify="center"
+                  className={classes.showcaseFooter}
+                >
+                  <Grid item xs={12} className={classes.footerStoreContainer}>
+                    <div className={classes.footerStoreCard}>
                       {store.cover && (
-                        <CardActionArea
+                        <div
                           onClick={() => {
                             history.push(`/loja/${url}/info`);
                           }}
+                          className={classes.footerCardAction}
                         >
-                          <CardMedia
-                            className={classes.media}
-                            component="img"
+                          <img
+                            className={classes.footerMedia}
                             alt={store.name}
-                            image={store.cover && store.cover.url}
-                            title={store.name}
+                            src={store.cover && store.cover.url}
                           />
-                        </CardActionArea>
+                        </div>
                       )}
-                      <CardContent>
-                        {showcase.facebook && (
-                          <IconButton
-                            onClick={() => {
-                              window.open(
-                                `https://facebook.com/${showcase.facebook}`
-                              );
-                            }}
-                          >
-                            <Facebook
-                              style={{ fill: '#4267B2' }}
-                              fontSize="large"
-                            />
-                          </IconButton>
-                        )}
-                        {showcase.instagram && (
-                          <IconButton
-                            onClick={() => {
-                              window.open(
-                                `https://instagram.com/${showcase.instagram}`
-                              );
-                            }}
-                          >
-                            <Instagram
-                              style={{ fill: '#C13584' }}
-                              fontSize="large"
-                            />
-                          </IconButton>
-                        )}
-                        {showcase.whatsapp && (
-                          <IconButton
-                            onClick={() => {
-                              window.open(
-                                `https://api.whatsapp.com/send?phone=${showcase.whatsapp}`
-                              );
-                            }}
-                          >
-                            <WhatsApp
-                              style={{
-                                fill: 'white',
-                                backgroundColor: '#128C7E',
-                                borderRadius: 10,
-                              }}
-                              fontSize="large"
-                            />
-                          </IconButton>
-                        )}
-                      </CardContent>
-                    </Card>
+                      <SocialNetworks
+                        facebook={showcase.facebook}
+                        instagram={showcase.instagram}
+                        whatsapp={showcase.whatsapp}
+                      />
+                    </div>
                   </Grid>
                   <Grid item xs={12} className={classes.footerInfo}>
-                    <Typography variant="caption" display="block" gutterBottom>
-                      IMAGENS MERAMENTE ILUSTRATIVAS**
-                    </Typography>
+                    <div>IMAGENS MERAMENTE ILUSTRATIVAS**</div>
                     <ShelfLife
                       align="center"
                       shelfLifeStart={store.shelfLifeStart}
                       shelfLifeEnd={store.shelfLifeEnd}
+                      color="#2e2e2e"
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6} className={classes.footerInfo}>
+                  <Grid item xs={12} md={6} className={classes.footerInfo}>
                     {store.address && store.city && (
                       <>
-                        <Typography
-                          variant="overline"
-                          display="block"
-                          gutterBottom
-                        >
-                          Endereço: {store.address}
-                        </Typography>
-                        <Typography
-                          variant="overline"
-                          display="block"
-                          gutterBottom
-                        >
-                          {store.city}.
-                        </Typography>{' '}
+                        <div>Endereço: {store.address}</div>
+                        <div>{store.city}.</div>
                       </>
                     )}
                   </Grid>
-                  <Grid item xs={12} sm={6} className={classes.footerInfo}>
-                    {store.phone && (
-                      <Typography
-                        variant="overline"
-                        display="block"
-                        gutterBottom
-                      >
-                        Contato: {store.phone}
-                      </Typography>
-                    )}
+                  <Grid item xs={12} md={6} className={classes.footerInfo}>
+                    {store.phone && <div>Contato: {store.phone}</div>}
+                  </Grid>
+                </Grid>
+                <Grid container justify="center">
+                  <Grid item xs={12} className={classes.encarteFooter}>
+                    <div>Página desenvolvida por:</div>
+                    <img
+                      src={logo}
+                      alt="e-ncarte logo"
+                      className={classes.encarteFooterLogo}
+                    />
+                    <SocialNetworks
+                      facebook="agenciaencarte"
+                      instagram="e_ncarte"
+                      whatsapp="558393609556"
+                    />
+                    <div>© {YEAR} e-ncarte publicidade digital</div>
+                    <div></div>
                   </Grid>
                 </Grid>
               </footer>

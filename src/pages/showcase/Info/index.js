@@ -2,25 +2,19 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Grid,
-  Card,
-  CardContent,
-  CardActionArea,
-  CardMedia,
-  IconButton,
-} from '@material-ui/core';
+import { Grid, IconButton } from '@material-ui/core';
 import { Facebook, Instagram, WhatsApp } from '@material-ui/icons';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import useStyles from './styles';
 // import { Container } from './styles';
 
 function Info({ match }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const { url } = match.params;
 
   const showcase = useSelector((state) => state.showcase.showcase);
+  const { primaryColor, secondaryColor, tertiaryColor } = showcase;
+  const classes = useStyles({ primaryColor, secondaryColor, tertiaryColor });
 
   useEffect(() => {
     async function getStore() {
@@ -38,19 +32,18 @@ function Info({ match }) {
         <LoadingIcon />
       ) : (
         <> */}
-      <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>
-        <Card>
-          <CardActionArea className={classes.cardArea}>
-            <CardMedia
+      <Grid item xs={12}>
+        <div className={classes.backgroundLogoContainer}>
+          <div className={classes.logoContainer}>
+            <img
               className={classes.media}
-              component="img"
               alt={showcase.name}
-              image={showcase.logo && showcase.logo.url}
-              title={showcase.name}
+              src={showcase.logo && showcase.logo.url}
             />
-          </CardActionArea>
-          <CardContent className={classes.cardContent} />
-        </Card>
+          </div>
+        </div>
+      </Grid>
+      <Grid item xs={12} sm={10} md={8} lg={6} className={classes.grid}>
         <h2 className={classes.showcaseName}>{showcase.name}</h2>
         {(showcase.facebook || showcase.instagram || showcase.whatsapp) && (
           <>

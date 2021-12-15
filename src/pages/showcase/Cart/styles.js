@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, darken, lighten } from '@material-ui/core';
 import { StyleSheet } from '@react-pdf/renderer';
 
 export default makeStyles((theme) => ({
@@ -23,6 +23,13 @@ export default makeStyles((theme) => ({
     marginBottom: 10,
     [theme.breakpoints.down('xs')]: {
       top: 40,
+    },
+  },
+  clearCart: {
+    backgroundColor: '#ba000d',
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: darken('#ba000d', 0.3),
     },
   },
   cardGrid: {
@@ -64,7 +71,7 @@ export default makeStyles((theme) => ({
     fontSize: 17,
     '& svg': {
       fontSize: 30,
-      color: theme.palette.encarte,
+      color: (props) => props.tertiaryColor || theme.palette.encarte,
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: 10,
@@ -73,8 +80,9 @@ export default makeStyles((theme) => ({
   productPrice: {
     alignSelf: 'flex-start',
     marginTop: theme.spacing(0.5),
-    color: theme.palette.encarte,
+    color: (props) => props.tertiaryColor || theme.palette.encarte,
     fontSize: 14,
+    fontWeight: 'bold',
     [theme.breakpoints.down('xs')]: {
       fontSize: 12,
     },
@@ -83,8 +91,8 @@ export default makeStyles((theme) => ({
     textAlign: 'center',
     alignSelf: 'flex-start',
     padding: theme.spacing(0.5),
-    color: '#ff0000',
-    backgroundColor: 'yellow',
+    color: (props) => props.tertiaryColor || '#ff0000',
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
     transform: 'skewX(-10deg)',
     borderRadius: 4,
     margin: theme.spacing(0.3),
@@ -93,11 +101,11 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   specialOfferProductPrice: {
-    color: '#ff0000',
+    color: (props) => props.tertiaryColor || '#ff0000',
     alignSelf: 'flex-start',
     fontWeight: 'bold',
     padding: theme.spacing(0.5),
-    backgroundColor: 'yellow',
+    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.4),
     transform: 'skewX(-10deg)',
     margin: theme.spacing(0.3),
     marginLeft: theme.spacing(1),
@@ -132,6 +140,7 @@ export default makeStyles((theme) => ({
     textAlign: 'center',
     outline: 'none',
     border: 'none',
+    fontWeight: 'bold',
     [theme.breakpoints.down('xs')]: {
       fontSize: 10,
       width: 20,
@@ -149,15 +158,16 @@ export default makeStyles((theme) => ({
     fontSize: 14,
     textAlign: 'right',
     '& div:nth-of-type(2)': {
-      color: theme.palette.encarte,
+      color: (props) => props.tertiaryColor || theme.palette.encarte,
       fontSize: 17,
+      fontWeight: 'bold',
       [theme.breakpoints.down('xs')]: {
         fontSize: 12,
       },
     },
     '& svg': {
       fontSize: 20,
-      color: theme.palette.encarte,
+      color: '#ba000d',
     },
     [theme.breakpoints.down('xs')]: {
       fontSize: 10,
@@ -192,12 +202,13 @@ export default makeStyles((theme) => ({
     },
     margin: '0 auto',
     '& button': {
+      fontWeight: 'bold',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-around',
       width: 150,
-      backgroundColor: theme.palette.encarte,
-      color: '#fff',
+      backgroundColor: (props) => props.primaryColor || theme.palette.encarte,
+      color: (props) => props.secondaryColor || '#fff',
       height: '100%',
       borderRadius: '0 10px 10px 0',
       border: 'none',

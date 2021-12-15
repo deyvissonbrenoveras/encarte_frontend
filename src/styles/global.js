@@ -21,6 +21,9 @@ export default createGlobalStyle`
     }
     body{
         -webkit-font-smoothing: antialiased;
+        background: #e3e3e3;
+        background: -webkit-linear-gradient(to right, #ffffff, #e3e3e3);
+        background: linear-gradient(to right, #ffffff, #e3e3e3);
     }
     body, input, button, textarea, select {
         font: 14px 'Roboto', sans-serif;
@@ -41,7 +44,7 @@ export default createGlobalStyle`
     }
     ::-webkit-scrollbar-track {        
         margin: 20px 0;
-        background: #fff;
+        background: none;
     }
     ::-webkit-scrollbar-thumb {     
         height: 10px;  

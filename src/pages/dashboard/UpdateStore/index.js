@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
 import { toast } from 'react-toastify';
 
 import { Form } from '@unform/web';
+
 import {
   Grid,
   Box,
@@ -22,15 +24,15 @@ import {
   Avatar,
   makeStyles,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+
 import CustomTable from '../../../components/CustomTable';
 import AddButton from '../../../components/AddButton';
 import api from '../../../services/api';
 import Input from '../../../components/Input';
 import Img from '../../../components/Img';
 import CheckboxInput from '../../../components/CheckboxInput';
-
 import LoadingIcon from '../../../components/LoadingIcon';
+import ColorPicker from '../../../components/ColorPicker';
 
 import { updateStoreRequest } from '../../../store/modules/store/actions';
 import { disassociateProductsFromStore } from '../../../store/modules/product/actions';
@@ -65,6 +67,7 @@ function UpdateStore({ match }) {
   }
   useEffect(getStore, [tabIndex, id]);
   async function submitHandle(data) {
+    console.log(data);
     try {
       formRef.current.setErrors({});
 
@@ -87,6 +90,30 @@ function UpdateStore({ match }) {
         active: Yup.boolean(),
         shelfLifeStart: Yup.date('Data inválida').nullable(),
         shelfLifeEnd: Yup.date('Data inválida').nullable(),
+        primaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
+        secondaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
+        tertiaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
+        quaternaryColor: Yup.string()
+          .matches(
+            '^#(?:[0-9a-fA-F]{3}){1,2}$',
+            'O valor deve ser um número hexadecimal'
+          )
+          .required('A cor é obrigatória'),
       });
       await schema.validate(data, {
         abortEarly: false,
@@ -191,6 +218,22 @@ function UpdateStore({ match }) {
                     name="city"
                     placeholder="Insira a cidade"
                     label="Cidade:"
+                  />
+                  <ColorPicker
+                    name="primaryColor"
+                    label="Selecione a cor primária:"
+                  />
+                  <ColorPicker
+                    name="secondaryColor"
+                    label="Selecione a cor secundária:"
+                  />
+                  <ColorPicker
+                    name="tertiaryColor"
+                    label="Selecione a cor terciária:"
+                  />
+                  <ColorPicker
+                    name="quaternaryColor"
+                    label="Selecione a cor quaternária:"
                   />
                 </Grid>
 
