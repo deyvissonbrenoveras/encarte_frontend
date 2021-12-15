@@ -5,7 +5,6 @@ export const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appBar: {
-    background: (props) => props.primaryColor || '#efefef',
     background: (props) => {
       const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
       return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;

@@ -6,7 +6,6 @@ export default makeStyles((theme) => ({
   },
   cover: {},
   backgroundLogoContainer: {
-    background: (props) => props.primaryColor || '#efefef',
     background: (props) => {
       const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
       return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;

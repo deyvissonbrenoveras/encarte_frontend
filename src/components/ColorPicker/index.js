@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
 import useStyles from './styles';
 import { useField } from '@unform/core';
-import { ClickAwayListener, Portal } from '@material-ui/core';
+import { ClickAwayListener } from '@material-ui/core';
 
 function ColorPicker({ name, label, initialColor = '#fff' }) {
   const pickerRef = useRef(null);

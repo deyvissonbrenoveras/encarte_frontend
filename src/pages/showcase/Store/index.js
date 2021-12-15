@@ -30,7 +30,6 @@ import PriceTypeEnum from '../../../util/PriceTypeEnum';
 
 import { addProduct } from '../../../store/modules/cart/actions';
 import SocialNetworks from '../../../components/SocialNetworks';
-import { css } from 'styled-components';
 
 function Store({ match }) {
   const { url } = match.params;
@@ -138,7 +137,7 @@ function Store({ match }) {
         setProductsFound(products);
       }
     }
-  }, [search]);
+  }, [search, store.products]);
 
   function ProductItemPrice(params) {
     const { product } = params;
@@ -244,7 +243,7 @@ function Store({ match }) {
         <img src={product.image.url} alt={product.name} />
         <div className={classes.carouselProductInfo}>
           <div className={classes.carouselProductName}>{product.name}</div>
-          {product.priceType == PriceTypeEnum.SPECIAL_OFFER ? (
+          {product.priceType === PriceTypeEnum.SPECIAL_OFFER ? (
             <div className={classes.carouselspecialOfferProductPrice}>
               OFERTA ESPECIAL
             </div>

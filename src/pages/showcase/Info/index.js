@@ -2,14 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Grid,
-  Card,
-  CardContent,
-  CardActionArea,
-  CardMedia,
-  IconButton,
-} from '@material-ui/core';
+import { Grid, IconButton } from '@material-ui/core';
 import { Facebook, Instagram, WhatsApp } from '@material-ui/icons';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import useStyles from './styles';

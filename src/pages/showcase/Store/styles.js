@@ -6,7 +6,6 @@ export default makeStyles((theme) => ({
     padding: 0,
   },
   showcaseName: {
-    background: (props) => props.primaryColor || '#efefef',
     background: (props) => {
       const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
       return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
@@ -134,12 +133,6 @@ export default makeStyles((theme) => ({
       padding: theme.spacing(0.1),
     },
   },
-  addCartButton: {
-    marginRight: 10,
-    '& svg': {
-      color: (props) => props.secondaryColor,
-    },
-  },
   partnerAvatar: {
     width: theme.spacing(7),
     height: theme.spacing(7),
@@ -168,7 +161,6 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   partnerContainer: {
-    background: (props) => props.primaryColor || '#efefef',
     background: (props) => {
       const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
       return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
@@ -401,7 +393,6 @@ export default makeStyles((theme) => ({
   },
   showcaseFooter: {
     backgroundColor: '#2e2e2e',
-    background: '#2e2e2e',
     background: () => {
       const gradientColor = lighten('#2e2e2e', 0.15);
       return `linear-gradient(90deg, ${gradientColor} 11%, #2e2e2e 77%)`;

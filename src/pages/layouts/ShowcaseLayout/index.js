@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -13,10 +13,8 @@ import {
 import { Store, ShoppingCart, Info, Search } from '@material-ui/icons';
 import ReactGA from 'react-ga';
 import { useStyles } from './styles';
-import logo from '../../../assets/logo.webp';
 import history from '../../../services/history';
 import { updateSearch } from '../../../store/modules/search/actions';
-import LoadingIcon from '../../../components/LoadingIcon';
 
 function ShowcaseLayout({ children, match, showSearchBar }) {
   const dispatch = useDispatch();
