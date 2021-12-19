@@ -123,21 +123,21 @@ function Store({ match }) {
     });
   }, [showcase]);
   useEffect(() => {
-    if (store.products) {
-      if (search && search.length === 0) {
-        setProductsFound(null);
-      } else {
-        const productSearch = slugify(search).toUpperCase();
-        const products = store.products.filter((product) => {
-          return (
-            slugify(product.name).toUpperCase().includes(productSearch) ||
-            slugify(product.description).toUpperCase().includes(productSearch)
-          );
-        });
-        setProductsFound(products);
-      }
+    if (search.length === 0) {
+      setProductsFound(null);
+    } else {
+      const productSearch = slugify(search).toUpperCase();
+      const products = store.products
+        ? store.products.filter((product) => {
+            return (
+              slugify(product.name).toUpperCase().includes(productSearch) ||
+              slugify(product.description).toUpperCase().includes(productSearch)
+            );
+          })
+        : null;
+      setProductsFound(products);
     }
-  }, [search, store.products]);
+  }, [search, store]);
 
   function ProductItemPrice(params) {
     const { product } = params;
@@ -261,7 +261,10 @@ function Store({ match }) {
     let carouselItems = [];
     store.cover &&
       carouselItems.push(
-        <div className={classes.carouselAdvertisementItem}>
+        <div
+          className={classes.carouselAdvertisementItem}
+          key={'advertisment-1'}
+        >
           <img
             className={classes.carouselAdvertisementImg}
             src={store.cover ? store.cover.url : ''}
@@ -274,11 +277,11 @@ function Store({ match }) {
       for (let i = 0; i < featuredProducts.length; i += 2) {
         productsItems.push(
           featuredProducts.length - i === 1 ? (
-            <div className={classes.carouselItem}>
+            <div className={classes.carouselItem} key={featuredProducts[i].id}>
               <CarouselProduct product={featuredProducts[i]} />
             </div>
           ) : (
-            <div className={classes.carouselItem}>
+            <div className={classes.carouselItem} key={featuredProducts[i].id}>
               <CarouselProduct product={featuredProducts[i]} />
               <CarouselProduct product={featuredProducts[i + 1]} />
             </div>
@@ -290,7 +293,10 @@ function Store({ match }) {
 
     store.secondaryCover &&
       carouselItems.push(
-        <div className={classes.carouselAdvertisementItem}>
+        <div
+          className={classes.carouselAdvertisementItem}
+          key={'advertisment-2'}
+        >
           <img
             className={classes.carouselAdvertisementImg}
             src={store.secondaryCover ? store.secondaryCover.url : ''}
