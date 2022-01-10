@@ -345,39 +345,41 @@ function Store({ match }) {
                   {store.partners &&
                     store.partners.filter((partner) => !partner.sponsorship)
                       .length > 0 && (
-                      <Typography
-                        component="h2"
-                        className={classes.partnersTitle}
-                      >
-                        Parceiros
-                      </Typography>
+                      <>
+                        <Typography
+                          component="h2"
+                          className={classes.partnersTitle}
+                        >
+                          Parceiros
+                        </Typography>
+                        <ul className={classes.partnerList}>
+                          {store.partners &&
+                            store.partners
+                              .filter((partner) => !partner.sponsorship)
+                              .map((partner) => (
+                                <li key={partner.id}>
+                                  <ButtonBase
+                                    key={partner.id}
+                                    onClick={() => {
+                                      history.push(
+                                        `/loja/${store.url}/parceiro/${partner.id}`
+                                      );
+                                    }}
+                                  >
+                                    <Avatar
+                                      alt={partner.name}
+                                      src={partner.logo ? partner.logo.url : ''}
+                                      className={classes.partnerAvatar}
+                                    />
+                                    <div className={classes.overflow}>
+                                      {partner.name}
+                                    </div>
+                                  </ButtonBase>
+                                </li>
+                              ))}
+                        </ul>
+                      </>
                     )}
-                  <ul className={classes.partnerList}>
-                    {store.partners &&
-                      store.partners
-                        .filter((partner) => !partner.sponsorship)
-                        .map((partner) => (
-                          <li key={partner.id}>
-                            <ButtonBase
-                              key={partner.id}
-                              onClick={() => {
-                                history.push(
-                                  `/loja/${store.url}/parceiro/${partner.id}`
-                                );
-                              }}
-                            >
-                              <Avatar
-                                alt={partner.name}
-                                src={partner.logo ? partner.logo.url : ''}
-                                className={classes.partnerAvatar}
-                              />
-                              <div className={classes.overflow}>
-                                {partner.name}
-                              </div>
-                            </ButtonBase>
-                          </li>
-                        ))}
-                  </ul>
                 </Grid>
               </Grid>
               {!search && (
