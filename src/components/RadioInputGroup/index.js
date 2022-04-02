@@ -10,7 +10,7 @@ import {
   Radio,
 } from '@material-ui/core';
 
-function RadioInputGroup({ name, label, options, ...rest }) {
+function RadioInputGroup({ name, label, options, onTypeChange, ...rest }) {
   const radioRef = useRef(null);
 
   const { fieldName, registerField, error } = useField(name);
@@ -26,6 +26,7 @@ function RadioInputGroup({ name, label, options, ...rest }) {
       },
       setValue: (_, value) => {
         setSelected(Number(value));
+        handleOnTypeChange(Number(value));
       },
       clearValue: () => {
         setSelected(0);
@@ -35,6 +36,12 @@ function RadioInputGroup({ name, label, options, ...rest }) {
 
   function handleChange(event) {
     setSelected(Number(event.target.value));
+    handleOnTypeChange(Number(event.target.value));
+  }
+  function handleOnTypeChange(type) {
+    if (onTypeChange) {
+      onTypeChange(type);
+    }
   }
   return (
     <>
@@ -48,11 +55,12 @@ function RadioInputGroup({ name, label, options, ...rest }) {
           value={selected}
         >
           {options &&
-            options.map((option) => (
+            options.map((option, index) => (
               <FormControlLabel
                 value={option.value}
                 control={<Radio />}
                 label={option.label}
+                key={index}
               />
             ))}
         </RadioGroup>
@@ -69,5 +77,5 @@ export default RadioInputGroup;
 RadioInputGroup.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.element).isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

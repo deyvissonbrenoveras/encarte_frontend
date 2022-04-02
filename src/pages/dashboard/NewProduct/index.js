@@ -87,10 +87,6 @@ function NewProduct() {
             .positive('Números negativos não são permitidos')
             .required('O preço é obrigatório'),
         }),
-        // price: Yup.number('Preço inválido')
-        //   .typeError('Preço inválido')
-        //   .positive('Números negativos não são permitidos')
-        //   .required('O preço é obrigatório'),
         featured: Yup.boolean(),
         stores: Yup.array().notRequired(),
         categoryId: Yup.number().positive().nullable(true),

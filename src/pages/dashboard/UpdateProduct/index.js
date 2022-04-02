@@ -11,6 +11,7 @@ import Input from '../../../components/Input';
 import CheckboxInput from '../../../components/CheckboxInput';
 import Img from '../../../components/Img';
 import Checkbox from '../../../components/Checkbox';
+import CheckboxList from '../../../components/CheckboxList';
 import Select from '../../../components/Select';
 import RadioGroup from '../../../components/RadioInputGroup';
 import { updateProductRequest } from '../../../store/modules/product/actions';
@@ -31,48 +32,50 @@ function UpdateProduct({ match }) {
 
   const [categoryOptions, setCategoryOptions] = useState([]);
 
-  useEffect(() => {
-    async function getData() {
-      try {
-        const storeResponse = await api.get('stores');
-        const storeOptions = storeResponse.data.map((store) => ({
-          id: store.id,
-          value: store.id,
-          label: store.name,
-          url: store.logo ? store.logo.url : null,
-        }));
-        setStoreChoiceOptions(storeOptions);
+  const [showPriceInput, setShowPriceInput] = useState(true);
+  async function getData() {
+    try {
+      setLoadingProduct(true);
+      const storeResponse = await api.get('stores');
+      const storeOptions = storeResponse.data.map((store) => ({
+        id: store.id,
+        value: store.id,
+        label: store.name,
+        url: store.logo ? store.logo.url : null,
+      }));
+      setStoreChoiceOptions(storeOptions);
 
-        const partnerResponse = await api.get('partners');
-        const partnerOptions = partnerResponse.data.map((partner) => ({
-          id: partner.id,
-          value: partner.id,
-          label: partner.name,
-          url: partner.logo ? partner.logo.url : null,
-        }));
-        setPartnerChoiceOptions(partnerOptions);
+      const partnerResponse = await api.get('partners');
+      const partnerOptions = partnerResponse.data.map((partner) => ({
+        id: partner.id,
+        value: partner.id,
+        label: partner.name,
+        url: partner.logo ? partner.logo.url : null,
+      }));
+      setPartnerChoiceOptions(partnerOptions);
 
-        const categoriesResponse = await api.get('categories');
-        setCategoryOptions(
-          categoriesResponse.data.map((category) => ({
-            value: category.id,
-            label: category.name,
-          }))
-        );
+      const categoriesResponse = await api.get('categories');
+      setCategoryOptions(
+        categoriesResponse.data.map((category) => ({
+          value: category.id,
+          label: category.name,
+        }))
+      );
 
-        const productResponse = await api.get(`products/${id}`);
-        setLoadingProduct(false);
-        formRef.current.setData(productResponse.data);
-        setStores(productResponse.data.stores);
+      const productResponse = await api.get(`products/${id}`);
+      setLoadingProduct(false);
+      formRef.current.setData(productResponse.data);
+      setStores(productResponse.data.stores);
 
-        setPartners(productResponse.data.partners);
-      } catch (err) {
-        toast.error('Houve um erro ao carregar o produto');
-      }
+      setPartners(productResponse.data.partners);
+    } catch (err) {
+      setLoadingProduct(false);
+      toast.error('Houve um erro ao carregar o produto');
     }
+  }
+  useEffect(() => {
     getData();
   }, [id]);
-
   async function submitHandle(data) {
     try {
       formRef.current.setErrors({});
@@ -82,27 +85,44 @@ function UpdateProduct({ match }) {
           .max(100, 'Máximo de 100 caracteres')
           .required('O nome é obrigatório'),
         description: Yup.string().max(1000, 'Máximo de 1000 caracteres'),
-        price: Yup.number('Preço inválido')
-          .typeError('Preço inválido')
-          .positive('Números negativos não são permitidos')
-          .required('O preço é obrigatório'),
+        price: Yup.number().when('priceType', {
+          is: PriceTypeEnum.SPECIAL_OFFER,
+          then: Yup.number().nullable().notRequired(),
+          otherwise: Yup.number('Preço inválido')
+            .typeError('Preço inválido')
+            .positive('Números negativos não são permitidos')
+            .required('O preço é obrigatório'),
+        }),
         featured: Yup.boolean(),
         categoryId: Yup.number().positive().nullable(true),
       });
       await schema.validate(data, {
         abortEarly: false,
       });
-
-      const productStores = stores.map((store) => Number(store.id));
-
-      const removeStores = productStores.filter(
-        (store) => !data.stores.includes(store)
-      );
-
-      const addStores = data.stores.filter((store) => {
-        return !productStores.includes(store);
+      const productStores = stores.map((store) => {
+        return {
+          storeId: Number(store.id),
+          customPrice: store.Products_Stores.customPrice,
+        };
       });
 
+      const removeStores = productStores
+        .map((storeMap) => storeMap.storeId)
+        .filter((storeId) => {
+          return !data.stores.some((store) => store.storeId === storeId);
+        });
+      console.log('Data:', data.stores);
+      const addStores = data.stores
+        .map((store) => {
+          return { ...store, customPrice: store.customPrice || null };
+        })
+        .filter((store) => {
+          return !productStores.some(
+            (str) =>
+              str.storeId === store.storeId &&
+              str.customPrice == store.customPrice
+          );
+        });
       const productPartners = partners.map((partner) => Number(partner.id));
 
       const removePartners = productPartners.filter(
@@ -122,6 +142,7 @@ function UpdateProduct({ match }) {
           addPartners
         )
       );
+      getData();
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {
@@ -156,14 +177,20 @@ function UpdateProduct({ match }) {
               { label: 'Destacado', value: PriceTypeEnum.FEATURED },
               { label: 'Oferta especial', value: PriceTypeEnum.SPECIAL_OFFER },
             ]}
+            onTypeChange={(type) => {
+              setShowPriceInput(type !== PriceTypeEnum.SPECIAL_OFFER);
+            }}
           />
 
-          <Input
-            type="number"
-            name="price"
-            placeholder="Insira o preço"
-            label="Preço:"
-          />
+          {showPriceInput && (
+            <Input
+              type="number"
+              name="price"
+              placeholder="Insira o preço"
+              label="Preço:"
+            />
+          )}
+
           <Input
             name="description"
             placeholder="Insira a descrição"
@@ -179,7 +206,14 @@ function UpdateProduct({ match }) {
           />
         </Grid>
         <Grid item xs={12} md={7}>
-          <Checkbox name="stores" options={storeChoiceOptions} label="Lojas" />
+          <CheckboxList
+            name="stores"
+            options={storeChoiceOptions}
+            label="Lojas"
+            numberFieldLabel="Preço: "
+            numberFieldPlaceholder="Preço personalizado"
+            hideAllPriceInputs={!showPriceInput}
+          />
           <Checkbox
             name="partners"
             options={partnerChoiceOptions}
