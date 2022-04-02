@@ -36,9 +36,8 @@ function RouteWrapper({
 export default RouteWrapper;
 
 RouteWrapper.propTypes = {
-  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
-    .isRequired,
-  layout: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
+  component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  layout: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
   privilegeRequired: PropTypes.number,
 };
 
