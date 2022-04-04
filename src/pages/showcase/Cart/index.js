@@ -99,7 +99,9 @@ function Cart({ match }) {
   }
   useEffect(() => {
     const newTotal = cart.reduce((accumulator, currentProduct) => {
-      return accumulator + currentProduct.price * currentProduct.amount;
+      const price =
+        currentProduct.Products_Stores.customPrice || currentProduct.price;
+      return accumulator + price * currentProduct.amount;
     }, 0);
     setTotal(formatPrice(newTotal));
   }, [cart]);

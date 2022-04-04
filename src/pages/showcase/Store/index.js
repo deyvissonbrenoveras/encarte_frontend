@@ -71,7 +71,10 @@ function Store({ match }) {
     let products;
     if (showcase.products) {
       products = showcase.products.map((pdt) => {
-        return { ...pdt, formattedPrice: formatPrice(pdt.price) };
+        const formattedPrice = formatPrice(
+          pdt.Products_Stores.customPrice || pdt.price
+        );
+        return { ...pdt, formattedPrice };
       });
 
       categories = products

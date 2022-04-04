@@ -80,6 +80,7 @@ const CheckboxList = ({
                       //label={numberFieldLabel}
                       size="small"
                       inputRef={(ref) => (priceRefs.current[index] = ref)}
+                      inputProps={{ step: 'any' }}
                     />
                   )}
                 </label>

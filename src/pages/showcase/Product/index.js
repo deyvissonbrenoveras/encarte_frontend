@@ -36,7 +36,10 @@ function Product({ match }) {
       const prod = showcase.products
         .filter((pdt) => pdt.id === productId)
         .map((pdt) => {
-          return { ...pdt, formattedPrice: formatPrice(pdt.price) };
+          const formattedPrice = formatPrice(
+            pdt.Products_Stores.customPrice || pdt.price
+          );
+          return { ...pdt, formattedPrice };
         })[0];
       setProduct(prod);
       // setTotal(formatPrice(amount * prod ? prod.price : 0));
@@ -103,7 +106,8 @@ function Product({ match }) {
   }
   useEffect(() => {
     if (product) {
-      setTotal(formatPrice(amount * product.price));
+      const price = product.Products_Stores.customPrice || product.price;
+      setTotal(formatPrice(amount * price));
     }
   }, [amount, product]);
   return loading ? (
