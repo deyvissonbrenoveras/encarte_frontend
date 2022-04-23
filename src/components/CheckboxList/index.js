@@ -37,11 +37,10 @@ const CheckboxList = ({
           });
         return mappedValue;
       },
-      clearValue: (/* refs */) => {
-        // refs.forEach((ref) => {
-        //   ref.checked = false;
-        // });
-        // não faz nada devido ao resetform
+      clearValue: (refs) => {
+        refs
+          .filter((ref) => ref.checked)
+          .forEach((ref) => (priceRefs.current[refs.indexOf(ref)].value = ''));
       },
       setValue: (refs, values) => {
         refs.forEach((ref) => {
@@ -80,7 +79,13 @@ const CheckboxList = ({
                       //label={numberFieldLabel}
                       size="small"
                       inputRef={(ref) => (priceRefs.current[index] = ref)}
-                      inputProps={{ step: 'any' }}
+                      inputProps={{ step: 'any', min: 0.01 }}
+                      error={error}
+                      onChange={({ target }) => {
+                        if (target.value) {
+                          inputRefs.current[index].checked = true;
+                        }
+                      }}
                     />
                   )}
                 </label>
@@ -98,8 +103,8 @@ const CheckboxList = ({
             </li>
           ))}
         </ul>
+        {error && <span>{error}</span>}
       </Container>
-      {error && <span>{error}</span>}
     </>
   );
 };

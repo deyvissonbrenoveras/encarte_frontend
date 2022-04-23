@@ -16,6 +16,7 @@ import Img from '../../../components/Img';
 // import { SaveButton } from '../../../components/Buttons';
 import { addProductRequest } from '../../../store/modules/product/actions';
 import Checkbox from '../../../components/Checkbox';
+import CheckboxList from '../../../components/CheckboxList';
 import RadioGroup from '../../../components/RadioInputGroup';
 import Select from '../../../components/Select';
 import api from '../../../services/api';
@@ -30,6 +31,8 @@ function NewProduct() {
 
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showPriceInput, setShowPriceInput] = useState(true);
+
   useEffect(() => {
     async function getData() {
       try {
@@ -93,6 +96,12 @@ function NewProduct() {
       });
       await schema.validate(data, {
         abortEarly: false,
+      });
+      data.stores = data.stores.map((productStore) => {
+        return {
+          ...productStore,
+          customPrice: productStore.customPrice || null,
+        };
       });
       dispatch(
         addProductRequest(data, function successCb() {
@@ -160,10 +169,13 @@ function NewProduct() {
             />
           </Grid>
           <Grid item xs={12} md={7}>
-            <Checkbox
+            <CheckboxList
               name="stores"
               options={storeChoiceOptions}
               label="Lojas"
+              numberFieldLabel="Preço: "
+              numberFieldPlaceholder="Preço personalizado"
+              hideAllPriceInputs={!showPriceInput}
             />
             <Checkbox
               name="partners"
