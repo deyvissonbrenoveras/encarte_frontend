@@ -6,6 +6,8 @@ import api from '../../../services/api';
 import LoadingIcon from '../../../components/LoadingIcon';
 import CustomTable from '../../../components/CustomTable';
 
+import { formatPrice } from '../../../util/format';
+
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,7 +81,7 @@ function Products() {
               alt: product.name,
             },
             name: { href: `/updateproduct/${product.id}`, label: product.name },
-            price: product.price,
+            price: formatPrice(product.price),
             featured: product.featured,
             category: product.category
               ? product.category.name

@@ -34,6 +34,8 @@ import CheckboxInput from '../../../components/CheckboxInput';
 import LoadingIcon from '../../../components/LoadingIcon';
 import ColorPicker from '../../../components/ColorPicker';
 
+import { formatPrice } from '../../../util/format';
+
 import { updateStoreRequest } from '../../../store/modules/store/actions';
 import { disassociateProductsFromStore } from '../../../store/modules/product/actions';
 
@@ -311,6 +313,12 @@ function UpdateStore({ match }) {
                   label: 'Preço',
                 },
                 {
+                  id: 'customPrice',
+                  numeric: true,
+                  disablePadding: false,
+                  label: 'Preço personalizado',
+                },
+                {
                   id: 'featured',
                   numeric: false,
                   disablePadding: false,
@@ -336,7 +344,10 @@ function UpdateStore({ match }) {
                     href: `/updateproduct/${product.id}`,
                     label: product.name,
                   },
-                  price: product.price,
+                  price: formatPrice(product.price),
+                  customPrice: product.Products_Stores.customPrice
+                    ? formatPrice(product.Products_Stores.customPrice)
+                    : null,
                   featured: product.featured,
                   category: product.category
                     ? product.category.name
