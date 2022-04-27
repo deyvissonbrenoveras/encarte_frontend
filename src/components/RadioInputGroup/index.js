@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 import { useField } from '@unform/core';
 import PropTypes from 'prop-types';
@@ -17,6 +17,25 @@ function RadioInputGroup({ name, label, options, onTypeChange, ...rest }) {
 
   const [selected, setSelected] = useState(0);
 
+  // function handleOnTypeChange(type) {
+  //   if (onTypeChange) {
+  //     onTypeChange(type);
+  //   }
+  // }
+  const handleOnTypeChange = useCallback(
+    (type) => {
+      if (onTypeChange) {
+        onTypeChange(type);
+      }
+    },
+    [onTypeChange]
+  );
+
+  function handleChange(event) {
+    setSelected(Number(event.target.value));
+    handleOnTypeChange(Number(event.target.value));
+  }
+
   useEffect(() => {
     registerField({
       name,
@@ -32,17 +51,8 @@ function RadioInputGroup({ name, label, options, onTypeChange, ...rest }) {
         setSelected(0);
       },
     });
-  }, [fieldName, registerField, name, selected]);
+  }, [fieldName, registerField, name, selected, handleOnTypeChange]);
 
-  function handleChange(event) {
-    setSelected(Number(event.target.value));
-    handleOnTypeChange(Number(event.target.value));
-  }
-  function handleOnTypeChange(type) {
-    if (onTypeChange) {
-      onTypeChange(type);
-    }
-  }
   return (
     <>
       <FormControl component="fieldset">
@@ -78,4 +88,5 @@ RadioInputGroup.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onTypeChange: PropTypes.func,
 };

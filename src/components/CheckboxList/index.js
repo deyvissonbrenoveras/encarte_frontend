@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
 
@@ -58,7 +58,7 @@ const CheckboxList = ({
         });
       },
     });
-  }, [defaultValue, fieldName, registerField]);
+  }, [defaultValue, fieldName, registerField, hideAllPriceInputs]);
 
   return (
     <>

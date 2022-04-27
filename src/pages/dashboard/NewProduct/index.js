@@ -147,6 +147,9 @@ function NewProduct() {
                   value: PriceTypeEnum.SPECIAL_OFFER,
                 },
               ]}
+              onTypeChange={(type) => {
+                setShowPriceInput(type !== PriceTypeEnum.SPECIAL_OFFER);
+              }}
             />
             <Input
               type="number"

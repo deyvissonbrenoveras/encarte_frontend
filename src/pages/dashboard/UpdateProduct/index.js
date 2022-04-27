@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -33,7 +33,7 @@ function UpdateProduct({ match }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   const [showPriceInput, setShowPriceInput] = useState(true);
-  async function getData() {
+  const getData = useCallback(async () => {
     try {
       setLoadingProduct(true);
       const storeResponse = await api.get('stores');
@@ -72,10 +72,12 @@ function UpdateProduct({ match }) {
       setLoadingProduct(false);
       toast.error('Houve um erro ao carregar o produto');
     }
-  }
+  }, [id]);
+
   useEffect(() => {
     getData();
-  }, [id]);
+  }, [id, getData]);
+
   async function submitHandle(data) {
     try {
       formRef.current.setErrors({});
@@ -111,7 +113,6 @@ function UpdateProduct({ match }) {
         .filter((storeId) => {
           return !data.stores.some((store) => store.storeId === storeId);
         });
-      console.log('Data:', data.stores);
       const addStores = data.stores
         .map((store) => {
           return { ...store, customPrice: store.customPrice || null };
@@ -120,7 +121,7 @@ function UpdateProduct({ match }) {
           return !productStores.some(
             (str) =>
               str.storeId === store.storeId &&
-              str.customPrice == store.customPrice
+              str.customPrice === store.customPrice
           );
         });
       const productPartners = partners.map((partner) => Number(partner.id));
