@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 import { useField } from '@unform/core';
 import PropTypes from 'prop-types';
@@ -10,12 +10,31 @@ import {
   Radio,
 } from '@material-ui/core';
 
-function RadioInputGroup({ name, label, options, ...rest }) {
+function RadioInputGroup({ name, label, options, onTypeChange, ...rest }) {
   const radioRef = useRef(null);
 
   const { fieldName, registerField, error } = useField(name);
 
   const [selected, setSelected] = useState(0);
+
+  // function handleOnTypeChange(type) {
+  //   if (onTypeChange) {
+  //     onTypeChange(type);
+  //   }
+  // }
+  const handleOnTypeChange = useCallback(
+    (type) => {
+      if (onTypeChange) {
+        onTypeChange(type);
+      }
+    },
+    [onTypeChange]
+  );
+
+  function handleChange(event) {
+    setSelected(Number(event.target.value));
+    handleOnTypeChange(Number(event.target.value));
+  }
 
   useEffect(() => {
     registerField({
@@ -26,16 +45,14 @@ function RadioInputGroup({ name, label, options, ...rest }) {
       },
       setValue: (_, value) => {
         setSelected(Number(value));
+        handleOnTypeChange(Number(value));
       },
       clearValue: () => {
         setSelected(0);
       },
     });
-  }, [fieldName, registerField, name, selected]);
+  }, [fieldName, registerField, name, selected, handleOnTypeChange]);
 
-  function handleChange(event) {
-    setSelected(Number(event.target.value));
-  }
   return (
     <>
       <FormControl component="fieldset">
@@ -48,11 +65,12 @@ function RadioInputGroup({ name, label, options, ...rest }) {
           value={selected}
         >
           {options &&
-            options.map((option) => (
+            options.map((option, index) => (
               <FormControlLabel
                 value={option.value}
                 control={<Radio />}
                 label={option.label}
+                key={index}
               />
             ))}
         </RadioGroup>
@@ -69,5 +87,6 @@ export default RadioInputGroup;
 RadioInputGroup.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.element).isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onTypeChange: PropTypes.func,
 };
