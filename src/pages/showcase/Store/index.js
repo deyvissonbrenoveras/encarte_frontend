@@ -100,9 +100,7 @@ function Store({ match }) {
       categories.map((cat) => {
         const editingCategory = { ...cat };
         editingCategory.products = products
-          .filter(
-            (prod) => (prod.category ? prod.category.id : null) === cat.id
-          )
+          .filter((prod) => (prod.category ? prod.category.id : 0) === cat.id)
           .sort((a, b) => a.name.localeCompare(b.name));
 
         return editingCategory;
