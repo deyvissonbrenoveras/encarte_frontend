@@ -99,12 +99,14 @@ function DashboardLayout({ children }) {
         </div>
         <Divider />
         <List className={classes.list}>
-          <ListItem button component={Link} to="/dashboard">
-            <ListItemIcon>
-              <AiFillHome className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItem>
+          {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
+            <ListItem button component={Link} to="/dashboard">
+              <ListItemIcon>
+                <AiFillHome className={classes.list} />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
+          )}
 
           <ListItem button component={Link} to="/stores">
             <ListItemIcon>

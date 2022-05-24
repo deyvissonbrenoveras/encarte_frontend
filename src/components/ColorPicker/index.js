@@ -4,7 +4,7 @@ import useStyles from './styles';
 import { useField } from '@unform/core';
 import { ClickAwayListener } from '@material-ui/core';
 
-function ColorPicker({ name, label, initialColor = '#fff' }) {
+function ColorPicker({ name, label, initialColor = '#fff', readOnly }) {
   const pickerRef = useRef(null);
   const { fieldName, registerField, error } = useField(name);
 
@@ -32,9 +32,11 @@ function ColorPicker({ name, label, initialColor = '#fff' }) {
   }
 
   function handleClick() {
-    setTimeout(() => {
-      setShowPicker(!showPicker);
-    }, 100);
+    if (!readOnly) {
+      setTimeout(() => {
+        setShowPicker(!showPicker);
+      }, 100);
+    }
   }
 
   return (

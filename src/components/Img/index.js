@@ -12,7 +12,14 @@ import { DeleteForever } from '@material-ui/icons';
 import api from '../../services/api';
 import useStyles from './styles';
 
-const ImageInput = ({ name, submitName, label, showRemoveButton, ...rest }) => {
+const ImageInput = ({
+  name,
+  submitName,
+  label,
+  showRemoveButton,
+  readOnly,
+  ...rest
+}) => {
   const inputRef = useRef();
 
   const { registerField, error, defaultValue } = useField(submitName);
@@ -59,7 +66,10 @@ const ImageInput = ({ name, submitName, label, showRemoveButton, ...rest }) => {
 
   return (
     <div>
-      <Card className={classes.root} onClick={() => inputRef.current.click()}>
+      <Card
+        className={classes.root}
+        onClick={() => !readOnly && inputRef.current.click()}
+      >
         <CardActionArea className={classes.actionArea}>
           <CardContent className={classes.content}>
             <Typography gutterBottom variant="h6">
@@ -82,7 +92,7 @@ const ImageInput = ({ name, submitName, label, showRemoveButton, ...rest }) => {
         {error && <span className={classes.error}>{error}</span>}
       </Card>
 
-      {showRemoveButton && preview && (
+      {!readOnly && showRemoveButton && preview && (
         <Box width="100%" textAlign="right">
           <button
             style={{ background: 'none', border: 'none' }}

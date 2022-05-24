@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
@@ -16,6 +16,7 @@ import Select from '../../../components/Select';
 import RadioGroup from '../../../components/RadioInputGroup';
 import { updateProductRequest } from '../../../store/modules/product/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
+import PrivilegeEnum from '../../../util/PrivilegeEnum';
 import api from '../../../services/api';
 
 function UpdateProduct({ match }) {
@@ -33,6 +34,14 @@ function UpdateProduct({ match }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   const [showPriceInput, setShowPriceInput] = useState(true);
+
+  const [userNotAdmin, setUserNotAdmin] = useState(false);
+  const userProfile = useSelector((state) => state.profile.profile);
+
+  useEffect(() => {
+    setUserNotAdmin(userProfile.privilege > PrivilegeEnum.SYSTEM_ADMINISTRATOR);
+  }, [userProfile]);
+
   const getData = useCallback(async () => {
     try {
       setLoadingProduct(true);
@@ -162,13 +171,19 @@ function UpdateProduct({ match }) {
 
       <Grid container justify="space-around">
         <Grid item xs={12} md={4}>
-          <Img name="image" submitName="fileId" label="Imagem:" />
+          <Img
+            name="image"
+            submitName="fileId"
+            label="Imagem:"
+            readOnly={userNotAdmin}
+          />
           <CheckboxInput name="featured" label="Destaque" />
 
           <Input
             name="name"
             placeholder="Insira o nome do produto"
             label="Nome:"
+            readOnly={userNotAdmin}
           />
           <RadioGroup
             name="priceType"
@@ -189,6 +204,7 @@ function UpdateProduct({ match }) {
               name="price"
               placeholder="Insira o preço"
               label="Preço:"
+              readOnly={userNotAdmin}
             />
           )}
 
@@ -198,6 +214,7 @@ function UpdateProduct({ match }) {
             label="Descrição:"
             multiline
             rows={4}
+            readOnly={userNotAdmin}
           />
           <Select
             name="categoryId"
@@ -215,11 +232,13 @@ function UpdateProduct({ match }) {
             numberFieldPlaceholder="Preço personalizado"
             hideAllPriceInputs={!showPriceInput}
           />
-          <Checkbox
-            name="partners"
-            options={partnerChoiceOptions}
-            label="Parceiros"
-          />
+          {!userNotAdmin && (
+            <Checkbox
+              name="partners"
+              options={partnerChoiceOptions}
+              label="Parceiros"
+            />
+          )}
         </Grid>
         <Box m={2} width="100%" textAlign="right">
           <Button variant="contained" color="primary" type="submit">
