@@ -305,19 +305,20 @@ function UpdateStore({ match }) {
                     readOnly={userNotAdmin}
                   />
                 </Grid>
-
-                <Box m={2} width="100%" textAlign="right">
-                  <Button variant="contained" color="primary" type="submit">
-                    Salvar
-                  </Button>
-                </Box>
+                {!userNotAdmin && (
+                  <Box m={2} width="100%" textAlign="right">
+                    <Button variant="contained" color="primary" type="submit">
+                      Salvar
+                    </Button>
+                  </Box>
+                )}
               </Grid>
             </Form>
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
             <CustomTable
               label="Produtos"
-              selectionEnabled
+              selectionEnabled={!userNotAdmin}
               headCells={[
                 {
                   id: 'id',

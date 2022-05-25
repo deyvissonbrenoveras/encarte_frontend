@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
 import { Container } from './styles';
 
-export default function Input({ name, label, defaultChecked, ...rest }) {
+export default function Input({
+  name,
+  label,
+  defaultChecked,
+  readOnly,
+  ...rest
+}) {
   const inputRef = useRef(null);
 
   const { fieldName, defaultValue, registerField } = useField(name);
@@ -25,6 +31,7 @@ export default function Input({ name, label, defaultChecked, ...rest }) {
         name={name}
         id={fieldName}
         type="checkbox"
+        disabled={readOnly}
         {...rest}
       />
     </Container>

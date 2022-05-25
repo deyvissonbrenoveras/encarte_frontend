@@ -10,7 +10,14 @@ import {
   Radio,
 } from '@material-ui/core';
 
-function RadioInputGroup({ name, label, options, onTypeChange, ...rest }) {
+function RadioInputGroup({
+  name,
+  label,
+  options,
+  onTypeChange,
+  readOnly,
+  ...rest
+}) {
   const radioRef = useRef(null);
 
   const { fieldName, registerField, error } = useField(name);
@@ -32,8 +39,10 @@ function RadioInputGroup({ name, label, options, onTypeChange, ...rest }) {
   );
 
   function handleChange(event) {
-    setSelected(Number(event.target.value));
-    handleOnTypeChange(Number(event.target.value));
+    if (!readOnly) {
+      setSelected(Number(event.target.value));
+      handleOnTypeChange(Number(event.target.value));
+    }
   }
 
   useEffect(() => {

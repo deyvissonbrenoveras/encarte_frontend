@@ -177,7 +177,11 @@ function UpdateProduct({ match }) {
             label="Imagem:"
             readOnly={userNotAdmin}
           />
-          <CheckboxInput name="featured" label="Destaque" />
+          <CheckboxInput
+            name="featured"
+            label="Destaque"
+            readOnly={userNotAdmin}
+          />
 
           <Input
             name="name"
@@ -193,6 +197,7 @@ function UpdateProduct({ match }) {
               { label: 'Destacado', value: PriceTypeEnum.FEATURED },
               { label: 'Oferta especial', value: PriceTypeEnum.SPECIAL_OFFER },
             ]}
+            readOnly={userNotAdmin}
             onTypeChange={(type) => {
               setShowPriceInput(type !== PriceTypeEnum.SPECIAL_OFFER);
             }}
