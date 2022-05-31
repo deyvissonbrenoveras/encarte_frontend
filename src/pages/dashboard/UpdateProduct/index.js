@@ -135,13 +135,19 @@ function UpdateProduct({ match }) {
         });
       const productPartners = partners.map((partner) => Number(partner.id));
 
-      const removePartners = productPartners.filter(
-        (partner) => !data.partners.includes(partner)
-      );
+      let removePartners = [];
+      let addPartners = [];
 
-      const addPartners = data.partners.filter((partner) => {
-        return !productPartners.includes(partner);
-      });
+      if (!userNotAdmin) {
+        removePartners = productPartners.filter(
+          (partner) => !data.partners.includes(partner)
+        );
+
+        addPartners = data.partners.filter((partner) => {
+          return !productPartners.includes(partner);
+        });
+      }
+
       dispatch(
         updateProductRequest(
           id,
@@ -152,6 +158,7 @@ function UpdateProduct({ match }) {
           addPartners
         )
       );
+
       getData();
     } catch (err) {
       const validationErrors = {};
@@ -236,6 +243,7 @@ function UpdateProduct({ match }) {
             numberFieldLabel="Preço: "
             numberFieldPlaceholder="Preço personalizado"
             hideAllPriceInputs={!showPriceInput}
+            disableCheckBox={userNotAdmin}
           />
           {!userNotAdmin && (
             <Checkbox

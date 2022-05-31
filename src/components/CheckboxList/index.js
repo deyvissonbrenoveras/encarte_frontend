@@ -14,6 +14,7 @@ const CheckboxList = ({
   numberFieldLabel,
   numberFieldPlaceholder,
   hideAllPriceInputs,
+  disableCheckBox,
   ...rest
 }) => {
   const inputRefs = useRef([]);
@@ -95,6 +96,7 @@ const CheckboxList = ({
                 ref={(ref) => {
                   inputRefs.current[index] = ref;
                 }}
+                disabled={disableCheckBox}
                 value={option.value}
                 type="checkbox"
                 id={option.id}
