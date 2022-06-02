@@ -19,6 +19,7 @@ import {
   Paper,
 } from '@material-ui/core';
 import { FaUser, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
+import { HiDocumentReport } from 'react-icons/hi';
 import { GiCheckboxTree } from 'react-icons/gi';
 import { AiFillHome } from 'react-icons/ai';
 import { useTheme } from '@material-ui/core/styles';
@@ -148,6 +149,15 @@ function DashboardLayout({ children }) {
                 <FaUser className={classes.list} />
               </ListItemIcon>
               <ListItemText primary="Usuários" />
+            </ListItem>
+          )}
+
+          {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
+            <ListItem button component={Link} to="/logs">
+              <ListItemIcon>
+                <HiDocumentReport className={classes.list} />
+              </ListItemIcon>
+              <ListItemText primary="Logs" />
             </ListItem>
           )}
         </List>
