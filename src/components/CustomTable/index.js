@@ -212,6 +212,7 @@ export default function EnhancedTable({
   actionLabel,
   actionCallback,
   selectionEnabled,
+  initialRowsPerPage = 5,
 }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -219,7 +220,7 @@ export default function EnhancedTable({
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(initialRowsPerPage);
   const [searchResult, setSearchResult] = React.useState(null);
 
   function handleSearch(e) {
