@@ -219,7 +219,11 @@ function UpdateStore({ match }) {
                   </Grid>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={5}>
-                  <CheckboxInput name="active" label="Ativo" />
+                  <CheckboxInput
+                    name="active"
+                    label="Ativo"
+                    readOnly={userNotAdmin}
+                  />
                   <Input
                     name="name"
                     placeholder="Insira o nome da loja"

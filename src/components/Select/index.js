@@ -3,7 +3,7 @@ import { useField } from '@unform/core';
 import ReactSelect from 'react-select';
 import PropTypes from 'prop-types';
 
-const Select = ({ name, ...rest }) => {
+const Select = ({ name, readOnly, ...rest }) => {
   const selectRef = useRef(null);
   const { fieldName, defaultValue, registerField } = useField(name);
   useEffect(() => {
@@ -38,7 +38,7 @@ const Select = ({ name, ...rest }) => {
       defaultValue={defaultValue}
       ref={selectRef}
       classNamePrefix="react-select"
-      isDisabled
+      isDisabled={readOnly}
       {...rest}
     />
   );

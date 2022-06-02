@@ -233,6 +233,7 @@ function UpdateProduct({ match }) {
             placeholder="Categoria:"
             options={categoryOptions}
             isClearable
+            readOnly={userNotAdmin}
           />
         </Grid>
         <Grid item xs={12} md={7}>
