@@ -1,21 +1,3 @@
-// import React from 'react';
-// import {
-//   TableContainer,
-//   Table,
-//   TableHead,
-//   TableRow,
-//   TableCell,
-//   TableBody,
-//   Paper,
-//   Avatar,
-//   Typography,
-// } from '@material-ui/core';
-
-// function CustomTable() {
-//   return <div />;
-// }
-
-// export default CustomTable;
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -377,14 +359,6 @@ export default function EnhancedTable({
                         </TableCell>
                       )}
 
-                      {/* <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.name}
-                      </TableCell> */}
                       {headCells.map((headCell) => {
                         if (headCell.type === 'image') {
                           return (
@@ -424,10 +398,6 @@ export default function EnhancedTable({
                           </TableCell>
                         );
                       })}
-                      {/* <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell> */}
                     </TableRow>
                   );
                 })}

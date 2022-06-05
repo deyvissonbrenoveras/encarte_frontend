@@ -77,7 +77,6 @@ const CheckboxList = ({
                       defaultValue={option.customPrice}
                       type="number"
                       placeholder={numberFieldPlaceholder}
-                      //label={numberFieldLabel}
                       size="small"
                       inputRef={(ref) => (priceRefs.current[index] = ref)}
                       inputProps={{ step: 'any', min: 0.01 }}

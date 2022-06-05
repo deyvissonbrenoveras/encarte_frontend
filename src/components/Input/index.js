@@ -18,7 +18,6 @@ export default function Input({
 
   const [shrink, setShrink] = useState(type === 'date' ? true : !!defaultValue);
   useEffect(() => {
-    // const path = rest.type === 'checkbox' ? 'checked' : 'value';
     registerField({
       name,
       ref: inputRef.current,

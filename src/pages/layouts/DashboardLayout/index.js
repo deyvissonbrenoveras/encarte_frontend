@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import { FaUser, FaStore, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
-// import { GiCheckboxTree } from 'react-icons/gi';
 import {
   Drawer,
   List,
@@ -15,7 +13,6 @@ import {
   IconButton,
   AppBar,
   Toolbar,
-  // Typography,
   Paper,
 } from '@material-ui/core';
 import { FaUser, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
@@ -27,8 +24,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Menu,
-  // Inbox,
-  // Mail,
   ExitToApp,
 } from '@material-ui/icons';
 import PrivilegeEnum from '../../../util/PrivilegeEnum';

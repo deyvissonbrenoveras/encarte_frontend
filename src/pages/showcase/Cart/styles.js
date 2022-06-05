@@ -173,14 +173,6 @@ export default makeStyles((theme) => ({
       fontSize: 10,
     },
   },
-  // total: {
-  //   marginTop: theme.spacing(3),
-  //   borderTop: `1px solid ${theme.palette.greyBorder}`,
-  //   padding: theme.spacing(2),
-  //   fontSize: 18,
-  //   color: theme.palette.encarte,
-  //   textAlign: 'right',
-  // },
   total: {
     backgroundColor: '#fff',
     width: '95%',
@@ -193,7 +185,6 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // color: theme.palette.encarte,
     fontWeight: 'bold',
     paddingLeft: theme.spacing(2),
     fontSize: 17,
@@ -215,7 +206,6 @@ export default makeStyles((theme) => ({
     },
   },
   pdfListLink: {
-    // padding: 15,
     margin: '15px 0 0 15px',
     display: 'block',
   },

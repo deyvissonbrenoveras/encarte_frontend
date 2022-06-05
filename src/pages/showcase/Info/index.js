@@ -6,7 +6,6 @@ import { Grid, IconButton } from '@material-ui/core';
 import { Facebook, Instagram, WhatsApp } from '@material-ui/icons';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import useStyles from './styles';
-// import { Container } from './styles';
 
 function Info({ match }) {
   const dispatch = useDispatch();
@@ -28,10 +27,6 @@ function Info({ match }) {
   }, [dispatch, url]);
   return (
     <Grid container justify="center">
-      {/* {loading ? (
-        <LoadingIcon />
-      ) : (
-        <> */}
       <Grid item xs={12}>
         <div className={classes.backgroundLogoContainer}>
           <div className={classes.logoContainer}>
