@@ -159,6 +159,8 @@ export default makeStyles((theme) => ({
   shelfLife: {
     fontSize: 14,
     fontWeight: 'bold',
+    display:'flex',
+    flexDirection: 'column'
   },
   partnerContainer: {
     background: (props) => {
