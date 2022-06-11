@@ -28,7 +28,6 @@ export function* signIn({ payload }) {
     const response = yield call(api.post, 'sessions', { email, password });
     const { token, user } = response.data;
     api.defaults.headers.Authorization = `Bearer ${token}`;
-    console.log('SAGA ACTION SIGN IN', { token, user })
     yield put(signInSuccess(token, user));
     history.push('/dashboard');
   } catch (err) {
