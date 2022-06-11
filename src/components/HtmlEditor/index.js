@@ -11,7 +11,6 @@ function HtmlEditor({ name, label }) {
   const { fieldName, registerField } = useField(name);
   const [html, setHtml] = useState(null);
   useEffect(() => {
-    // const path = rest.type === 'checkbox' ? 'checked' : 'value';
     registerField({
       name,
       ref: inputRef.current,

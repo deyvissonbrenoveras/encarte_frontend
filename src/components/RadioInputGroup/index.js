@@ -24,11 +24,6 @@ function RadioInputGroup({
 
   const [selected, setSelected] = useState(0);
 
-  // function handleOnTypeChange(type) {
-  //   if (onTypeChange) {
-  //     onTypeChange(type);
-  //   }
-  // }
   const handleOnTypeChange = useCallback(
     (type) => {
       if (onTypeChange) {

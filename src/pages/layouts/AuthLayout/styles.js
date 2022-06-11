@@ -18,13 +18,6 @@ export const Container = styled.div`
   form {
     display: flex;
     flex-direction: column;
-    /* input {
-      margin-top: 5px;
-      padding: 5px 10px;
-      border-radius: 5px;
-      border: 0;
-      background: rgba(0, 0, 0, 0.06);
-    } */
     span {
       color: #e63630;
       font-size: 14px;

@@ -14,7 +14,6 @@ function ColorPicker({ name, label, initialColor = '#fff', readOnly }) {
   const classes = useStyles({ showPicker });
 
   useEffect(() => {
-    // const path = rest.type === 'checkbox' ? 'checked' : 'value';
     registerField({
       name,
       ref: pickerRef.current,
@@ -64,9 +63,7 @@ function ColorPicker({ name, label, initialColor = '#fff', readOnly }) {
           ref={pickerRef}
           display={false}
           className={classes.colorPicker}
-          onClick={(e) => {
-            console.log(e.target);
-          }}
+          onClick={(e) => {}}
         />
       </ClickAwayListener>
 

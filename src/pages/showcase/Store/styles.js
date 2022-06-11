@@ -20,7 +20,6 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // maxHeight: 150,
   },
   media: {
     maxHeight: 200,
@@ -183,9 +182,7 @@ export default makeStyles((theme) => ({
     margin: 6,
     borderRadius: 10,
     padding: theme.spacing(0.8),
-    // overflowY: 'scroll',
     overflowX: 'scroll',
-    // width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     [theme.breakpoints.up('sm')]: {

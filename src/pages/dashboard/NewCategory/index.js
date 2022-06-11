@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import Input from '../../../components/Input';
 
 import { addCategoryRequest } from '../../../store/modules/category/actions';
-// import { Container } from './styles';
 
 function NewCategory() {
   const dispatch = useDispatch();

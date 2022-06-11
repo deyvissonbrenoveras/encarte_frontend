@@ -50,7 +50,6 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   searchInput: {
-    // height: 10,
     width: '100%',
     maxWidth: 600,
     background: '#fff',
@@ -81,8 +80,6 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: 'auto',
     },
-    // position: 'sticky',
-    // top: 200,
     display: 'flex',
     flexOrder: 1,
   },

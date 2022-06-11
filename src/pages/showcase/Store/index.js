@@ -106,7 +106,6 @@ function Store({ match }) {
         return editingCategory;
       });
 
-    // shelfLifeEnd formatting
     const shelfLifeStart = showcase.shelfLifeStart
       ? format(parseISO(showcase.shelfLifeStart.split('T')[0]), 'dd/MM/yyyy')
       : null;

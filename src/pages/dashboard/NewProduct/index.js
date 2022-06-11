@@ -9,11 +9,8 @@ import { Typography, Grid, Button, Box } from '@material-ui/core';
 import PriceTypeEnum from '../../../util/PriceTypeEnum';
 import Input from '../../../components/Input';
 import CheckboxInput from '../../../components/CheckboxInput';
-// import Textarea from '../../../components/Textarea';
 import Img from '../../../components/Img';
 
-// import { Container, FormHeader } from './styles';
-// import { SaveButton } from '../../../components/Buttons';
 import { addProductRequest } from '../../../store/modules/product/actions';
 import Checkbox from '../../../components/Checkbox';
 import CheckboxList from '../../../components/CheckboxList';
