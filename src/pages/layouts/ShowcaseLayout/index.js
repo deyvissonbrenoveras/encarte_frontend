@@ -70,9 +70,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
                   dispatch(updateSearch(e.target.value));
                 }}
                 className={classes.searchInput}
-                // label="Busque por produtos"
                 placeholder="Busque por produtos"
-                //fullWidth
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="start">
@@ -87,6 +85,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
               <Button
                 className={classes.logoButton}
                 onClick={() => {
+                  dispatch(updateSearch(''));
                   history.push('/');
                 }}
               >
