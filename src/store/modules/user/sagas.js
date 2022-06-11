@@ -7,7 +7,6 @@ import { loadUsersSuccess } from './actions';
 function* loadUsersRequest() {
   try {
     const response = yield call(api.get, 'users');
-    console.log('usuarios', response)
     yield put(loadUsersSuccess(response.data));
   } catch (err) {
     toast.error(
