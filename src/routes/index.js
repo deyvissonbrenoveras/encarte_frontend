@@ -189,7 +189,6 @@ function Routes() {
           component={UpdateUser}
           layout={DashboardLayout}
         />
-            
         <Route
           exact
           privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
@@ -197,7 +196,6 @@ function Routes() {
           component={Logs}
           layout={DashboardLayout}
         />
-
         <Route path="*" component={NotFound} layout={MainLayout}  />
       </Switch>
     </Suspense>
