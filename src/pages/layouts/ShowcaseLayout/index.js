@@ -85,6 +85,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
               <Button
                 className={classes.logoButton}
                 onClick={() => {
+                  dispatch(updateSearch(''));
                   history.push('/');
                 }}
               >
