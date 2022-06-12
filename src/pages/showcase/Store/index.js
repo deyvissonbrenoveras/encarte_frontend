@@ -177,7 +177,8 @@ function Store({ match }) {
         display="block"
         gutterBottom
       >
-        {`PREÇOS VÁLIDOS DE ${shelfLifeStart} ATÉ ${shelfLifeEnd}.`}
+        <span>{`PREÇOS VÁLIDOS DE ${shelfLifeStart} ATÉ ${shelfLifeEnd}`}</span>
+        <span>OU ENQUANTO DURAR O ESTOQUE.</span>
       </Typography>
     );
   }
