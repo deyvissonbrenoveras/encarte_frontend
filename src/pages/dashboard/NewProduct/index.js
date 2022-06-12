@@ -148,12 +148,15 @@ function NewProduct() {
                 setShowPriceInput(type !== PriceTypeEnum.SPECIAL_OFFER);
               }}
             />
-            <Input
-              type="number"
-              name="price"
-              placeholder="Insira o preço"
-              label="Preço:"
-            />
+
+            {showPriceInput && (
+              <Input
+                type="number"
+                name="price"
+                placeholder="Insira o preço"
+                label="Preço:"
+              />
+            )}
             <Input
               name="description"
               placeholder="Insira a descrição"
