@@ -18,7 +18,6 @@ export default makeStyles((theme) => ({
     justifyContent: ' center',
   },
   storeCard: {
-    // width: '100%',
     height: 120,
     margin: 10,
     display: 'flex',

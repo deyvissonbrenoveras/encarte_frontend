@@ -10,6 +10,7 @@ import category from './category/reducer';
 import showcase from './showcase/reducer';
 import cart from './cart/reducer';
 import search from './search/reducer';
+import log from './log/reducer';
 
 export default combineReducers({
   auth,
@@ -22,4 +23,5 @@ export default combineReducers({
   showcase,
   cart,
   search,
+  log,
 });

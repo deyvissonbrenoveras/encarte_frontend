@@ -168,10 +168,7 @@ function Info({ match }) {
                           <Close />
                         </button>
                       </Box>
-                      <Grid
-                        container
-                        // style={{ height: '100%', border: '1px solid red' }}
-                      >
+                      <Grid container>
                         <Grid
                           item
                           xs={12}

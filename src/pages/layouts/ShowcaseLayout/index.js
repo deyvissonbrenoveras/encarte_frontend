@@ -70,9 +70,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
                   dispatch(updateSearch(e.target.value));
                 }}
                 className={classes.searchInput}
-                // label="Busque por produtos"
                 placeholder="Busque por produtos"
-                //fullWidth
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="start">
@@ -87,6 +85,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
               <Button
                 className={classes.logoButton}
                 onClick={() => {
+                  dispatch(updateSearch(''));
                   history.push('/');
                 }}
               >
@@ -96,23 +95,9 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
                   alt="logo"
                 />
               </Button>
-              {/* <input
-            type="text"
-            placeholder="Busque por nome ou descrição do produto"
-            onChange={(e) => {
-              dispatch(updateSearch(e.target.value));
-            }}
-          /> */}
 
               <div className={classes.iconButtons}>
-                {/* <Button
-              className={classes.logoButton}
-              onClick={() => {
-                history.push('/');
-              }}
-            >
-              <img className={classes.logo} src={logo} alt="logo" />
-            </Button> */}
+                
                 <IconButton
                   onClick={() => {
                     history.push(`/loja/${url}`);

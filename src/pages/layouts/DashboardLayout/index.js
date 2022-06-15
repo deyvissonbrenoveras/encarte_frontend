@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import { FaUser, FaStore, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
-// import { GiCheckboxTree } from 'react-icons/gi';
 import {
   Drawer,
   List,
@@ -15,10 +13,10 @@ import {
   IconButton,
   AppBar,
   Toolbar,
-  // Typography,
   Paper,
 } from '@material-ui/core';
 import { FaUser, FaUserFriends, FaBoxOpen } from 'react-icons/fa';
+import { HiDocumentReport } from 'react-icons/hi';
 import { GiCheckboxTree } from 'react-icons/gi';
 import { AiFillHome } from 'react-icons/ai';
 import { useTheme } from '@material-ui/core/styles';
@@ -26,8 +24,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Menu,
-  // Inbox,
-  // Mail,
   ExitToApp,
 } from '@material-ui/icons';
 import PrivilegeEnum from '../../../util/PrivilegeEnum';
@@ -99,12 +95,14 @@ function DashboardLayout({ children }) {
         </div>
         <Divider />
         <List className={classes.list}>
-          <ListItem button component={Link} to="/dashboard">
-            <ListItemIcon>
-              <AiFillHome className={classes.list} />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItem>
+          {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
+            <ListItem button component={Link} to="/dashboard">
+              <ListItemIcon>
+                <AiFillHome className={classes.list} />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
+          )}
 
           <ListItem button component={Link} to="/stores">
             <ListItemIcon>
@@ -146,6 +144,15 @@ function DashboardLayout({ children }) {
                 <FaUser className={classes.list} />
               </ListItemIcon>
               <ListItemText primary="Usuários" />
+            </ListItem>
+          )}
+
+          {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
+            <ListItem button component={Link} to="/logs">
+              <ListItemIcon>
+                <HiDocumentReport className={classes.list} />
+              </ListItemIcon>
+              <ListItemText primary="Logs" />
             </ListItem>
           )}
         </List>

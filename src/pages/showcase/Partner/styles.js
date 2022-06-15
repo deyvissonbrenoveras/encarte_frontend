@@ -110,7 +110,6 @@ export default makeStyles((theme) => ({
     width: '100%',
     maxWidth: 900,
     height: '90vh',
-    // margin: 10,
     backgroundColor: '#fff',
     overflow: 'scroll',
     padding: 0,
@@ -118,7 +117,6 @@ export default makeStyles((theme) => ({
   productModalGrid: {
     height: '100%',
     textAlign: 'center',
-    // marginTop: 15,
     marginBottom: 30,
     padding: '0 20px',
   },

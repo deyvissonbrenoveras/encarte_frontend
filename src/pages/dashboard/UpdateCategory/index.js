@@ -10,7 +10,6 @@ import Input from '../../../components/Input';
 
 import { updateCategoryRequest } from '../../../store/modules/category/actions';
 import api from '../../../services/api';
-// import { Container } from './styles';
 
 function UpdateCategory({ match }) {
   const { id } = match.params;

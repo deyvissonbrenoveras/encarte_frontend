@@ -33,13 +33,15 @@ const NewCategory = lazy(() => import('../pages/dashboard/NewCategory'));
 const Categories = lazy(() => import('../pages/dashboard/Categories'));
 const UpdateCategory = lazy(() => import('../pages/dashboard/UpdateCategory'));
 const Products = lazy(() => import('../pages/dashboard/Products'));
-
+const Logs = lazy(() => import('../pages/dashboard/Logs'));
 // SHOWCASE
 const Store = lazy(() => import('../pages/showcase/Store'));
 const Product = lazy(() => import('../pages/showcase/Product'));
 const Info = lazy(() => import('../pages/showcase/Info'));
 const Partner = lazy(() => import('../pages/showcase/Partner'));
 const Cart = lazy(() => import('../pages/showcase/Cart'));
+
+const NotFound = lazy(() => import('../pages/NotFound'));
 
 function Routes() {
   return (
@@ -187,6 +189,14 @@ function Routes() {
           component={UpdateUser}
           layout={DashboardLayout}
         />
+        <Route
+          exact
+          privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
+          path="/logs"
+          component={Logs}
+          layout={DashboardLayout}
+        />
+        <Route path="*" component={NotFound} layout={MainLayout}  />
       </Switch>
     </Suspense>
   );

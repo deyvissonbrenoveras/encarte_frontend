@@ -17,12 +17,7 @@ const CheckboxInput = ({ name, options, label, ...rest }) => {
           .filter((ref) => ref.checked)
           .map((ref) => Number(ref.value));
       },
-      clearValue: (/* refs */) => {
-        // refs.forEach((ref) => {
-        //   ref.checked = false;
-        // });
-        // não faz nada devido ao resetform
-      },
+      clearValue: () => {},
       setValue: (refs, values) => {
         refs.forEach((ref) => {
           if (

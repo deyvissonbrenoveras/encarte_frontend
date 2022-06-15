@@ -1,21 +1,3 @@
-// import React from 'react';
-// import {
-//   TableContainer,
-//   Table,
-//   TableHead,
-//   TableRow,
-//   TableCell,
-//   TableBody,
-//   Paper,
-//   Avatar,
-//   Typography,
-// } from '@material-ui/core';
-
-// function CustomTable() {
-//   return <div />;
-// }
-
-// export default CustomTable;
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -212,6 +194,7 @@ export default function EnhancedTable({
   actionLabel,
   actionCallback,
   selectionEnabled,
+  initialRowsPerPage = 5,
 }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -219,7 +202,7 @@ export default function EnhancedTable({
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(initialRowsPerPage);
   const [searchResult, setSearchResult] = React.useState(null);
 
   function handleSearch(e) {
@@ -376,14 +359,6 @@ export default function EnhancedTable({
                         </TableCell>
                       )}
 
-                      {/* <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.name}
-                      </TableCell> */}
                       {headCells.map((headCell) => {
                         if (headCell.type === 'image') {
                           return (
@@ -423,10 +398,6 @@ export default function EnhancedTable({
                           </TableCell>
                         );
                       })}
-                      {/* <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell> */}
                     </TableRow>
                   );
                 })}

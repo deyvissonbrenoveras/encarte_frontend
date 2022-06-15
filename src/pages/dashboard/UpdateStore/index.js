@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
@@ -38,6 +38,7 @@ import { formatPrice } from '../../../util/format';
 
 import { updateStoreRequest } from '../../../store/modules/store/actions';
 import { disassociateProductsFromStore } from '../../../store/modules/product/actions';
+import PrivilegeEnum from '../../../util/PrivilegeEnum';
 
 const useStyles = makeStyles({
   root: {
@@ -51,6 +52,14 @@ function UpdateStore({ match }) {
   const [store, setStore] = useState({});
   const [tabIndex, setTabIndex] = useState(0);
   const formRef = useRef(null);
+
+  const [userNotAdmin, setUserNotAdmin] = useState(false);
+  const userProfile = useSelector((state) => state.profile.profile);
+
+  useEffect(() => {
+    setUserNotAdmin(userProfile.privilege > PrivilegeEnum.SYSTEM_ADMINISTRATOR);
+  }, [userProfile]);
+
   function getStore() {
     async function execGetStore() {
       setLoading(true);
@@ -69,7 +78,6 @@ function UpdateStore({ match }) {
   }
   useEffect(getStore, [tabIndex, id]);
   async function submitHandle(data) {
-    console.log(data);
     try {
       formRef.current.setErrors({});
 
@@ -173,7 +181,7 @@ function UpdateStore({ match }) {
           >
             <Tab label="Editar Loja" />
             <Tab label="Produtos" />
-            <Tab label="Parceiros" />
+            {!userNotAdmin && <Tab label="Parceiros" />}
           </Tabs>
           <TabPanel value={tabIndex} index={0}>
             <Form ref={formRef} onSubmit={submitHandle}>
@@ -184,7 +192,12 @@ function UpdateStore({ match }) {
                   style={{ marginBottom: 20 }}
                 >
                   <Grid item xs={12} lg={3} style={{ margin: 10 }}>
-                    <Img name="logo" submitName="logoId" label="Logo:" />
+                    <Img
+                      name="logo"
+                      submitName="logoId"
+                      label="Logo:"
+                      readOnly={userNotAdmin}
+                    />
                   </Grid>
                   <Grid item xs={12} lg={3} style={{ margin: 10 }}>
                     <Img
@@ -192,6 +205,7 @@ function UpdateStore({ match }) {
                       submitName="coverId"
                       label="Imagem da campanha:"
                       showRemoveButton
+                      readOnly={userNotAdmin}
                     />
                   </Grid>
                   <Grid item xs={12} lg={3} style={{ margin: 10 }}>
@@ -200,42 +214,59 @@ function UpdateStore({ match }) {
                       submitName="secondaryCoverId"
                       label="Imagem secundária da campanha:"
                       showRemoveButton
+                      readOnly={userNotAdmin}
                     />
                   </Grid>
                 </Grid>
                 <Grid item xs={12} sm={6} lg={5}>
-                  <CheckboxInput name="active" label="Ativo" />
+                  <CheckboxInput
+                    name="active"
+                    label="Ativo"
+                    readOnly={userNotAdmin}
+                  />
                   <Input
                     name="name"
                     placeholder="Insira o nome da loja"
                     label="Nome:"
+                    readOnly={userNotAdmin}
                   />
-                  <Input name="url" placeholder="Insira a URL" label="URL:" />
+                  <Input
+                    name="url"
+                    placeholder="Insira a URL"
+                    label="URL:"
+                    readOnly={userNotAdmin}
+                  />
                   <Input
                     name="address"
                     placeholder="Insira o endereço"
                     label="Endereço:"
+                    readOnly={userNotAdmin}
                   />
                   <Input
                     name="city"
                     placeholder="Insira a cidade"
                     label="Cidade:"
+                    readOnly={userNotAdmin}
                   />
                   <ColorPicker
                     name="primaryColor"
                     label="Selecione a cor primária:"
+                    readOnly={userNotAdmin}
                   />
                   <ColorPicker
                     name="secondaryColor"
                     label="Selecione a cor secundária:"
+                    readOnly={userNotAdmin}
                   />
                   <ColorPicker
                     name="tertiaryColor"
                     label="Selecione a cor terciária:"
+                    readOnly={userNotAdmin}
                   />
                   <ColorPicker
                     name="quaternaryColor"
                     label="Selecione a cor quaternária:"
+                    readOnly={userNotAdmin}
                   />
                 </Grid>
 
@@ -244,47 +275,54 @@ function UpdateStore({ match }) {
                     name="phone"
                     placeholder="Insira o telefone"
                     label="Telefone:"
+                    readOnly={userNotAdmin}
                   />
 
                   <Input
                     name="whatsapp"
                     placeholder="Insira o Whatsapp"
                     label="Whatsapp:"
+                    readOnly={userNotAdmin}
                   />
                   <Input
                     name="instagram"
                     placeholder="Insira o Instagram"
                     label="Instagram:"
+                    readOnly={userNotAdmin}
                   />
                   <Input
                     name="facebook"
                     placeholder="Insira o Facebook"
                     label="Facebook:"
+                    readOnly={userNotAdmin}
                   />
                   <Input
                     name="shelfLifeStart"
                     label="Data início da validade do e-ncarte:"
                     type="date"
+                    readOnly={userNotAdmin}
                   />
                   <Input
                     name="shelfLifeEnd"
                     label="Data fim da validade do e-ncarte:"
                     type="date"
+                    readOnly={userNotAdmin}
                   />
                 </Grid>
-
-                <Box m={2} width="100%" textAlign="right">
-                  <Button variant="contained" color="primary" type="submit">
-                    Salvar
-                  </Button>
-                </Box>
+                {!userNotAdmin && (
+                  <Box m={2} width="100%" textAlign="right">
+                    <Button variant="contained" color="primary" type="submit">
+                      Salvar
+                    </Button>
+                  </Box>
+                )}
               </Grid>
             </Form>
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
             <CustomTable
               label="Produtos"
-              selectionEnabled
+              selectionEnabled={!userNotAdmin}
               headCells={[
                 {
                   id: 'id',

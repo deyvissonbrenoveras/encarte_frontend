@@ -14,6 +14,7 @@ const CheckboxList = ({
   numberFieldLabel,
   numberFieldPlaceholder,
   hideAllPriceInputs,
+  disableCheckBox,
   ...rest
 }) => {
   const inputRefs = useRef([]);
@@ -76,7 +77,6 @@ const CheckboxList = ({
                       defaultValue={option.customPrice}
                       type="number"
                       placeholder={numberFieldPlaceholder}
-                      //label={numberFieldLabel}
                       size="small"
                       inputRef={(ref) => (priceRefs.current[index] = ref)}
                       inputProps={{ step: 'any', min: 0.01 }}
@@ -95,6 +95,7 @@ const CheckboxList = ({
                 ref={(ref) => {
                   inputRefs.current[index] = ref;
                 }}
+                disabled={disableCheckBox}
                 value={option.value}
                 type="checkbox"
                 id={option.id}

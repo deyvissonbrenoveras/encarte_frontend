@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
@@ -16,6 +16,7 @@ import Select from '../../../components/Select';
 import RadioGroup from '../../../components/RadioInputGroup';
 import { updateProductRequest } from '../../../store/modules/product/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
+import PrivilegeEnum from '../../../util/PrivilegeEnum';
 import api from '../../../services/api';
 
 function UpdateProduct({ match }) {
@@ -33,6 +34,14 @@ function UpdateProduct({ match }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   const [showPriceInput, setShowPriceInput] = useState(true);
+
+  const [userNotAdmin, setUserNotAdmin] = useState(false);
+  const userProfile = useSelector((state) => state.profile.profile);
+
+  useEffect(() => {
+    setUserNotAdmin(userProfile.privilege > PrivilegeEnum.SYSTEM_ADMINISTRATOR);
+  }, [userProfile]);
+
   const getData = useCallback(async () => {
     try {
       setLoadingProduct(true);
@@ -126,13 +135,19 @@ function UpdateProduct({ match }) {
         });
       const productPartners = partners.map((partner) => Number(partner.id));
 
-      const removePartners = productPartners.filter(
-        (partner) => !data.partners.includes(partner)
-      );
+      let removePartners = [];
+      let addPartners = [];
 
-      const addPartners = data.partners.filter((partner) => {
-        return !productPartners.includes(partner);
-      });
+      if (!userNotAdmin) {
+        removePartners = productPartners.filter(
+          (partner) => !data.partners.includes(partner)
+        );
+
+        addPartners = data.partners.filter((partner) => {
+          return !productPartners.includes(partner);
+        });
+      }
+
       dispatch(
         updateProductRequest(
           id,
@@ -143,6 +158,7 @@ function UpdateProduct({ match }) {
           addPartners
         )
       );
+
       getData();
     } catch (err) {
       const validationErrors = {};
@@ -162,13 +178,23 @@ function UpdateProduct({ match }) {
 
       <Grid container justify="space-around">
         <Grid item xs={12} md={4}>
-          <Img name="image" submitName="fileId" label="Imagem:" />
-          <CheckboxInput name="featured" label="Destaque" />
+          <Img
+            name="image"
+            submitName="fileId"
+            label="Imagem:"
+            readOnly={userNotAdmin}
+          />
+          <CheckboxInput
+            name="featured"
+            label="Destaque"
+            readOnly={userNotAdmin}
+          />
 
           <Input
             name="name"
             placeholder="Insira o nome do produto"
             label="Nome:"
+            readOnly={userNotAdmin}
           />
           <RadioGroup
             name="priceType"
@@ -178,6 +204,7 @@ function UpdateProduct({ match }) {
               { label: 'Destacado', value: PriceTypeEnum.FEATURED },
               { label: 'Oferta especial', value: PriceTypeEnum.SPECIAL_OFFER },
             ]}
+            readOnly={userNotAdmin}
             onTypeChange={(type) => {
               setShowPriceInput(type !== PriceTypeEnum.SPECIAL_OFFER);
             }}
@@ -189,6 +216,7 @@ function UpdateProduct({ match }) {
               name="price"
               placeholder="Insira o preço"
               label="Preço:"
+              readOnly={userNotAdmin}
             />
           )}
 
@@ -198,12 +226,14 @@ function UpdateProduct({ match }) {
             label="Descrição:"
             multiline
             rows={4}
+            readOnly={userNotAdmin}
           />
           <Select
             name="categoryId"
             placeholder="Categoria:"
             options={categoryOptions}
             isClearable
+            readOnly={userNotAdmin}
           />
         </Grid>
         <Grid item xs={12} md={7}>
@@ -214,12 +244,15 @@ function UpdateProduct({ match }) {
             numberFieldLabel="Preço: "
             numberFieldPlaceholder="Preço personalizado"
             hideAllPriceInputs={!showPriceInput}
+            disableCheckBox={userNotAdmin}
           />
-          <Checkbox
-            name="partners"
-            options={partnerChoiceOptions}
-            label="Parceiros"
-          />
+          {!userNotAdmin && (
+            <Checkbox
+              name="partners"
+              options={partnerChoiceOptions}
+              label="Parceiros"
+            />
+          )}
         </Grid>
         <Box m={2} width="100%" textAlign="right">
           <Button variant="contained" color="primary" type="submit">

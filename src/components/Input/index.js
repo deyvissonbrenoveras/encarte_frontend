@@ -3,14 +3,21 @@ import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
 import { TextField } from '@material-ui/core';
 
-export default function Input({ name, label, variant, size, type, ...rest }) {
+export default function Input({
+  name,
+  label,
+  variant,
+  size,
+  type,
+  readOnly,
+  ...rest
+}) {
   const inputRef = useRef(null);
 
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
   const [shrink, setShrink] = useState(type === 'date' ? true : !!defaultValue);
   useEffect(() => {
-    // const path = rest.type === 'checkbox' ? 'checked' : 'value';
     registerField({
       name,
       ref: inputRef.current,
@@ -78,7 +85,13 @@ export default function Input({ name, label, variant, size, type, ...rest }) {
         InputLabelProps={{
           shrink,
         }}
-        inputProps={type === 'number' ? { step: 'any' } : {}}
+        inputProps={
+          type === 'number'
+            ? { step: 'any', readOnly }
+            : {
+                readOnly,
+              }
+        }
         {...rest}
       />
       {error && (

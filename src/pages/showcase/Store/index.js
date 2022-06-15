@@ -106,7 +106,6 @@ function Store({ match }) {
         return editingCategory;
       });
 
-    // shelfLifeEnd formatting
     const shelfLifeStart = showcase.shelfLifeStart
       ? format(parseISO(showcase.shelfLifeStart.split('T')[0]), 'dd/MM/yyyy')
       : null;
@@ -178,7 +177,8 @@ function Store({ match }) {
         display="block"
         gutterBottom
       >
-        {`PREÇOS VÁLIDOS DE ${shelfLifeStart} ATÉ ${shelfLifeEnd}.`}
+        <span>{`PREÇOS VÁLIDOS DE ${shelfLifeStart} ATÉ ${shelfLifeEnd}`}</span>
+        <span>OU ENQUANTO DURAR O ESTOQUE.</span>
       </Typography>
     );
   }
