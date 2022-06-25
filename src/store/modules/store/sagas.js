@@ -20,6 +20,23 @@ export function* loadStoresRequest({ payload }) {
   }
 }
 
+export function* filterStoresRequest({ payload }) {
+  const city = payload;
+  try {
+    const response = yield call(api.get, 'locations', {
+      params: { locationName: city },
+    });
+    yield put(loadStoresSuccess(response.data));
+  } catch (err) {
+    yield put(storeFailure());
+    toast.error(
+      err.response.data
+        ? err.response.data.error
+        : 'Houve um erro ao buscar as lojas.'
+    );
+  }
+}
+
 export function* addStoreRequest({ payload, successCb }) {
   try {
     yield call(api.post, 'stores', payload);
@@ -47,5 +64,6 @@ export function* updateStoreRequest({ payload }) {
 export default all([
   takeLatest('@store/ADD_REQUEST', addStoreRequest),
   takeLatest('@store/LOAD_STORES_REQUEST', loadStoresRequest),
+  takeLatest('@store/FILTER_STORES_REQUEST', filterStoresRequest),
   takeLatest('@store/UPDATE_REQUEST', updateStoreRequest),
 ]);
