@@ -3,6 +3,7 @@ import produce from 'immer';
 const INITIAL_STATE = {
   loading: false,
   stores: [],
+  city: {}
 };
 export default function store(state = INITIAL_STATE, action) {
   switch (action.type) {
