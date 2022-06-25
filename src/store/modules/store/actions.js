@@ -10,6 +10,12 @@ export function loadStoresSuccess(stores) {
     payload: stores,
   };
 }
+export function filterStoresRequest(city) {
+  return {
+    type: '@store/FILTER_STORES_REQUEST',
+    payload: city,
+  };
+}
 export function addStoreRequest(store, successCb) {
   return {
     type: '@store/ADD_REQUEST',
