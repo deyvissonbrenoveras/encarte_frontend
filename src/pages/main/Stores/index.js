@@ -14,6 +14,9 @@ import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
 
+//utils
+import { getLocation } from '../../../util/getLocation'
+
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
 
@@ -25,10 +28,26 @@ export default function Stores() {
 
   const { stores, loading } = useSelector((state) => state.store);
   const [storesFound, setStoresFound] = useState(null);
-
+ 
   useState(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+    }
     dispatch(loadStoresRequest());
   }, []);
+
+  //Get the latitude and the longitude;
+  async function successFunction(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    var location = await getLocation(lng, lat);
+    console.log(location)
+  }
+
+  function errorFunction() {
+    alert("Geocoder failed");
+  }
+
   function handleSearch(e) {
     if (e.target.value.length === 0) {
       setStoresFound(null);
@@ -86,10 +105,10 @@ export default function Stores() {
           </Grid>
           {storesFound !== null
             ? storesFound.map((store) => (
-                <StoreCard key={store.id} store={store} />
-              ))
+              <StoreCard key={store.id} store={store} />
+            ))
             : stores &&
-              stores.map((store) => <StoreCard key={store.id} store={store} />)}
+            stores.map((store) => <StoreCard key={store.id} store={store} />)}
         </Grid>
       </Grid>
     </Grid>
