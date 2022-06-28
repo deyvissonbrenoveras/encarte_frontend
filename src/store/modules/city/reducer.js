@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 };
 export default function city(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case '@city/LOAD_STORES_SUCCESS':
+    case '@city/LOAD_CITIES_SUCCESS':
       return produce(state, (draft) => {
         draft.cities = action.payload;
         draft.loading = true;

@@ -5,7 +5,7 @@ export function loadCitiesRequest() {
 }
 export function loadCitiesSuccess(cities) {
   return {
-    type: '@city/LOAD_STORES_SUCCESS',
+    type: '@city/LOAD_CITIES_SUCCESS',
     payload: cities,
   };
 }
