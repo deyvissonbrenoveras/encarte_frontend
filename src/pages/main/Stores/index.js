@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
+import { loadCitiesRequest } from '../../../store/modules/city/actions'
 
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
@@ -24,9 +25,11 @@ export default function Stores() {
   const dispatch = useDispatch();
 
   const { stores, loading } = useSelector((state) => state.store);
+  const { cities } = useSelector((state) => state.city);
   const [storesFound, setStoresFound] = useState(null);
 
   useState(() => {
+    dispatch(loadCitiesRequest());
     dispatch(loadStoresRequest());
   }, []);
   function handleSearch(e) {
