@@ -58,7 +58,7 @@ export default function Stores() {
         <Box className={classes.stickyTop} width="100%" textAlign="left">
           <img src={logo} alt="e-ncarte" className={classes.logo} />
         </Box>
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs={12} className={classes.search}>
             <div className={classes.ContainerButtons}>
               <TextField
@@ -103,12 +103,14 @@ export default function Stores() {
           <Typography className={classes.subtitle}>
             Supermercados encontrados:
           </Typography>
-          {storesFound !== null
-            ? storesFound.map((store) => (
-              <StoreCard key={store.id} store={store} />
-            ))
-            : stores &&
-            stores.map((store) => <StoreCard key={store.id} store={store} />)}
+          <Grid container spacing={2}>
+            {storesFound !== null
+              ? storesFound.map((store) => (
+                <StoreCard key={store.id} store={store} />
+              ))
+              : stores &&
+              stores.map((store) => <StoreCard key={store.id} store={store} />)}
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
