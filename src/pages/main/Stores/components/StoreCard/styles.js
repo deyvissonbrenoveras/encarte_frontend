@@ -2,15 +2,11 @@ import { makeStyles } from '@material-ui/core';
 import { darken } from 'polished';
 
 export default makeStyles((theme) => ({
-    grid: {
-        margin: '.2rem',
-        background: '#FFF',
-        borderRadius: '7px',
-        boxShadow: '3px 5px 14px -2px rgba(0,0,0,0.46)'
-        
-    },
     storeCard: {
         height: 370,
+        borderRadius: '7px',
+        boxShadow: '3px 5px 14px -2px rgba(0,0,0,0.46)',
+        background: '#FFF',
         
         display: 'flex',
         flexDirection: 'column',
