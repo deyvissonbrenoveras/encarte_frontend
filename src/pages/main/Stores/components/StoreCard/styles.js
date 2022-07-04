@@ -41,10 +41,10 @@ export default makeStyles((theme) => ({
                 fontSize: '2rem'
             },
 
-            background: '#ED2F55',
-            border:'none',
+            background: '#fff',
+            border: '2px solid #4d4d4d',
             padding: '0.8rem 1.4rem',
-            color: '#fff',
+            color: '#4d4d4d',
             borderRadius: '4px',
             marginTop: '4px',
 
