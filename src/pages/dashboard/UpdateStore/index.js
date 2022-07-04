@@ -33,6 +33,7 @@ import Img from '../../../components/Img';
 import CheckboxInput from '../../../components/CheckboxInput';
 import LoadingIcon from '../../../components/LoadingIcon';
 import ColorPicker from '../../../components/ColorPicker';
+import Select from '../../../components/Select';
 
 import { formatPrice } from '../../../util/format';
 
@@ -56,15 +57,39 @@ function UpdateStore({ match }) {
   const [userNotAdmin, setUserNotAdmin] = useState(false);
   const userProfile = useSelector((state) => state.profile.profile);
 
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
   useEffect(() => {
     setUserNotAdmin(userProfile.privilege > PrivilegeEnum.SYSTEM_ADMINISTRATOR);
   }, [userProfile]);
+
+  async function getStates() {
+    const response = await api.get('locations/states');
+    const stateOptions = response.data.map((state) => ({
+      value: state.uf,
+      label: state.name,
+    }));
+
+    setStates(stateOptions);
+  }
+
+  async function getCities(state) {
+    const response = await api.get('locations/cities', { params: { state } });
+    const cityOptions = response.data.map((city) => ({
+      value: city.id,
+      label: city.name,
+    }));
+
+    setCities(cityOptions);
+  }
 
   function getStore() {
     async function execGetStore() {
       setLoading(true);
 
       try {
+        getStates();
         const response = await api.get(`store`, { params: { id } });
         setLoading(false);
         setStore(response.data);
@@ -242,10 +267,21 @@ function UpdateStore({ match }) {
                     label="Endereço:"
                     readOnly={userNotAdmin}
                   />
-                  <Input
-                    name="city"
-                    placeholder="Insira a cidade"
-                    label="Cidade:"
+                  <Select
+                    name="stateId"
+                    placeholder="Estado:"
+                    options={states}
+                    isClearable
+                    onChange={(e) => {
+                      if (e) getCities(e.value);
+                    }}
+                    readOnly={userNotAdmin}
+                  />
+                  <Select
+                    name="cityId"
+                    placeholder="Cidade:"
+                    options={cities}
+                    isClearable
                     readOnly={userNotAdmin}
                   />
                   <ColorPicker
