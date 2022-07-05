@@ -8,6 +8,7 @@ export default makeStyles((theme) => ({
         boxShadow: '3px 5px 14px -2px rgba(0,0,0,0.46)',
         background: '#FFF',
 
+        marginBottom: '.5rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -29,6 +30,8 @@ export default makeStyles((theme) => ({
             minHeight: '70%',
             borderTopLeftRadius: '5px',
             borderTopRightRadius: '5px',
+            objectFit: 'contain',
+            padding: '5px'
         },
         '& h3': {
             fontSize: 14,
