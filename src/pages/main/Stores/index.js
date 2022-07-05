@@ -54,11 +54,11 @@ export default function Stores() {
     <LoadingIcon />
   ) : (
     <Grid container justify="center" className={classes.container}>
-      <Grid item xs={12} lg={8}>
+      <Grid item xs={12} lg={8} style={{ height: '100vh' }}>
         <Box className={classes.stickyTop} width="100%" textAlign="left">
           <img src={logo} alt="e-ncarte" className={classes.logo} />
         </Box>
-        <Grid container spacing={2}>
+        <Grid container>
           <Grid item xs={12} className={classes.search}>
             <div className={classes.ContainerButtons}>
               <TextField
@@ -103,7 +103,7 @@ export default function Stores() {
           <Typography className={classes.subtitle}>
             Supermercados encontrados:
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} className={classes.containerStores}>
             {storesFound !== null
               ? storesFound.map((store) => (
                 <StoreCard key={store.id} store={store} />
