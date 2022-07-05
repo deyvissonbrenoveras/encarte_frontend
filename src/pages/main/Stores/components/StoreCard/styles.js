@@ -4,10 +4,10 @@ import { darken } from 'polished';
 export default makeStyles((theme) => ({
     storeCard: {
         height: 370,
-        borderRadius: '7px',
+        width: '33%',
         boxShadow: '3px 5px 14px -2px rgba(0,0,0,0.46)',
         background: '#FFF',
-        
+
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -23,11 +23,12 @@ export default makeStyles((theme) => ({
         },
         '& img': {
             width: '100%',
+            height: 'auto',
             maxHeight: '70%',
             minWidth: '70%',
             minHeight: '70%',
             borderTopLeftRadius: '5px',
-            borderTopRightRadius: '5px'
+            borderTopRightRadius: '5px',
         },
         '& h3': {
             fontSize: 14,
@@ -54,7 +55,18 @@ export default makeStyles((theme) => ({
             fontWeight: '600',
             height: '3rem',
         },
-        
+        [theme.breakpoints.down('sm')]: {
+            width: '49%',
+            marginBottom: '.6rem',
+            '& img': {
+                objectFit: 'contain',
+            }
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            height: 457,
+        },
+
     },
     bodyCard: {
         display: 'flex',

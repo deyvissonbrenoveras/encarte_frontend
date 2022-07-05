@@ -14,7 +14,7 @@ export function StoreCard({ store }) {
     const classes = useStyle();
     
     return (
-        <Grid item xs={6} md={4}>
+        // <Grid item xs={6} md={4}>
             <Link to={`loja/${store.url}`} className={classes.storeCard}>
                 <img
                     src={store.logo ? store.logo.url : ''}
@@ -27,7 +27,7 @@ export function StoreCard({ store }) {
                     <button>Visitar <BsArrowRightShort /></button>
                 </div>
             </Link>
-        </Grid>
+        // </Grid>
     );
 }
 
