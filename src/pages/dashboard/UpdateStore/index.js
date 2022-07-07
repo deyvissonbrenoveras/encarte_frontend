@@ -57,28 +57,17 @@ function UpdateStore({ match }) {
   const [userNotAdmin, setUserNotAdmin] = useState(false);
   const userProfile = useSelector((state) => state.profile.profile);
 
-  const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
     setUserNotAdmin(userProfile.privilege > PrivilegeEnum.SYSTEM_ADMINISTRATOR);
   }, [userProfile]);
 
-  async function getStates() {
-    const response = await api.get('locations/states');
-    const stateOptions = response.data.map((state) => ({
-      value: state.uf,
-      label: state.name,
-    }));
-
-    setStates(stateOptions);
-  }
-
   async function getCities(state) {
-    const response = await api.get('locations/cities', { params: { state } });
+    const response = await api.get('locations/cities');
     const cityOptions = response.data.map((city) => ({
       value: city.id,
-      label: city.name,
+      label: `${city.name} - ${city.state.uf}`,
     }));
 
     setCities(cityOptions);
@@ -89,7 +78,7 @@ function UpdateStore({ match }) {
       setLoading(true);
 
       try {
-        getStates();
+        getCities();
         const response = await api.get(`store`, { params: { id } });
         setLoading(false);
         setStore(response.data);
@@ -114,12 +103,17 @@ function UpdateStore({ match }) {
           .max(50, 'Máximo de 50 caracteres')
           .required('A URL é obrigatória'),
         address: Yup.string().max(100, 'Máximo de 100 caracteres'),
-        city: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        cityId: Yup.number()
+          .positive()
+          .required('A cidade é obrigatória')
+          .typeError('A cidade é obrigatória'),
         phone: Yup.string().max(100, 'Máximo de 100 caracteres'),
         whatsapp: Yup.string().max(100, 'Máximo de 100 caracteres'),
         instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
         facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
-        logoId: Yup.number().required('Selecione uma logo'),
+        logoId: Yup.number()
+          .required('Selecione uma logo')
+          .typeError('Selecione uma logo'),
         coverId: Yup.number().nullable(),
         secondaryCoverId: Yup.number().nullable(),
         active: Yup.boolean(),
@@ -265,16 +259,6 @@ function UpdateStore({ match }) {
                     name="address"
                     placeholder="Insira o endereço"
                     label="Endereço:"
-                    readOnly={userNotAdmin}
-                  />
-                  <Select
-                    name="stateId"
-                    placeholder="Estado:"
-                    options={states}
-                    isClearable
-                    onChange={(e) => {
-                      if (e) getCities(e.value);
-                    }}
                     readOnly={userNotAdmin}
                   />
                   <Select

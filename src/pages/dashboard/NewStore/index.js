@@ -1,18 +1,48 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
 
 import { useDispatch } from 'react-redux';
 
+import { toast } from 'react-toastify';
+import api from '../../../services/api';
 import { Form } from '@unform/web';
 import { Grid, Box, Button, Typography } from '@material-ui/core';
 import Input from '../../../components/Input';
 import ColorPicker from '../../../components/ColorPicker';
+import Select from '../../../components/Select';
+import LoadingIcon from '../../../components/LoadingIcon';
 import Img from '../../../components/Img';
 import { addStoreRequest } from '../../../store/modules/store/actions';
 
 function NewStore() {
   const dispatch = useDispatch();
   const formRef = useRef();
+
+  const [loading, setLoading] = useState(true);
+  const [cities, setCities] = useState([]);
+
+  async function getCities(state) {
+    async function execGetCities() {
+      try {
+        const response = await api.get('locations/cities');
+        const cityOptions = response.data.map((city) => ({
+          value: city.id,
+          label: `${city.name} - ${city.state.uf}`,
+        }));
+
+        setCities(cityOptions);
+        setLoading(false);
+      } catch (err) {
+        toast.error('Houve um erro ao carregar as informações da loja');
+        setLoading(false);
+      }
+    }
+    execGetCities();
+  }
+
+  useEffect(() => {
+    getCities();
+  }, []);
 
   async function handleSubmit(data) {
     try {
@@ -25,12 +55,17 @@ function NewStore() {
           .max(50, 'Máximo de 50 caracteres')
           .required('A URL é obrigatória'),
         address: Yup.string().max(100, 'Máximo de 100 caracteres'),
-        city: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        cityId: Yup.number()
+          .positive()
+          .required('A cidade é obrigatória')
+          .typeError('A cidade é obrigatória'),
         phone: Yup.string().max(100, 'Máximo de 100 caracteres'),
         whatsapp: Yup.string().max(100, 'Máximo de 100 caracteres'),
         instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
         facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
-        logoId: Yup.number().required('Selecione uma logo'),
+        logoId: Yup.number()
+          .required('Selecione uma logo')
+          .typeError('Selecione uma logo'),
         coverId: Yup.number().nullable(),
         secondaryCoverId: Yup.number().nullable(),
         shelfLifeStart: Yup.date('Data inválida').nullable(),
@@ -80,7 +115,9 @@ function NewStore() {
       }
     }
   }
-  return (
+  return loading ? (
+    <LoadingIcon />
+  ) : (
     <Form ref={formRef} onSubmit={handleSubmit}>
       <Typography align="center" variant="h5">
         Nova loja
@@ -119,7 +156,12 @@ function NewStore() {
             placeholder="Insira o endereço"
             label="Endereço:"
           />
-          <Input name="city" placeholder="Insira a cidade" label="Cidade:" />
+          <Select
+            name="cityId"
+            placeholder="Cidade:"
+            options={cities}
+            isClearable
+          />
           <ColorPicker
             name="primaryColor"
             label="Selecione a cor primária:"
