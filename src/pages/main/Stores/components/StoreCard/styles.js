@@ -66,8 +66,8 @@ export default makeStyles((theme) => ({
             }
         },
         [theme.breakpoints.down('xs')]: {
-            width: '100%',
-            height: 457,
+            width: '49%',
+            padding: '0px'
         },
 
     },
@@ -92,7 +92,15 @@ export default makeStyles((theme) => ({
             lineHeight: '1rem',
             color: 'rgb(66, 70, 77)',
             height: '3rem',
-        }
+        },
+        [theme.breakpoints.down('xs')]: {
+            '& span': {
+                display: 'none'
+            },
+            '& label': {
+                fontSize: '1rem',
+            },
+        },
     },
     imgStore: {
         width: '100%',

@@ -65,10 +65,6 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    [theme.breakpoints.down('md')]: {
-      // background: 'orange'
-
-    },
     [theme.breakpoints.down('sm')]: {
       margin: '.5rem',
       padding: '0px 1.2rem',
@@ -76,8 +72,10 @@ export default makeStyles((theme) => ({
       flexWrap: 'wrap',
     },
     [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
-      alignItems: 'center',
+      width: '100%',
+      flexDirection: 'row',
+      margin: '0px',
+      padding: '0px 5px'
     },
   }
 }));
