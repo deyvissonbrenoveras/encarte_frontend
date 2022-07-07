@@ -22,7 +22,7 @@ export function StoreCard({ store }) {
                     className={classes.imgStore}
                 />
                 <div className={classes.bodyCard}>
-                    <label>{store.name}</label>
+                    <p>{store.name}</p>
                     <span>Endereço: {store.address}</span>
                     <button>Visitar <BsArrowRightShort /></button>
                 </div>
