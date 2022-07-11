@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const Select = ({ name, readOnly, ...rest }) => {
   const selectRef = useRef(null);
-  const { fieldName, defaultValue, registerField } = useField(name);
+  const { fieldName, defaultValue, registerField, error } = useField(name);
   useEffect(() => {
     registerField({
       name: fieldName,
@@ -34,13 +34,18 @@ const Select = ({ name, readOnly, ...rest }) => {
     });
   }, [fieldName, registerField, rest.isMulti]);
   return (
-    <ReactSelect
-      defaultValue={defaultValue}
-      ref={selectRef}
-      classNamePrefix="react-select"
-      isDisabled={readOnly}
-      {...rest}
-    />
+    <>
+      <ReactSelect
+        defaultValue={defaultValue}
+        ref={selectRef}
+        classNamePrefix="react-select"
+        isDisabled={readOnly}
+        {...rest}
+      />
+      {error && (
+        <span style={{ color: '#ff0000', display: 'block' }}>{error}</span>
+      )}
+    </>
   );
 };
 export default Select;

@@ -33,6 +33,7 @@ import Img from '../../../components/Img';
 import CheckboxInput from '../../../components/CheckboxInput';
 import LoadingIcon from '../../../components/LoadingIcon';
 import ColorPicker from '../../../components/ColorPicker';
+import Select from '../../../components/Select';
 
 import { formatPrice } from '../../../util/format';
 
@@ -56,15 +57,28 @@ function UpdateStore({ match }) {
   const [userNotAdmin, setUserNotAdmin] = useState(false);
   const userProfile = useSelector((state) => state.profile.profile);
 
+  const [cities, setCities] = useState([]);
+
   useEffect(() => {
     setUserNotAdmin(userProfile.privilege > PrivilegeEnum.SYSTEM_ADMINISTRATOR);
   }, [userProfile]);
+
+  async function getCities(state) {
+    const response = await api.get('locations/cities');
+    const cityOptions = response.data.map((city) => ({
+      value: city.id,
+      label: `${city.name} - ${city.state.uf}`,
+    }));
+
+    setCities(cityOptions);
+  }
 
   function getStore() {
     async function execGetStore() {
       setLoading(true);
 
       try {
+        getCities();
         const response = await api.get(`store`, { params: { id } });
         setLoading(false);
         setStore(response.data);
@@ -89,12 +103,17 @@ function UpdateStore({ match }) {
           .max(50, 'Máximo de 50 caracteres')
           .required('A URL é obrigatória'),
         address: Yup.string().max(100, 'Máximo de 100 caracteres'),
-        city: Yup.string().max(100, 'Máximo de 100 caracteres'),
+        cityId: Yup.number()
+          .positive()
+          .required('A cidade é obrigatória')
+          .typeError('A cidade é obrigatória'),
         phone: Yup.string().max(100, 'Máximo de 100 caracteres'),
         whatsapp: Yup.string().max(100, 'Máximo de 100 caracteres'),
         instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
         facebook: Yup.string().max(100, 'Máximo de 100 caracteres'),
-        logoId: Yup.number().required('Selecione uma logo'),
+        logoId: Yup.number()
+          .required('Selecione uma logo')
+          .typeError('Selecione uma logo'),
         coverId: Yup.number().nullable(),
         secondaryCoverId: Yup.number().nullable(),
         active: Yup.boolean(),
@@ -242,10 +261,11 @@ function UpdateStore({ match }) {
                     label="Endereço:"
                     readOnly={userNotAdmin}
                   />
-                  <Input
-                    name="city"
-                    placeholder="Insira a cidade"
-                    label="Cidade:"
+                  <Select
+                    name="cityId"
+                    placeholder="Cidade:"
+                    options={cities}
+                    isClearable
                     readOnly={userNotAdmin}
                   />
                   <ColorPicker
