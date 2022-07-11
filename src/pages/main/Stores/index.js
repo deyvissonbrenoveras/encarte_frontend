@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Grid,
   TextField,
@@ -7,9 +6,15 @@ import {
   Typography,
   Box,
 } from '@material-ui/core';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import { useSelector, useDispatch } from 'react-redux';
+import { StoreCard } from './components/StoreCard'
+//icons 
+import { HiOutlineLocationMarker } from 'react-icons/hi'
 
-import { Link } from 'react-router-dom';
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
@@ -27,6 +32,7 @@ export default function Stores() {
   const { stores, loading } = useSelector((state) => state.store);
   const { cities } = useSelector((state) => state.city);
   const [storesFound, setStoresFound] = useState(null);
+  const [filterLocation, setFilterLocation] = useState(null);
 
   useState(() => {
     dispatch(loadCitiesRequest());
@@ -46,53 +52,68 @@ export default function Stores() {
       setStoresFound(strs);
     }
   }
-  function StoreCard({ store }) {
-    return (
-      <Grid item xs={6} lg={4} className={classes.grid}>
-        <Link to={`loja/${store.url}`} className={classes.storeCard}>
-          <img src={store.logo ? store.logo.url : ''} alt={store.name} />
-          <h3>{store.name}</h3>
-        </Link>
-      </Grid>
-    );
-  }
-  StoreCard.propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    store: PropTypes.object.isRequired,
-  };
+
   return loading ? (
     <LoadingIcon />
   ) : (
-    <Grid container justify="center">
-      <Grid item xs={12} lg={6}>
-        <Box className={classes.stickyTop} width="100%" textAlign="center">
+    <Grid container justify="center" className={classes.container}>
+      <Grid item xs={12} lg={8} style={{ height: '100vh' }}>
+        <Box className={classes.stickyTop} width="100%" textAlign="left">
           <img src={logo} alt="e-ncarte" className={classes.logo} />
         </Box>
-        <Typography component="h2" className={classes.subtitle}>
-          Selecione uma loja
-        </Typography>
         <Grid container>
           <Grid item xs={12} className={classes.search}>
-            <TextField
-              onChange={handleSearch}
-              className={classes.searchInput}
-              label="Buscar"
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <div className={classes.ContainerButtons}>
+              <TextField
+                onChange={handleSearch}
+                className={classes.searchInput}
+                label="Buscar"
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Search />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <div className={classes.filterLocationInput}>
+                <FormControl
+                  variant="standard"
+                  sx={{ m: 1 }}
+                  className={classes.selectInputLocation}
+                >
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Filtrar locais <HiOutlineLocationMarker />
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={filterLocation}
+
+                    variant="standard"
+                    onChange={(event) => setFilterLocation(event.target.value)}
+                  >
+                    <MenuItem value=""><em>Selecione a cidade</em></MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
           </Grid>
-          {storesFound !== null
-            ? storesFound.map((store) => (
+          <Typography className={classes.subtitle}>
+            Supermercados encontrados:
+          </Typography>
+          <Grid container spacing={2} className={classes.containerStores}>
+            {storesFound !== null
+              ? storesFound.map((store) => (
                 <StoreCard key={store.id} store={store} />
               ))
-            : stores &&
+              : stores &&
               stores.map((store) => <StoreCard key={store.id} store={store} />)}
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
