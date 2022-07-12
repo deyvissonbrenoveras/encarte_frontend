@@ -63,6 +63,7 @@ export default makeStyles((theme) => ({
             marginBottom: '.6rem',
             '& img': {
                 objectFit: 'contain',
+                minHeight: '50%',
             },
             height: 'auto',
             minHeight: 370,
@@ -81,7 +82,7 @@ export default makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-
+        position: 'relative',
         height: '30%',
         width: '100%',
         padding: '.5rem',
@@ -102,11 +103,21 @@ export default makeStyles((theme) => ({
             height: '3rem',
         },
         [theme.breakpoints.down('xs')]: {
-            '& span': {
-                display: 'none'
+            height: '50%',
+            justifyContent: 'flex-start',
+            '& p': {
+                fontSize: '1.2rem',
+                height: 'auto',
+                marginTop: '1rem'
             },
-            '& label': {
-                fontSize: '1rem',
+            '& span': {
+                height: 'auto',
+                marginTop: '1rem'
+            },
+            '& button': {
+                position: 'absolute',
+                bottom: '4px',
+                width: '94%'
             },
         },
     },
