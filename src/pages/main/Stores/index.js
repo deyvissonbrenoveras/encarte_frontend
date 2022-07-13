@@ -11,9 +11,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useSelector, useDispatch } from 'react-redux';
-import { StoreCard } from './components/StoreCard'
-//icons 
-import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { StoreCard } from './components/StoreCard';
+//icons
+import { HiOutlineLocationMarker } from 'react-icons/hi';
 
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
@@ -87,11 +87,12 @@ export default function Stores() {
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
                     value={filterLocation}
-
                     variant="standard"
                     onChange={(event) => setFilterLocation(event.target.value)}
                   >
-                    <MenuItem value=""><em>Selecione a cidade</em></MenuItem>
+                    <MenuItem value="">
+                      <em>Selecione a cidade</em>
+                    </MenuItem>
                     <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
                     <MenuItem value={30}>Thirty</MenuItem>
@@ -101,15 +102,17 @@ export default function Stores() {
             </div>
           </Grid>
           <Typography className={classes.subtitle}>
-            Supermercados encontrados:
+            Estabelecimentos encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
             {storesFound !== null
               ? storesFound.map((store) => (
-                <StoreCard key={store.id} store={store} />
-              ))
+                  <StoreCard key={store.id} store={store} />
+                ))
               : stores &&
-              stores.map((store) => <StoreCard key={store.id} store={store} />)}
+                stores.map((store) => (
+                  <StoreCard key={store.id} store={store} />
+                ))}
           </Grid>
         </Grid>
       </Grid>
