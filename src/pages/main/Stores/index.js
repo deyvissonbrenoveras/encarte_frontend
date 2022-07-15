@@ -18,7 +18,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
-import { loadCitiesRequest, loadCitiesActiveRequest } from '../../../store/modules/city/actions'
+import { loadCitiesRequest, loadCitiesActiveRequest, filterStoresByCityRequest } from '../../../store/modules/city/actions'
 
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
@@ -30,7 +30,7 @@ export default function Stores() {
   const dispatch = useDispatch();
 
   const { stores, loading } = useSelector((state) => state.store);
-  const { cities } = useSelector((state) => state.city);
+  const stateCity = useSelector((state) => state.city);
   const [storesFound, setStoresFound] = useState(null);
   const [filterLocation, setFilterLocation] = useState(null);
 
@@ -91,15 +91,16 @@ export default function Stores() {
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
                     value={filterLocation}
-
                     variant="standard"
-                    onChange={(event) => setFilterLocation(event.target.value)}
+                    onChange={(event) => {
+                      dispatch(filterStoresByCityRequest(event.target.value))
+                    }}
                   >
                     <MenuItem value=""><em>Selecione a cidade</em></MenuItem>
-                    {cities.map((item) => {
+                    {stateCity.cities.map((item) => {
                       return <MenuItem value={item.cityId}>{item.city.name} - {item.city.state.uf}</MenuItem>
                     })}
-                    
+
                   </Select>
                 </FormControl>
               </div>
@@ -109,12 +110,14 @@ export default function Stores() {
             Supermercados encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
-            {storesFound !== null
-              ? storesFound.map((store) => (
+            {stateCity.stores.length ? (
+              stateCity.stores.map(store => (
                 <StoreCard key={store.id} store={store} />
               ))
-              : stores &&
-              stores.map((store) => <StoreCard key={store.id} store={store} />)}
+            ) : (
+              stores &&
+              stores.map((store) => <StoreCard key={store.id} store={store} />)
+            )}
           </Grid>
         </Grid>
       </Grid>
