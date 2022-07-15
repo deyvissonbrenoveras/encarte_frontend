@@ -18,7 +18,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
-import { loadCitiesRequest } from '../../../store/modules/city/actions'
+import { loadCitiesRequest, loadCitiesActiveRequest } from '../../../store/modules/city/actions'
 
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
@@ -35,9 +35,10 @@ export default function Stores() {
   const [filterLocation, setFilterLocation] = useState(null);
 
   useState(() => {
-    dispatch(loadCitiesRequest());
+    dispatch(loadCitiesActiveRequest());
     dispatch(loadStoresRequest());
   }, []);
+
   function handleSearch(e) {
     if (e.target.value.length === 0) {
       setStoresFound(null);
@@ -95,9 +96,10 @@ export default function Stores() {
                     onChange={(event) => setFilterLocation(event.target.value)}
                   >
                     <MenuItem value=""><em>Selecione a cidade</em></MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {cities.map((item) => {
+                      return <MenuItem value={item.cityId}>{item.city.name} - {item.city.state.uf}</MenuItem>
+                    })}
+                    
                   </Select>
                 </FormControl>
               </div>
