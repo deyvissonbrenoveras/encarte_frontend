@@ -14,6 +14,12 @@ export function loadCitiesActiveSuccess(cities) {
     payload: cities,
   };
 }
+export function filterStoresByCityRequest(cityId) {
+  return {
+    type: '@city/FILTER_STORES_BY_CITY_REQUEST',
+    payload: cityId,
+  };
+}
 export function loadCitiesSuccess(cities) {
   return {
     type: '@city/LOAD_CITIES_SUCCESS',
