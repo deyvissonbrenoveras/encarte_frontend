@@ -33,6 +33,7 @@ export default function Stores() {
   const stateCity = useSelector((state) => state.city);
   const [storesFound, setStoresFound] = useState(null);
   const [filterLocation, setFilterLocation] = useState(null);
+  const [filteredStores, setFilteredStores] = useState([]);
 
   useState(() => {
     dispatch(loadCitiesActiveRequest());
@@ -52,6 +53,14 @@ export default function Stores() {
       });
       setStoresFound(strs);
     }
+  }
+
+  const handleFilterStores = (value) => {
+    if(value == 'TODOS') {
+      setFilterLocation(null)
+    }
+    var storesData = stores.filter(store => store.cityId == value);
+    setFilteredStores(storesData)
   }
 
   return loading ? (
@@ -93,10 +102,12 @@ export default function Stores() {
                     value={filterLocation}
                     variant="standard"
                     onChange={(event) => {
-                      dispatch(filterStoresByCityRequest(event.target.value))
+                      setFilterLocation(event.target.value)
+                      handleFilterStores(event.target.value)
                     }}
                   >
                     <MenuItem value=""><em>Selecione a cidade</em></MenuItem>
+                    <MenuItem value='TODOS'>TODOS</MenuItem>
                     {stateCity.cities.map((item) => {
                       return <MenuItem value={item.cityId}>{item.city.name} - {item.city.state.uf}</MenuItem>
                     })}
@@ -110,8 +121,8 @@ export default function Stores() {
             Supermercados encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
-            {stateCity.stores.length ? (
-              stateCity.stores.map(store => (
+            {(filterLocation != null && filteredStores.length) ? (
+              filteredStores.map(store => (
                 <StoreCard key={store.id} store={store} />
               ))
             ) : (
