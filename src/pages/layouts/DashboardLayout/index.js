@@ -111,6 +111,13 @@ function DashboardLayout({ children }) {
             <ListItemText primary="Lojas" />
           </ListItem>
 
+          <ListItem button component={Link} to="/store-category">
+            <ListItemIcon>
+              <FaBoxOpen className={classes.list} />
+            </ListItemIcon>
+            <ListItemText primary="Categoria lojas" />
+          </ListItem>
+
           {profile && profile.privilege < PrivilegeEnum.STORE_ADMINISTRATOR && (
             <ListItem button component={Link} to="/products">
               <ListItemIcon>
