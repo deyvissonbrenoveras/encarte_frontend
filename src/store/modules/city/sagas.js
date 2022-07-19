@@ -5,17 +5,6 @@ import { loadCitiesSuccess, cityFailure, loadCitiesActiveSuccess } from './actio
 
 export function* loadCitiesRequest() {
   yield put(loadCitiesSuccess([{ id: '1', locationName: 'cajazeiras-pb' }]));
-  // try {
-  //   const response = yield call(api.get, 'locations');
-  //   yield put(loadCitiesSuccess(response.data));
-  // } catch (err) {
-  //   yield put(cityFailure());
-  //   toast.error(
-  //     err.response.data
-  //       ? err.response.data.error
-  //       : 'Erro ao se comunicar com o servidor'
-  //   );
-  // }
 }
 
 export function* loadCitiesActiveRequest() {
@@ -33,17 +22,7 @@ export function* loadCitiesActiveRequest() {
 }
 
 export function* filterStoresByCityRequest() {
-  // try {
-  //   const response = yield call(api.get, '/locations/active-cities');
-  //   const resolve = response.data.filter(item => item.city != null)
-    
-  //   yield put(loadCitiesActiveSuccess(resolve));
-  // } catch (err) {
-  //   yield put(cityFailure());
-  //   toast.error(err.response.data ? err.response.data.error
-  //     : 'Erro ao se comunicar com o servidor'
-  //   );
-  // }
+  
 }
 
 export default all([
