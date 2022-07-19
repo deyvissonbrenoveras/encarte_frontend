@@ -32,7 +32,7 @@ export default function Stores() {
   const { stores, loading } = useSelector((state) => state.store);
   const stateCity = useSelector((state) => state.city);
   const [storesFound, setStoresFound] = useState(null);
-  const [filterLocation, setFilterLocation] = useState(null);
+  const [filterLocation, setFilterLocation] = useState('TODOS');
   const [filteredStores, setFilteredStores] = useState([]);
 
   useState(() => {
@@ -56,9 +56,7 @@ export default function Stores() {
   }
 
   const handleFilterStores = (value) => {
-    if(value == 'TODOS') {
-      setFilterLocation(null)
-    }
+    if(value == ''){ setFilterLocation('TODOS') }
     var storesData = stores.filter(store => store.cityId == value);
     setFilteredStores(storesData)
   }
@@ -106,7 +104,7 @@ export default function Stores() {
                       handleFilterStores(event.target.value)
                     }}
                   >
-                    <MenuItem value=""><em>Selecione a cidade</em></MenuItem>
+                    <MenuItem value="" hidden><em>Selecione a cidade</em></MenuItem>
                     <MenuItem value='TODOS'>TODOS</MenuItem>
                     {stateCity.cities.map((item) => {
                       return <MenuItem value={item.cityId}>{item.city.name} - {item.city.state.uf}</MenuItem>
@@ -121,7 +119,7 @@ export default function Stores() {
             Supermercados encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
-            {(filterLocation != null && filteredStores.length) ? (
+            {(filterLocation != 'TODOS' && filteredStores.length) ? (
               filteredStores.map(store => (
                 <StoreCard key={store.id} store={store} />
               ))
