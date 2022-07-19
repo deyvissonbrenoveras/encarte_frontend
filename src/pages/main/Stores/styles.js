@@ -64,7 +64,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: '2px',
     [theme.breakpoints.down('sm')]: {
       margin: '.5rem',
       padding: '0px 1.2rem',
