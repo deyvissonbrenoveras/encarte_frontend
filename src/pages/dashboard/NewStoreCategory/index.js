@@ -18,43 +18,13 @@ function NewStore() {
   const dispatch = useDispatch();
   const formRef = useRef();
 
-  const [loading, setLoading] = useState(true);
-  const [cities, setCities] = useState([]);
+  const [typeCategory, setTypeCategory] = useState('');
 
-  async function getCities(state) {
-    async function execGetCities() {
-      try {
-        const response = await api.get('locations/cities');
-        const cityOptions = response.data.map((city) => ({
-          value: city.id,
-          label: `${city.name} - ${city.state.uf}`,
-        }));
-
-        console.log(cityOptions)
-
-        setCities(cityOptions);
-        setLoading(false);
-      } catch (err) {
-        toast.error('Houve um erro ao carregar as informações da loja');
-        setLoading(false);
-      }
-    }
-    execGetCities();
-  }
-
-  useEffect(() => {
-    getCities();
-  }, []);
 
   async function handleSubmit(data) {
     try {
       formRef.current.setErrors({});
-
-      dispatch(
-        addStoreRequest(data, function successCb() {
-          formRef.current.reset();
-        })
-      );
+      console.log('form data', data)
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {
@@ -65,40 +35,62 @@ function NewStore() {
       }
     }
   }
-  return loading ? (
-    <LoadingIcon />
-  ) : (
+
+  const options = [
+    { value: 'city', label: 'Cidade' },
+    { value: 'state', label: 'Estado' },
+  ];
+
+  return (
     <Form ref={formRef} onSubmit={handleSubmit}>
-      <Typography align="center" variant="h5">
+      <Typography align="left" variant="h5">
         Adicionar nova categoria
       </Typography>
-      <Grid container justify="space-around">
-        
-        <Grid item xs={12} sm={6} lg={5}>
-          <Input
-            name="name"
-            placeholder="Insira o nome da loja"
-            label="Nome:"
-          />
-          <Input name="url" placeholder="Insira a URL" label="URL:" />
-          <Input
-            name="address"
-            placeholder="Insira o endereço"
-            label="Endereço:"
-          />
-          <Select
-            name="cityId"
-            placeholder="Cidade:"
-            options={cities}
-            isClearable
-          />
-          
+      <Grid
+        container
+        direction="column"
+      >
+        <Grid
+          container
+          alignItems="center"
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          style={{ width: '100%' }}
+        >
+          <div style={{ width: '48%' }}>
+            <Input
+              name="name"
+              placeholder="Insira o nome da categoria"
+              label="Nome:"
+            />
+          </div>
+          <div style={{ width: '50%' }}>
+            <Select
+              name="type"
+              placeholder="Tipo de categoria: "
+              options={options}
+              onChange={(event) => {
+                setTypeCategory(event.value);
+              }}
+              isClearable
+            />
+          </div>
+
+          <div style={{ width: '48%' }}>
+            <Input
+              name="uf"
+              placeholder="Ex.: PB"
+              label="UF:"
+              disabled={typeCategory != 'state'}
+            />
+          </div>
         </Grid>
 
 
-        <Box m={2} width="100%" textAlign="right">
+
+        <Box p={2} width="100%" textAlign="right">
           <Button variant="contained" color="primary" type="submit">
-            Salvar
+            Adicionar categoria
           </Button>
         </Box>
       </Grid>
