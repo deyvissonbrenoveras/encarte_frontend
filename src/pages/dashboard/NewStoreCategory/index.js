@@ -3,15 +3,10 @@ import * as Yup from 'yup';
 
 import { useDispatch } from 'react-redux';
 
-import { toast } from 'react-toastify';
-import api from '../../../services/api';
 import { Form } from '@unform/web';
 import { Grid, Box, Button, Typography } from '@material-ui/core';
 import Input from '../../../components/Input';
-import ColorPicker from '../../../components/ColorPicker';
 import Select from '../../../components/Select';
-import LoadingIcon from '../../../components/LoadingIcon';
-import Img from '../../../components/Img';
 import { addStoreRequest } from '../../../store/modules/store/actions';
 
 function NewStore() {
@@ -24,7 +19,8 @@ function NewStore() {
   async function handleSubmit(data) {
     try {
       formRef.current.setErrors({});
-      console.log('form data', data)
+      console.log('form data', data);
+      
     } catch (err) {
       const validationErrors = {};
       if (err instanceof Yup.ValidationError) {
