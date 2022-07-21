@@ -11,14 +11,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useSelector, useDispatch } from 'react-redux';
-import { StoreCard } from './components/StoreCard'
-//icons 
-import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { StoreCard } from './components/StoreCard';
+//icons
+import { HiOutlineLocationMarker } from 'react-icons/hi';
 
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
-import { loadCitiesRequest, loadCitiesActiveRequest, filterStoresByCityRequest } from '../../../store/modules/city/actions'
+import { loadCitiesActiveRequest } from '../../../store/modules/city/actions';
 
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
@@ -56,15 +56,17 @@ export default function Stores() {
   }
 
   const handleFilterStores = (value) => {
-    if(value == ''){ setFilterLocation('TODOS') }
-    var storesData = stores.filter(store => store.cityId == value);
-    setFilteredStores(storesData)
-  }
+    if (value == '') {
+      setFilterLocation('TODOS');
+    }
+    var storesData = stores.filter((store) => store.cityId == value);
+    setFilteredStores(storesData);
+  };
 
   return loading ? (
     <LoadingIcon />
   ) : (
-    <Grid container justify="center" className={classes.container}>
+    <Grid container justifyContent="center" className={classes.container}>
       <Grid item xs={12} lg={8} style={{ height: '100vh' }}>
         <Box className={classes.stickyTop} width="100%" textAlign="left">
           <img src={logo} alt="e-ncarte" className={classes.logo} />
@@ -100,16 +102,21 @@ export default function Stores() {
                     value={filterLocation}
                     variant="standard"
                     onChange={(event) => {
-                      setFilterLocation(event.target.value)
-                      handleFilterStores(event.target.value)
+                      setFilterLocation(event.target.value);
+                      handleFilterStores(event.target.value);
                     }}
                   >
-                    <MenuItem value="" hidden><em>Selecione a cidade</em></MenuItem>
-                    <MenuItem value='TODOS'>TODOS</MenuItem>
+                    <MenuItem value="" hidden>
+                      <em>Selecione a cidade</em>
+                    </MenuItem>
+                    <MenuItem value="TODOS">TODOS</MenuItem>
                     {stateCity.cities.map((item) => {
-                      return <MenuItem value={item.cityId}>{item.city.name} - {item.city.state.uf}</MenuItem>
+                      return (
+                        <MenuItem key={item.cityId} value={item.cityId}>
+                          {item.city.name} - {item.city.state.uf}
+                        </MenuItem>
+                      );
                     })}
-
                   </Select>
                 </FormControl>
               </div>
@@ -119,14 +126,14 @@ export default function Stores() {
             Supermercados encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
-            {(filterLocation != 'TODOS' && filteredStores.length) ? (
-              filteredStores.map(store => (
-                <StoreCard key={store.id} store={store} />
-              ))
-            ) : (
-              stores &&
-              stores.map((store) => <StoreCard key={store.id} store={store} />)
-            )}
+            {filterLocation != 'TODOS' && filteredStores.length
+              ? filteredStores.map((store) => (
+                  <StoreCard key={store.id} store={store} />
+                ))
+              : stores &&
+                stores.map((store) => (
+                  <StoreCard key={store.id} store={store} />
+                ))}
           </Grid>
         </Grid>
       </Grid>
