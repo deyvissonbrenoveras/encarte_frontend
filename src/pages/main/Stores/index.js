@@ -31,7 +31,7 @@ export default function Stores() {
 
   const { stores, loading } = useSelector((state) => state.store);
   const stateCity = useSelector((state) => state.city);
-  const [storesFound, setStoresFound] = useState(null);
+  const [storesFoundBySearch, setStoresFoundBySearch] = useState(false);
   const [filterLocation, setFilterLocation] = useState('TODOS');
   const [filteredStores, setFilteredStores] = useState([]);
 
@@ -42,7 +42,8 @@ export default function Stores() {
 
   function handleSearch(e) {
     if (e.target.value.length === 0) {
-      setStoresFound(null);
+      setFilteredStores([]);
+      setStoresFoundBySearch(false)
     } else {
       const storeSearch = slugify(e.target.value).toUpperCase();
       const strs = stores.filter((store) => {
@@ -51,7 +52,8 @@ export default function Stores() {
           slugify(store.url).toUpperCase().includes(storeSearch)
         );
       });
-      setStoresFound(strs);
+      setStoresFoundBySearch(true)
+      setFilteredStores(strs);
     }
   }
 
@@ -126,7 +128,7 @@ export default function Stores() {
             Estabelecimentos encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
-            {filterLocation != 'TODOS' && filteredStores.length
+            {(filterLocation != 'TODOS' && filteredStores.length || storesFoundBySearch && filteredStores.length)
               ? filteredStores.map((store) => (
                   <StoreCard key={store.id} store={store} />
                 ))
