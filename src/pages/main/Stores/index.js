@@ -123,7 +123,7 @@ export default function Stores() {
             </div>
           </Grid>
           <Typography className={classes.subtitle}>
-            Supermercados encontrados:
+            Estabelecimentos encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
             {filterLocation != 'TODOS' && filteredStores.length
