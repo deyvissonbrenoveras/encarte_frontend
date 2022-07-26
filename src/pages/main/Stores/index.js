@@ -31,9 +31,9 @@ export default function Stores() {
 
   const { stores, loading } = useSelector((state) => state.store);
   const stateCity = useSelector((state) => state.city);
-  const [storesFoundBySearch, setStoresFoundBySearch] = useState(false);
   const [filterLocation, setFilterLocation] = useState('TODOS');
   const [filteredStores, setFilteredStores] = useState([]);
+  const [cityId, setCityId] = useState('');
 
   useState(() => {
     dispatch(loadCitiesActiveRequest());
@@ -42,14 +42,13 @@ export default function Stores() {
 
   function handleSearch(e) {
     if (e.target.value.length === 0) {
-      setStoresFoundBySearch(false)
-      if (filterLocation == 'TODOS') {
+      handleFilterStores(cityId);
+      if (filterLocation === 'TODOS') {
         setFilteredStores([])
       }
     } else {
       const storeSearch = slugify(e.target.value).toUpperCase();
-      const strs = filterStores(filterLocation != 'TODOS' ? filteredStores : stores, storeSearch);
-      setStoresFoundBySearch(true)
+      const strs = filterStores(filterLocation !== 'TODOS' ? filteredStores : stores, storeSearch);
       if (strs.length) {
         setFilteredStores(strs);
       }
@@ -66,12 +65,12 @@ export default function Stores() {
   }
 
   const handleFilterStores = (value) => {
-    if (value == '') {
+    if (value === '') {
       setFilterLocation('TODOS');
       setFilteredStores([])
     }
-    var storesData = stores.filter((store) => store.cityId == value);
-
+    var storesData = stores.filter((store) => store.cityId === value);
+    setCityId(value);
     setFilteredStores(storesData);
   };
 
