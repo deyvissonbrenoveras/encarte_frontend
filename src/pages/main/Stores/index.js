@@ -42,26 +42,36 @@ export default function Stores() {
 
   function handleSearch(e) {
     if (e.target.value.length === 0) {
-      setFilteredStores([]);
       setStoresFoundBySearch(false)
+      if (filterLocation == 'TODOS') {
+        setFilteredStores([])
+      }
     } else {
       const storeSearch = slugify(e.target.value).toUpperCase();
-      const strs = stores.filter((store) => {
-        return (
-          slugify(store.name).toUpperCase().includes(storeSearch) ||
-          slugify(store.url).toUpperCase().includes(storeSearch)
-        );
-      });
+      const strs = filterStores(filterLocation != 'TODOS' ? filteredStores : stores, storeSearch);
       setStoresFoundBySearch(true)
-      setFilteredStores(strs);
+      if (strs.length) {
+        setFilteredStores(strs);
+      }
     }
+  }
+
+  const filterStores = (storesToFilter, storeSearch) => {
+    return storesToFilter.filter((store) => {
+      return (
+        slugify(store.name).toUpperCase().includes(storeSearch) ||
+        slugify(store.url).toUpperCase().includes(storeSearch)
+      );
+    });
   }
 
   const handleFilterStores = (value) => {
     if (value == '') {
       setFilterLocation('TODOS');
+      setFilteredStores([])
     }
     var storesData = stores.filter((store) => store.cityId == value);
+
     setFilteredStores(storesData);
   };
 
@@ -128,14 +138,14 @@ export default function Stores() {
             Estabelecimentos encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
-            {(filterLocation != 'TODOS' && filteredStores.length || storesFoundBySearch && filteredStores.length)
+            {(filteredStores.length)
               ? filteredStores.map((store) => (
-                  <StoreCard key={store.id} store={store} />
-                ))
+                <StoreCard key={store.id} store={store} />
+              ))
               : stores &&
-                stores.map((store) => (
-                  <StoreCard key={store.id} store={store} />
-                ))}
+              stores.map((store) => (
+                <StoreCard key={store.id} store={store} />
+              ))}
           </Grid>
         </Grid>
       </Grid>
