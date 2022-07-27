@@ -39,12 +39,8 @@ function Store({ match }) {
   const showcase = useSelector((state) => state.showcase.showcase);
   const loading = useSelector((state) => state.showcase.loading);
   const search = useSelector((state) => state.search.search);
-  const {
-    primaryColor,
-    secondaryColor,
-    tertiaryColor,
-    quaternaryColor,
-  } = showcase;
+  const { primaryColor, secondaryColor, tertiaryColor, quaternaryColor } =
+    showcase;
   const classes = useStyles({
     primaryColor,
     secondaryColor,
@@ -537,7 +533,9 @@ function Store({ match }) {
                     {store.address && store.city && (
                       <>
                         <div>Endereço: {store.address}</div>
-                        <div>{store.city}.</div>
+                        <div>
+                          {store.city.name} - {store.city.state.uf}
+                        </div>
                       </>
                     )}
                   </Grid>
