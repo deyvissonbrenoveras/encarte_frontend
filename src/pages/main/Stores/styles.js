@@ -61,22 +61,6 @@ export default makeStyles((theme) => ({
     },
   },
   containerStores: {
-    margin: '.5rem 1.2rem',
-    width: '100%',
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '2px',
-    [theme.breakpoints.down('sm')]: {
-      margin: '.5rem',
-      padding: '0px 1.2rem',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      flexDirection: 'row',
-      margin: '0px',
-      padding: '0px 5px',
-    },
+    padding: 10,
   },
 }));

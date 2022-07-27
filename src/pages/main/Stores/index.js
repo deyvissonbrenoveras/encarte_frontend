@@ -44,11 +44,14 @@ export default function Stores() {
     if (e.target.value.length === 0) {
       handleFilterStores(cityId);
       if (filterLocation === 'TODOS') {
-        setFilteredStores([])
+        setFilteredStores([]);
       }
     } else {
       const storeSearch = slugify(e.target.value).toUpperCase();
-      const strs = filterStores(filterLocation !== 'TODOS' ? filteredStores : stores, storeSearch);
+      const strs = filterStores(
+        filterLocation !== 'TODOS' ? filteredStores : stores,
+        storeSearch
+      );
       if (strs.length) {
         setFilteredStores(strs);
       }
@@ -62,12 +65,12 @@ export default function Stores() {
         slugify(store.url).toUpperCase().includes(storeSearch)
       );
     });
-  }
+  };
 
   const handleFilterStores = (value) => {
     if (value === '') {
       setFilterLocation('TODOS');
-      setFilteredStores([])
+      setFilteredStores([]);
     }
     var storesData = stores.filter((store) => store.cityId === value);
     setCityId(value);
@@ -136,15 +139,19 @@ export default function Stores() {
           <Typography className={classes.subtitle}>
             Estabelecimentos encontrados:
           </Typography>
-          <Grid container spacing={2} className={classes.containerStores}>
-            {(filteredStores.length)
+          <Grid spacing={1} container className={classes.containerStores}>
+            {filteredStores.length
               ? filteredStores.map((store) => (
-                <StoreCard key={store.id} store={store} />
-              ))
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <StoreCard key={store.id} store={store} />
+                  </Grid>
+                ))
               : stores &&
-              stores.map((store) => (
-                <StoreCard key={store.id} store={store} />
-              ))}
+                stores.map((store) => (
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <StoreCard key={store.id} store={store} />
+                  </Grid>
+                ))}
           </Grid>
         </Grid>
       </Grid>
