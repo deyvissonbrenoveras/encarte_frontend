@@ -18,7 +18,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
-import { loadCitiesRequest } from '../../../store/modules/city/actions'
+import { loadCitiesActiveRequest } from '../../../store/modules/city/actions';
 
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
@@ -30,33 +30,54 @@ export default function Stores() {
   const dispatch = useDispatch();
 
   const { stores, loading } = useSelector((state) => state.store);
-  const { cities } = useSelector((state) => state.city);
-  const [storesFound, setStoresFound] = useState(null);
-  const [filterLocation, setFilterLocation] = useState(null);
+  const stateCity = useSelector((state) => state.city);
+  const [filterLocation, setFilterLocation] = useState('TODOS');
+  const [filteredStores, setFilteredStores] = useState([]);
+  const [cityId, setCityId] = useState('');
 
   useState(() => {
-    dispatch(loadCitiesRequest());
+    dispatch(loadCitiesActiveRequest());
     dispatch(loadStoresRequest());
   }, []);
+
   function handleSearch(e) {
     if (e.target.value.length === 0) {
-      setStoresFound(null);
+      handleFilterStores(cityId);
+      if (filterLocation === 'TODOS') {
+        setFilteredStores([])
+      }
     } else {
       const storeSearch = slugify(e.target.value).toUpperCase();
-      const strs = stores.filter((store) => {
-        return (
-          slugify(store.name).toUpperCase().includes(storeSearch) ||
-          slugify(store.url).toUpperCase().includes(storeSearch)
-        );
-      });
-      setStoresFound(strs);
+      const strs = filterStores(filterLocation !== 'TODOS' ? filteredStores : stores, storeSearch);
+      if (strs.length) {
+        setFilteredStores(strs);
+      }
     }
   }
+
+  const filterStores = (storesToFilter, storeSearch) => {
+    return storesToFilter.filter((store) => {
+      return (
+        slugify(store.name).toUpperCase().includes(storeSearch) ||
+        slugify(store.url).toUpperCase().includes(storeSearch)
+      );
+    });
+  }
+
+  const handleFilterStores = (value) => {
+    if (value === '') {
+      setFilterLocation('TODOS');
+      setFilteredStores([])
+    }
+    var storesData = stores.filter((store) => store.cityId === value);
+    setCityId(value);
+    setFilteredStores(storesData);
+  };
 
   return loading ? (
     <LoadingIcon />
   ) : (
-    <Grid container justify="center" className={classes.container}>
+    <Grid container justifyContent="center" className={classes.container}>
       <Grid item xs={12} lg={8} style={{ height: '100vh' }}>
         <Box className={classes.stickyTop} width="100%" textAlign="left">
           <img src={logo} alt="e-ncarte" className={classes.logo} />
@@ -91,14 +112,22 @@ export default function Stores() {
                     id="demo-simple-select-standard"
                     value={filterLocation}
                     variant="standard"
-                    onChange={(event) => setFilterLocation(event.target.value)}
+                    onChange={(event) => {
+                      setFilterLocation(event.target.value);
+                      handleFilterStores(event.target.value);
+                    }}
                   >
-                    <MenuItem value="">
+                    <MenuItem value="" hidden>
                       <em>Selecione a cidade</em>
                     </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value="TODOS">TODOS</MenuItem>
+                    {stateCity.cities.map((item) => {
+                      return (
+                        <MenuItem key={item.cityId} value={item.cityId}>
+                          {item.city.name} - {item.city.state.uf}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </div>
@@ -108,14 +137,14 @@ export default function Stores() {
             Estabelecimentos encontrados:
           </Typography>
           <Grid container spacing={2} className={classes.containerStores}>
-            {storesFound !== null
-              ? storesFound.map((store) => (
-                  <StoreCard key={store.id} store={store} />
-                ))
+            {(filteredStores.length)
+              ? filteredStores.map((store) => (
+                <StoreCard key={store.id} store={store} />
+              ))
               : stores &&
-                stores.map((store) => (
-                  <StoreCard key={store.id} store={store} />
-                ))}
+              stores.map((store) => (
+                <StoreCard key={store.id} store={store} />
+              ))}
           </Grid>
         </Grid>
       </Grid>
