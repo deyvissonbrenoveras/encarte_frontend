@@ -1,41 +1,82 @@
 import { makeStyles } from '@material-ui/core';
-import { darken } from 'polished';
 
 export default makeStyles((theme) => ({
   logo: {
     height: 50,
   },
+  stickyTop: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '.7rem',
+    },
+  },
   subtitle: {
-    fontSize: 20,
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-    margin: '10px 5px',
+    fontSize: '1rem',
+    textAlign: 'left',
+    letterSpacing: 1,
+    fontWeight: 600,
+    marginLeft: '15px',
+    display: 'block',
+    width: '100%',
+    color: '#383838',
+    marginBottom: '1.7rem',
+  },
+  container: {
+    background: '#F2F3F4',
+    height: '100vh',
+    width: '100vw',
+    overflowX: 'hidden',
+    paddingBottom: 250,
   },
   search: {
     margin: theme.spacing(2),
     display: 'flex',
     justifyContent: ' center',
   },
-  storeCard: {
-    height: 120,
-    margin: 10,
+  ContainerButtons: {
+    width: '100%',
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
-    cursor: 'pointer',
-    borderRadius: 10,
-    color: '#000',
-    '&:hover': {
-      backgroundColor: darken(0.02, '#fff'),
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
     },
-    '& img': {
-      maxWidth: '70%',
-      maxHeight: '70%',
+  },
+  searchInput: {
+    width: '65%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
-    '& h3': {
-      fontSize: 14,
+  },
+  filterLocationInput: {
+    width: '35%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      margin: '0px !important',
+    },
+  },
+  selectInputLocation: {
+    width: '100%',
+    marginTop: '14px',
+    [theme.breakpoints.down('sm')]: {
+      margin: '0px !important',
+    },
+  },
+  containerStores: {
+    margin: '.5rem 1.2rem',
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '2px',
+    [theme.breakpoints.down('sm')]: {
+      margin: '.5rem',
+      padding: '0px 1.2rem',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      flexDirection: 'row',
+      margin: '0px',
+      padding: '0px 5px',
     },
   },
 }));

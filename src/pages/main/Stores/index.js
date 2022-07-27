@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Grid,
   TextField,
@@ -7,12 +6,19 @@ import {
   Typography,
   Box,
 } from '@material-ui/core';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import { useSelector, useDispatch } from 'react-redux';
+import { StoreCard } from './components/StoreCard';
+//icons
+import { HiOutlineLocationMarker } from 'react-icons/hi';
 
-import { Link } from 'react-router-dom';
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
+import { loadCitiesActiveRequest } from '../../../store/modules/city/actions';
 
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
@@ -24,72 +30,122 @@ export default function Stores() {
   const dispatch = useDispatch();
 
   const { stores, loading } = useSelector((state) => state.store);
-  const [storesFound, setStoresFound] = useState(null);
+  const stateCity = useSelector((state) => state.city);
+  const [filterLocation, setFilterLocation] = useState('TODOS');
+  const [filteredStores, setFilteredStores] = useState([]);
+  const [cityId, setCityId] = useState('');
 
   useState(() => {
+    dispatch(loadCitiesActiveRequest());
     dispatch(loadStoresRequest());
   }, []);
+
   function handleSearch(e) {
     if (e.target.value.length === 0) {
-      setStoresFound(null);
+      handleFilterStores(cityId);
+      if (filterLocation === 'TODOS') {
+        setFilteredStores([])
+      }
     } else {
       const storeSearch = slugify(e.target.value).toUpperCase();
-      const strs = stores.filter((store) => {
-        return (
-          slugify(store.name).toUpperCase().includes(storeSearch) ||
-          slugify(store.url).toUpperCase().includes(storeSearch)
-        );
-      });
-      setStoresFound(strs);
+      const strs = filterStores(filterLocation !== 'TODOS' ? filteredStores : stores, storeSearch);
+      if (strs.length) {
+        setFilteredStores(strs);
+      }
     }
   }
-  function StoreCard({ store }) {
-    return (
-      <Grid item xs={6} lg={4} className={classes.grid}>
-        <Link to={`loja/${store.url}`} className={classes.storeCard}>
-          <img src={store.logo ? store.logo.url : ''} alt={store.name} />
-          <h3>{store.name}</h3>
-        </Link>
-      </Grid>
-    );
+
+  const filterStores = (storesToFilter, storeSearch) => {
+    return storesToFilter.filter((store) => {
+      return (
+        slugify(store.name).toUpperCase().includes(storeSearch) ||
+        slugify(store.url).toUpperCase().includes(storeSearch)
+      );
+    });
   }
-  StoreCard.propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    store: PropTypes.object.isRequired,
+
+  const handleFilterStores = (value) => {
+    if (value === '') {
+      setFilterLocation('TODOS');
+      setFilteredStores([])
+    }
+    var storesData = stores.filter((store) => store.cityId === value);
+    setCityId(value);
+    setFilteredStores(storesData);
   };
+
   return loading ? (
     <LoadingIcon />
   ) : (
-    <Grid container justify="center">
-      <Grid item xs={12} lg={6}>
-        <Box className={classes.stickyTop} width="100%" textAlign="center">
+    <Grid container justifyContent="center" className={classes.container}>
+      <Grid item xs={12} lg={8} style={{ height: '100vh' }}>
+        <Box className={classes.stickyTop} width="100%" textAlign="left">
           <img src={logo} alt="e-ncarte" className={classes.logo} />
         </Box>
-        <Typography component="h2" className={classes.subtitle}>
-          Selecione uma loja
-        </Typography>
         <Grid container>
           <Grid item xs={12} className={classes.search}>
-            <TextField
-              onChange={handleSearch}
-              className={classes.searchInput}
-              label="Buscar"
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <div className={classes.ContainerButtons}>
+              <TextField
+                onChange={handleSearch}
+                className={classes.searchInput}
+                label="Buscar"
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Search />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <div className={classes.filterLocationInput}>
+                <FormControl
+                  variant="standard"
+                  sx={{ m: 1 }}
+                  className={classes.selectInputLocation}
+                >
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Filtrar locais <HiOutlineLocationMarker />
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={filterLocation}
+                    variant="standard"
+                    onChange={(event) => {
+                      setFilterLocation(event.target.value);
+                      handleFilterStores(event.target.value);
+                    }}
+                  >
+                    <MenuItem value="" hidden>
+                      <em>Selecione a cidade</em>
+                    </MenuItem>
+                    <MenuItem value="TODOS">TODOS</MenuItem>
+                    {stateCity.cities.map((item) => {
+                      return (
+                        <MenuItem key={item.cityId} value={item.cityId}>
+                          {item.city.name} - {item.city.state.uf}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
           </Grid>
-          {storesFound !== null
-            ? storesFound.map((store) => (
+          <Typography className={classes.subtitle}>
+            Estabelecimentos encontrados:
+          </Typography>
+          <Grid container spacing={2} className={classes.containerStores}>
+            {(filteredStores.length)
+              ? filteredStores.map((store) => (
                 <StoreCard key={store.id} store={store} />
               ))
-            : stores &&
-              stores.map((store) => <StoreCard key={store.id} store={store} />)}
+              : stores &&
+              stores.map((store) => (
+                <StoreCard key={store.id} store={store} />
+              ))}
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
