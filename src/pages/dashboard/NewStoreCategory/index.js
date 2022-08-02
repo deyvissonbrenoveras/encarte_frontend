@@ -1,6 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
-import { useDispatch } from 'react-redux';
 
 import { Form } from '@unform/web';
 import { Grid, Box, Button, Typography } from '@material-ui/core';
@@ -17,7 +16,7 @@ function NewStore() {
 
   async function handleSubmit(data) {
     try {
-      const response = await api.post('/store-categories', data);
+      await api.post('/store-categories', data);
       toast.success('Categoria adicionada com sucesso!');
       history.goBack()
     } catch (err) {
