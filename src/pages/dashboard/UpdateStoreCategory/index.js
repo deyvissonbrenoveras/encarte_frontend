@@ -20,7 +20,7 @@ function UpdateStoreCategory() {
 
   async function handleSubmit(data) {
     try {
-      const response = await api.put(`/store-categories/${id}`, data);
+      await api.put(`/store-categories/${id}`, data);
       toast.success('Categoria editada com sucesso!');
       history.goBack()
     } catch (err) {
@@ -31,11 +31,10 @@ function UpdateStoreCategory() {
   useEffect(() => {
     async function fetch() {
         const response = await api.get(`/store-categories/${id}`);
-        console.log('categoria get', response.data)
         setCategory(response.data.name);
     }
     fetch();
-  }, [])
+  }, [id])
 
   return (
     <Form ref={formRef} onSubmit={handleSubmit}>
