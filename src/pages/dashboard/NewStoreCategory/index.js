@@ -1,41 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as Yup from 'yup';
+import React, { useRef, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 
 import { Form } from '@unform/web';
 import { Grid, Box, Button, Typography } from '@material-ui/core';
 import Input from '../../../components/Input';
-import Select from '../../../components/Select';
-import { addStoreRequest } from '../../../store/modules/store/actions';
+
+import { useHistory } from "react-router-dom"
+
+import { toast } from 'react-toastify';
+import api from '../../../services/api';
 
 function NewStore() {
-  const dispatch = useDispatch();
+  let history = useHistory()
   const formRef = useRef();
-
-  const [typeCategory, setTypeCategory] = useState('');
-
 
   async function handleSubmit(data) {
     try {
-      formRef.current.setErrors({});
-      console.log('form data', data);
-      
+      const response = await api.post('/store-categories', data);
+      toast.success('Categoria adicionada com sucesso!');
+      history.goBack()
     } catch (err) {
-      const validationErrors = {};
-      if (err instanceof Yup.ValidationError) {
-        err.inner.forEach((error) => {
-          validationErrors[error.path] = error.message;
-        });
-        formRef.current.setErrors(validationErrors);
-      }
+      toast.error('Houve um erro ao inserir categoria.');
     }
   }
-
-  const options = [
-    { value: 'city', label: 'Cidade' },
-    { value: 'state', label: 'Estado' },
-  ];
 
   return (
     <Form ref={formRef} onSubmit={handleSubmit}>
@@ -58,26 +46,6 @@ function NewStore() {
               name="name"
               placeholder="Insira o nome da categoria"
               label="Nome:"
-            />
-          </div>
-          <div style={{ width: '50%' }}>
-            <Select
-              name="type"
-              placeholder="Tipo de categoria: "
-              options={options}
-              onChange={(event) => {
-                setTypeCategory(event.value);
-              }}
-              isClearable
-            />
-          </div>
-
-          <div style={{ width: '48%' }}>
-            <Input
-              name="uf"
-              placeholder="Ex.: PB"
-              label="UF:"
-              disabled={typeCategory != 'state'}
             />
           </div>
         </Grid>
