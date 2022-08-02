@@ -22,6 +22,7 @@ const Dashboard = lazy(() => import('../pages/dashboard/DashboardIndex'));
 const Stores = lazy(() => import('../pages/dashboard/Stores'));
 const StoreCategory = lazy(() => import('../pages/dashboard/StoreCategory'));
 const NewStoreCategory = lazy(() => import('../pages/dashboard/NewStoreCategory'));
+const UpdateStoreCategory = lazy(() => import('../pages/dashboard/UpdateStoreCategory'));
 const NewStore = lazy(() => import('../pages/dashboard/NewStore'));
 const UpdateStore = lazy(() => import('../pages/dashboard/UpdateStore'));
 const Users = lazy(() => import('../pages/dashboard/Users'));
@@ -119,6 +120,13 @@ function Routes() {
           privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
           path="/newstorecategory"
           component={NewStoreCategory}
+          layout={DashboardLayout}
+        />
+        <Route
+          exact
+          privilegeRequired={PrivilegeEnum.STORE_ADMINISTRATOR}
+          path="/updatestorecategory/:id"
+          component={UpdateStoreCategory}
           layout={DashboardLayout}
         />
         <Route
