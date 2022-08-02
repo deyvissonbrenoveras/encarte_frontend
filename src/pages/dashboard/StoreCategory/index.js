@@ -52,7 +52,7 @@ function StoreCategory() {
           ]}
           rows={storeCategory.map((category) => ({
             id: category.id,
-            name: { href: `/updatestore/${category.id}`, label: category.name },
+            name: { href: `/updatestorecategory/${category.id}`, label: category.name },
           }))}
         />
       )}
