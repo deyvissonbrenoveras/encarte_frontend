@@ -94,7 +94,6 @@ export default makeStyles((theme) => ({
             height: '3rem',
             marginBottom: '2px',
             textOverflow: 'ellipsis',
-            ["-webkit-line-clamp"]: 3
         },
         '& span': {
             fontSize: '.95rem',
