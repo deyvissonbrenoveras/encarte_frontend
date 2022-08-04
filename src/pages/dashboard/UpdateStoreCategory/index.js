@@ -67,7 +67,7 @@ function UpdateStoreCategory() {
 
         <Box p={2} width="100%" textAlign="right">
           <Button variant="contained" color="primary" type="submit">
-            Editar categoria
+            Salvar
           </Button>
         </Box>
       </Grid>
