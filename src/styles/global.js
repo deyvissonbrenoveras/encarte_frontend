@@ -34,6 +34,9 @@ export default createGlobalStyle`
     button {
         cursor: pointer;
     }
+    *:disabled {
+        cursor: not-allowed;
+    }
     li {
         list-style: none;
     }
