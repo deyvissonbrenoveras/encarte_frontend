@@ -20,17 +20,33 @@ function NewStore() {
 
   const [loading, setLoading] = useState(true);
   const [cities, setCities] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  async function getCities(state) {
+  function normalizedCitiesOptions(cities) {
+    const cityOptions = cities.map((city) => ({
+      value: city.id,
+      label: `${city.name} - ${city.state.uf}`,
+    }));
+
+    setCities(cityOptions);
+  }
+
+  function normalizedCategoriesOptions(categories) {
+    const categoriesOptions = categories.map((category) => ({
+      value: category.id,
+      label: `${category.name}`,
+    }));
+    setCategories(categoriesOptions);
+  }
+
+  async function getCities() {
     async function execGetCities() {
       try {
-        const response = await api.get('locations/cities');
-        const cityOptions = response.data.map((city) => ({
-          value: city.id,
-          label: `${city.name} - ${city.state.uf}`,
-        }));
+        Promise.all([api.get('locations/cities'), api.get('/store-categories')]).then(res => {
+          normalizedCitiesOptions(res[0].data);
+          normalizedCategoriesOptions(res[1].data);
+        });
 
-        setCities(cityOptions);
         setLoading(false);
       } catch (err) {
         toast.error('Houve um erro ao carregar as informações da loja');
@@ -59,6 +75,10 @@ function NewStore() {
           .positive()
           .required('A cidade é obrigatória')
           .typeError('A cidade é obrigatória'),
+        storeCategoryId: Yup.number()
+          .positive()
+          .required('A categoria é obrigatória')
+          .typeError('A categoria é obrigatória'),
         phone: Yup.string().max(100, 'Máximo de 100 caracteres'),
         whatsapp: Yup.string().max(100, 'Máximo de 100 caracteres'),
         instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
@@ -99,7 +119,7 @@ function NewStore() {
       await schema.validate(data, {
         abortEarly: false,
       });
-
+      
       dispatch(
         addStoreRequest(data, function successCb() {
           formRef.current.reset();
@@ -162,6 +182,13 @@ function NewStore() {
             options={cities}
             isClearable
           />
+          <Select
+            name="storeCategoryId"
+            placeholder="Categoria:"
+            options={categories}
+            isClearable
+          />
+
           <ColorPicker
             name="primaryColor"
             label="Selecione a cor primária:"
