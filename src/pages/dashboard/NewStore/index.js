@@ -58,6 +58,7 @@ function NewStore() {
 
   useEffect(() => {
     getCities();
+    // eslint-disable-next-line
   }, []);
 
   async function handleSubmit(data) {
