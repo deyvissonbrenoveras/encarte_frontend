@@ -16,6 +16,10 @@ export default function city(state = INITIAL_STATE, action) {
       return produce(state, (draft) => {
         draft.loading = false;
       });
+    case '@city/LOAD_CITIES_ACTIVE_SUCCESS':
+      return produce(state, (draft) => {
+        draft.cities = action.payload;
+      });
     case '@city/FAILURE':
       return produce(state, (draft) => {
         draft.loading = false;

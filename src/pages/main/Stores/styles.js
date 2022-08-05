@@ -17,14 +17,15 @@ export default makeStyles((theme) => ({
     marginLeft: '15px',
     display: 'block',
     width: '100%',
-    color: "#383838",
-    marginBottom: '1.7rem'
+    color: '#383838',
+    marginBottom: '1.7rem',
   },
   container: {
-    background: "#F2F3F4",
-    height: "100vh",
+    background: '#F2F3F4',
+    height: '100vh',
     width: '100vw',
-    overflowX: 'hidden'
+    overflowX: 'hidden',
+    paddingBottom: 250,
   },
   search: {
     margin: theme.spacing(2),
@@ -36,7 +37,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column'
+      flexDirection: 'column',
     },
   },
   searchInput: {
@@ -60,22 +61,6 @@ export default makeStyles((theme) => ({
     },
   },
   containerStores: {
-    margin: '.5rem 1.2rem',
-    width: '100%',
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    [theme.breakpoints.down('sm')]: {
-      margin: '.5rem',
-      padding: '0px 1.2rem',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      flexDirection: 'row',
-      margin: '0px',
-      padding: '0px 5px'
-    },
-  }
+    padding: 10,
+  },
 }));
