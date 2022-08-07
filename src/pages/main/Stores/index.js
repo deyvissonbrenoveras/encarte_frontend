@@ -19,7 +19,7 @@ import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
 import { loadStoresRequest } from '../../../store/modules/store/actions';
 import { loadCitiesActiveRequest } from '../../../store/modules/city/actions';
-
+import api from '../../../services/api';
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
 
@@ -28,16 +28,31 @@ import logo from '../../../assets/logo.webp';
 export default function Stores() {
   const classes = useStyle();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { stores, loading } = useSelector((state) => state.store);
-  const stateCity = useSelector((state) => state.city);
+  const [stores, setStores] = useState(true);
+  const [stateCity, setStateCity] = useState([]);
+  const [storeCategory, setStoreCategory] = useState([]);
+  const [search, setSearch] = useState('');
+
   const [filterLocation, setFilterLocation] = useState('TODOS');
+  const [categoryInput, setCategoryInput] = useState('TODOS');
   const [filteredStores, setFilteredStores] = useState([]);
   const [cityId, setCityId] = useState('');
 
   useState(() => {
-    dispatch(loadCitiesActiveRequest());
-    dispatch(loadStoresRequest());
+    Promise.all([
+      api.get('/locations/active-cities'), 
+      api.get('/stores'),
+      api.get('/store-categories')
+    ]).then(res => {
+      const resolve = res[0].data.filter((item) => item.city != null);
+      setStateCity(resolve);  
+
+      setStores(res[1].data);
+      setStoreCategory(res[2].data);
+      setIsLoading(false);
+    });
   }, []);
 
   function handleSearch(e) {
@@ -77,7 +92,46 @@ export default function Stores() {
     setFilteredStores(storesData);
   };
 
-  return loading ? (
+  const handleFilterStoresCategory = (value) => {
+    console.log('id da categoria', value);
+    if (value === '') {
+      handleFilterStores(cityId);
+    }
+    console.log('filtrado?', filteredStores.length > 0)
+    var storesData = (filteredStores.length > 0 ? filteredStores : stores)
+    .filter((store) => store.storeCategoryId === value);
+    setCityId(value);
+    console.log('lojas filtradas', storesData);
+    if(storesData.length) setFilteredStores(storesData);
+  };
+
+  const filterCity = (stores, city) => {
+    var filtered = stores.filter(store => store.cityId == city);
+    console.log('result filter city', filtered);
+    return filtered.length > 0 ? filtered : stores
+  }
+
+  const filterCategory = (stores, category) => {
+    console.log(stores, category);
+    var filtered = stores.filter(store => store.storeCategoryId == category);
+    console.log('result filter category', filtered);
+    return filtered.length > 0 ? filtered : stores
+  }
+
+  const filterStoresSearch = (stores, search) => {
+    var filtered =  stores.filter(store => store.name.toLowerCase().includes(search.toLowerCase()));
+    return filtered.length > 0 ? filtered : stores
+  }
+
+  const handleFilter = (search = '', city = '', category = '') => {
+    var filteredSearch = filterStoresSearch(stores, search);
+    var filteredCity = filterCity(filteredSearch, city);
+    var filteredCategory = filterCategory(filteredCity, category);
+
+    setFilteredStores(filteredCategory);
+  }
+
+  return isLoading ? (
     <LoadingIcon />
   ) : (
     <Grid container justifyContent="center" className={classes.container}>
@@ -89,7 +143,11 @@ export default function Stores() {
           <Grid item xs={12} className={classes.search}>
             <div className={classes.ContainerButtons}>
               <TextField
-                onChange={handleSearch}
+                // onChange={handleSearch}
+                onChange={({ target }) => {
+                  setSearch(target.value)
+                  handleFilter(target.value, filterLocation, categoryInput);
+                }}
                 className={classes.searchInput}
                 label="Buscar"
                 fullWidth
@@ -117,17 +175,53 @@ export default function Stores() {
                     variant="standard"
                     onChange={(event) => {
                       setFilterLocation(event.target.value);
-                      handleFilterStores(event.target.value);
+                      handleFilter(search, event.target.value, categoryInput);
+                      // handleFilterStores(event.target.value);
                     }}
                   >
                     <MenuItem value="" hidden>
                       <em>Selecione a cidade</em>
                     </MenuItem>
                     <MenuItem value="TODOS">TODOS</MenuItem>
-                    {stateCity.cities.map((item) => {
+                    {stateCity.map((item) => {
                       return (
                         <MenuItem key={item.cityId} value={item.cityId}>
                           {item.city.name} - {item.city.state.uf}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </div>
+
+              <div className={classes.filterLocationInput}>
+                <FormControl
+                  variant="standard"
+                  sx={{ m: 1 }}
+                  className={classes.selectInputLocation}
+                >
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Filtrar por categoria <HiOutlineLocationMarker />
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={categoryInput}
+                    variant="standard"
+                    onChange={(event) => {
+                      setCategoryInput(event.target.value);
+                      handleFilter(search, filterLocation,event.target.value);
+                      // handleFilterStoresCategory(event.target.value);
+                    }}
+                  >
+                    <MenuItem value="" hidden>
+                      <em>Selecione a categoria</em>
+                    </MenuItem>
+                    <MenuItem value="TODOS">TODOS</MenuItem>
+                    {storeCategory.map((item) => {
+                      return (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.name}
                         </MenuItem>
                       );
                     })}
