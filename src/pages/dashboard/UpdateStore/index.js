@@ -106,9 +106,10 @@ function UpdateStore({ match }) {
     }
     execGetStore();
   }
+
   useEffect(() => {
     if (!loading && store && formRef.current) formRef.current.setData(store);
-  }, [loading]);
+  }, [loading, store]);
 
   useEffect(fetch, [tabIndex, id]);
 

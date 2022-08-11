@@ -30,7 +30,6 @@ export default function Stores() {
   const dispatch = useDispatch();
 
   const { stores, loading } = useSelector((state) => state.store);
-  const [storesFound, setStoresFound] = useState(null);
   const stateCity = useSelector((state) => state.city);
   const [filterLocation, setFilterLocation] = useState('TODOS');
   const [filteredStores, setFilteredStores] = useState([]);
