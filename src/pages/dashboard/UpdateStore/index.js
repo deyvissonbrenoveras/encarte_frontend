@@ -64,7 +64,7 @@ function UpdateStore({ match }) {
     setUserNotAdmin(userProfile.privilege > PrivilegeEnum.SYSTEM_ADMINISTRATOR);
   }, [userProfile]);
 
-  async function getCities(state) {
+  async function getCities() {
     const response = await api.get('locations/cities');
     const cityOptions = response.data.map((city) => ({
       value: city.id,
@@ -77,7 +77,6 @@ function UpdateStore({ match }) {
   async function getStore() {
     const response = await api.get(`store`, { params: { id } });
     setStore(response.data);
-    formRef.current.setData(response.data);
   }
 
   async function getCategories() {
@@ -94,18 +93,23 @@ function UpdateStore({ match }) {
       setLoading(true);
 
       try {
-        getCategories();
-        getCities();
-        getStore();
+        await getCities();
+        await getCategories();
+        await getStore();
 
         setLoading(false);
       } catch (err) {
+        console.log(err);
         toast.error('Houve um erro ao carregar as informações da loja');
         setLoading(false);
       }
     }
     execGetStore();
   }
+
+  useEffect(() => {
+    if (!loading && store && formRef.current) formRef.current.setData(store);
+  }, [loading, store]);
 
   useEffect(fetch, [tabIndex, id]);
 
