@@ -58,12 +58,13 @@ function UpdateStore({ match }) {
   const userProfile = useSelector((state) => state.profile.profile);
 
   const [cities, setCities] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     setUserNotAdmin(userProfile.privilege > PrivilegeEnum.SYSTEM_ADMINISTRATOR);
   }, [userProfile]);
 
-  async function getCities(state) {
+  async function getCities() {
     const response = await api.get('locations/cities');
     const cityOptions = response.data.map((city) => ({
       value: city.id,
@@ -73,24 +74,45 @@ function UpdateStore({ match }) {
     setCities(cityOptions);
   }
 
-  function getStore() {
+  async function getStore() {
+    const response = await api.get(`store`, { params: { id } });
+    setStore(response.data);
+  }
+
+  async function getCategories() {
+    const response = await api.get('/store-categories');
+    const categoriesOptions = response.data.map((category) => ({
+      value: category.id,
+      label: `${category.name}`,
+    }));
+    setCategories(categoriesOptions);
+  }
+
+  function fetch() {
     async function execGetStore() {
       setLoading(true);
 
       try {
-        getCities();
-        const response = await api.get(`store`, { params: { id } });
+        await getCities();
+        await getCategories();
+        await getStore();
+
         setLoading(false);
-        setStore(response.data);
-        formRef.current.setData(response.data);
       } catch (err) {
+        console.log(err);
         toast.error('Houve um erro ao carregar as informações da loja');
         setLoading(false);
       }
     }
     execGetStore();
   }
-  useEffect(getStore, [tabIndex, id]);
+
+  useEffect(() => {
+    if (!loading && store && formRef.current) formRef.current.setData(store);
+  }, [loading, store]);
+
+  useEffect(fetch, [tabIndex, id]);
+
   async function submitHandle(data) {
     try {
       formRef.current.setErrors({});
@@ -107,6 +129,10 @@ function UpdateStore({ match }) {
           .positive()
           .required('A cidade é obrigatória')
           .typeError('A cidade é obrigatória'),
+        storeCategoryId: Yup.number()
+          .positive()
+          .required('A categoria é obrigatória')
+          .typeError('A categoria é obrigatória'),
         phone: Yup.string().max(100, 'Máximo de 100 caracteres'),
         whatsapp: Yup.string().max(100, 'Máximo de 100 caracteres'),
         instagram: Yup.string().max(100, 'Máximo de 100 caracteres'),
@@ -147,7 +173,6 @@ function UpdateStore({ match }) {
       await schema.validate(data, {
         abortEarly: false,
       });
-      console.log(data);
       dispatch(updateStoreRequest(id, data));
     } catch (err) {
       const validationErrors = {};
@@ -265,6 +290,13 @@ function UpdateStore({ match }) {
                     name="cityId"
                     placeholder="Cidade:"
                     options={cities}
+                    isClearable
+                    readOnly={userNotAdmin}
+                  />
+                  <Select
+                    name="storeCategoryId"
+                    placeholder="Categoria:"
+                    options={categories}
                     isClearable
                     readOnly={userNotAdmin}
                   />
