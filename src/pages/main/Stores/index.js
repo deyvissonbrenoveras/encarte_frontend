@@ -10,15 +10,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useSelector, useDispatch } from 'react-redux';
 import { StoreCard } from './components/StoreCard';
 //icons
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
-import { loadStoresRequest } from '../../../store/modules/store/actions';
-import { loadCitiesActiveRequest } from '../../../store/modules/city/actions';
 import api from '../../../services/api';
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
@@ -27,16 +24,13 @@ import logo from '../../../assets/logo.webp';
 
 export default function Stores() {
   const classes = useStyle();
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
 
   const [stores, setStores] = useState(true);
   const [stateCity, setStateCity] = useState([]);
   const [storeCategory, setStoreCategory] = useState([]);
-  const [search, setSearch] = useState('');
 
   const [hasError, setHasError] = useState('');
-  const [hasFiltered, setHasFiltered] = useState(false)
   const [filterLocation, setFilterLocation] = useState('TODOS');
   const [categoryInput, setCategoryInput] = useState('TODOS');
   const [filteredStores, setFilteredStores] = useState([]);
@@ -58,14 +52,13 @@ export default function Stores() {
   }, []);
 
   function handleSearch(e) {
-    if(e.target.value.length === 0 && categoryInput != 'TODOS' && filterLocation != 'TODOS') {
+    if(e.target.value.length === 0 && categoryInput !== 'TODOS' && filterLocation !== 'TODOS') {
       handleFilterStoresByCity(filterLocation)
-    } else if (e.target.value.length === 0 && categoryInput != 'TODOS') {
+    } else if (e.target.value.length === 0 && categoryInput !== 'TODOS') {
       handleFilterStoresByCategory(categoryInput)
-    } else if (e.target.value.length === 0 && filterLocation != 'TODOS') {
+    } else if (e.target.value.length === 0 && filterLocation !== 'TODOS') {
       handleFilterStoresByCity(filterLocation)
     } else if (e.target.value.length === 0) {
-      setHasFiltered(false)
       handleFilterStoresByCity(cityId);
       if (filterLocation === 'TODOS') {
         setFilteredStores([]);
@@ -77,7 +70,6 @@ export default function Stores() {
         storeSearch
       );
       if (strs.length) {
-        setHasFiltered(true)
         setFilteredStores(strs);
       } else {
         setHasError('Nenhuma loja encontrada pela pesquisa informada.')
@@ -100,8 +92,7 @@ export default function Stores() {
   }
 
   const handleFilterStoresByCity = (value) => {
-    if(value === 'TODOS' && categoryInput != 'TODOS') {
-      setHasFiltered(false);
+    if(value === 'TODOS' && categoryInput !== 'TODOS') {
       filterStoresByCategoryRegardlessOfCity(categoryInput)
       return
     } else if (value === '' || value === 'TODOS') {
@@ -109,18 +100,17 @@ export default function Stores() {
       setFilteredStores([]);
     }
     
-
-    var storesData = stores.filter((store) => {
-      if((categoryInput != 'TODOS') && (store.storeCategoryId === categoryInput) && (store.cityId === value)) {
+    // eslint-disable-next-line
+    var storesData = stores.filter(store => {
+      if((categoryInput !== 'TODOS') && (store.storeCategoryId === categoryInput) && (store.cityId === value)) {
         return store
-      } else if(categoryInput == 'TODOS' && store.cityId === value) {
-          return store
+      } else if(categoryInput === 'TODOS' && store.cityId === value) {
+        return store
       }
     });
     setCityId(value);
     if(storesData.length > 0) {
       setFilteredStores(storesData);
-      setHasFiltered(true);
       setHasError('')
     } else {
       setHasError('Nenhuma loja encontrada') 
@@ -128,20 +118,21 @@ export default function Stores() {
   };
 
   const handleFilterStoresByCategory = (value) => {
-    if(value === 'TODOS' && filterLocation != 'TODOS') {
+    if(value === 'TODOS' && filterLocation !== 'TODOS') {
       handleFilterStoresByCity(filterLocation)
       return
     } 
     
 
-    var hasCityToFilter = filterLocation != 'TODOS' ? (stores.filter(store => store.cityId === filterLocation)).length > 0 : false
-    var storesData = (filteredStores.length > 0 && !hasCityToFilter && filterLocation != 'TODOS' ? filteredStores : stores)
+    var hasCityToFilter = filterLocation !== 'TODOS' ? (stores.filter(store => store.cityId === filterLocation)).length > 0 : false
+    var storesData = (filteredStores.length > 0 && !hasCityToFilter && filterLocation !== 'TODOS' ? filteredStores : stores)
+    // eslint-disable-next-line
     .filter((store) => {
-      if(filterLocation != 'TODOS' ? store.cityId === filterLocation && store.storeCategoryId === value 
+      if(filterLocation !== 'TODOS' ? store.cityId === filterLocation && store.storeCategoryId === value 
       : store.storeCategoryId === value) {
         return store
       } 
-      else if (filterLocation == 'TODOS' && store.storeCategoryId === value){
+      else if (filterLocation === 'TODOS' && store.storeCategoryId === value){
         return store
       } 
       else if (store.storeCategoryId === value){
@@ -255,7 +246,7 @@ export default function Stores() {
           <Typography className={classes.subtitle}>
             Estabelecimentos encontrados:
           </Typography>
-          {hasError != '' && <Typography className={classes.subtitle}>
+          {hasError !== '' && <Typography className={classes.subtitle}>
             {hasError}
           </Typography>}
           <Grid spacing={1} container className={classes.containerStores}>
