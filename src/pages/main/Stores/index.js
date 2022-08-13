@@ -35,6 +35,8 @@ export default function Stores() {
   const [storeCategory, setStoreCategory] = useState([]);
   const [search, setSearch] = useState('');
 
+  const [hasError, setHasError] = useState('');
+  const [hasFiltered, setHasFiltered] = useState(false)
   const [filterLocation, setFilterLocation] = useState('TODOS');
   const [categoryInput, setCategoryInput] = useState('TODOS');
   const [filteredStores, setFilteredStores] = useState([]);
@@ -56,19 +58,29 @@ export default function Stores() {
   }, []);
 
   function handleSearch(e) {
-    if (e.target.value.length === 0) {
-      handleFilterStores(cityId);
+    if(e.target.value.length === 0 && categoryInput != 'TODOS' && filterLocation != 'TODOS') {
+      handleFilterStoresByCity(filterLocation)
+    } else if (e.target.value.length === 0 && categoryInput != 'TODOS') {
+      handleFilterStoresByCategory(categoryInput)
+    } else if (e.target.value.length === 0 && filterLocation != 'TODOS') {
+      handleFilterStoresByCity(filterLocation)
+    } else if (e.target.value.length === 0) {
+      setHasFiltered(false)
+      handleFilterStoresByCity(cityId);
       if (filterLocation === 'TODOS') {
         setFilteredStores([]);
       }
     } else {
       const storeSearch = slugify(e.target.value).toUpperCase();
       const strs = filterStores(
-        filterLocation !== 'TODOS' ? filteredStores : stores,
+        filteredStores.length ? filteredStores : stores,
         storeSearch
       );
       if (strs.length) {
+        setHasFiltered(true)
         setFilteredStores(strs);
+      } else {
+        setHasError('Nenhuma loja encontrada pela pesquisa informada.')
       }
     }
   }
@@ -76,60 +88,75 @@ export default function Stores() {
   const filterStores = (storesToFilter, storeSearch) => {
     return storesToFilter.filter((store) => {
       return (
-        slugify(store.name).toUpperCase().includes(storeSearch) ||
-        slugify(store.url).toUpperCase().includes(storeSearch)
+        slugify(store.name).toUpperCase().includes(storeSearch) || slugify(store.url).toUpperCase().includes(storeSearch)
       );
     });
   };
+  
+  // filtrar lojas por categoria independente da cidade
+  const filterStoresByCategoryRegardlessOfCity = (categoryId) => {
+    var filtered = stores.filter(store => store.storeCategoryId === categoryId);
+    setFilteredStores(filtered)
+  }
 
-  const handleFilterStores = (value) => {
-    if (value === '') {
+  const handleFilterStoresByCity = (value) => {
+    if(value === 'TODOS' && categoryInput != 'TODOS') {
+      setHasFiltered(false);
+      filterStoresByCategoryRegardlessOfCity(categoryInput)
+      return
+    } else if (value === '' || value === 'TODOS') {
       setFilterLocation('TODOS');
       setFilteredStores([]);
     }
-    var storesData = stores.filter((store) => store.cityId === value);
-    setCityId(value);
-    setFilteredStores(storesData);
-  };
+    
 
-  const handleFilterStoresCategory = (value) => {
-    console.log('id da categoria', value);
-    if (value === '') {
-      handleFilterStores(cityId);
+    var storesData = stores.filter((store) => {
+      if((categoryInput != 'TODOS') && (store.storeCategoryId === categoryInput) && (store.cityId === value)) {
+        return store
+      } else if(categoryInput == 'TODOS' && store.cityId === value) {
+          return store
+      }
+    });
+    setCityId(value);
+    if(storesData.length > 0) {
+      setFilteredStores(storesData);
+      setHasFiltered(true);
+      setHasError('')
+    } else {
+      setHasError('Nenhuma loja encontrada') 
     }
-    console.log('filtrado?', filteredStores.length > 0)
-    var storesData = (filteredStores.length > 0 ? filteredStores : stores)
-    .filter((store) => store.storeCategoryId === value);
-    setCityId(value);
-    console.log('lojas filtradas', storesData);
-    if(storesData.length) setFilteredStores(storesData);
   };
 
-  const filterCity = (stores, city) => {
-    var filtered = stores.filter(store => store.cityId == city);
-    console.log('result filter city', filtered);
-    return filtered.length > 0 ? filtered : stores
-  }
+  const handleFilterStoresByCategory = (value) => {
+    if(value === 'TODOS' && filterLocation != 'TODOS') {
+      handleFilterStoresByCity(filterLocation)
+      return
+    } 
+    
 
-  const filterCategory = (stores, category) => {
-    console.log(stores, category);
-    var filtered = stores.filter(store => store.storeCategoryId == category);
-    console.log('result filter category', filtered);
-    return filtered.length > 0 ? filtered : stores
-  }
-
-  const filterStoresSearch = (stores, search) => {
-    var filtered =  stores.filter(store => store.name.toLowerCase().includes(search.toLowerCase()));
-    return filtered.length > 0 ? filtered : stores
-  }
-
-  const handleFilter = (search = '', city = '', category = '') => {
-    var filteredSearch = filterStoresSearch(stores, search);
-    var filteredCity = filterCity(filteredSearch, city);
-    var filteredCategory = filterCategory(filteredCity, category);
-
-    setFilteredStores(filteredCategory);
-  }
+    var hasCityToFilter = filterLocation != 'TODOS' ? (stores.filter(store => store.cityId === filterLocation)).length > 0 : false
+    var storesData = (filteredStores.length > 0 && !hasCityToFilter && filterLocation != 'TODOS' ? filteredStores : stores)
+    .filter((store) => {
+      if(filterLocation != 'TODOS' ? store.cityId === filterLocation && store.storeCategoryId === value 
+      : store.storeCategoryId === value) {
+        return store
+      } 
+      else if (filterLocation == 'TODOS' && store.storeCategoryId === value){
+        return store
+      } 
+      else if (store.storeCategoryId === value){
+        return store
+      }
+    });
+    setCityId(value);
+    
+    if(storesData.length > 0) {
+      setHasError('')
+      setFilteredStores(storesData)
+    } else {
+      setHasError('Nenhuma loja encontrada') 
+    }
+  };
 
   return isLoading ? (
     <LoadingIcon />
@@ -143,11 +170,7 @@ export default function Stores() {
           <Grid item xs={12} className={classes.search}>
             <div className={classes.ContainerButtons}>
               <TextField
-                // onChange={handleSearch}
-                onChange={({ target }) => {
-                  setSearch(target.value)
-                  handleFilter(target.value, filterLocation, categoryInput);
-                }}
+                onChange={handleSearch}
                 className={classes.searchInput}
                 label="Buscar"
                 fullWidth
@@ -175,8 +198,7 @@ export default function Stores() {
                     variant="standard"
                     onChange={(event) => {
                       setFilterLocation(event.target.value);
-                      handleFilter(search, event.target.value, categoryInput);
-                      // handleFilterStores(event.target.value);
+                      handleFilterStoresByCity(event.target.value);
                     }}
                   >
                     <MenuItem value="" hidden>
@@ -210,8 +232,8 @@ export default function Stores() {
                     variant="standard"
                     onChange={(event) => {
                       setCategoryInput(event.target.value);
-                      handleFilter(search, filterLocation,event.target.value);
-                      // handleFilterStoresCategory(event.target.value);
+                      // handleFilter(search, filterLocation,event.target.value);
+                      handleFilterStoresByCategory(event.target.value);
                     }}
                   >
                     <MenuItem value="" hidden>
@@ -233,6 +255,9 @@ export default function Stores() {
           <Typography className={classes.subtitle}>
             Estabelecimentos encontrados:
           </Typography>
+          {hasError != '' && <Typography className={classes.subtitle}>
+            {hasError}
+          </Typography>}
           <Grid spacing={1} container className={classes.containerStores}>
             {filteredStores.length
               ? filteredStores.map((store) => (
