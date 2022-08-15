@@ -87,7 +87,7 @@ function Cart({ match }) {
   function handleRemoveAmount(product) {
     const quantityToRemove = getQuantityToChange(product);
     const newAmount = product.amount - quantityToRemove;
-    dispatch(changeAmount(store.id, product.id, newAmount.toFixed(2)));
+    dispatch(changeAmount(store.id, product.id, Number(newAmount.toFixed(2))));
   }
   function handleAddAmount(product) {
     const quantityToAdd = getQuantityToChange(product);
