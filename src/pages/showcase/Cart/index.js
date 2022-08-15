@@ -67,14 +67,32 @@ function Cart({ match }) {
     }
     getStore();
   }, [dispatch, url]);
+  function getQuantityToChange(product) {
+    if (!product.fractionedQuantity) {
+      return 1;
+    } else {
+      switch (true) {
+        case product.amount > 10:
+          return 1;
+        case product.amount > 5:
+          return 0.5;
+        default:
+          return 0.1;
+      }
+    }
+  }
   function handleRemove(productId) {
     dispatch(removeProduct(store.id, productId));
   }
-  function handleRemoveAmount(productId, amount) {
-    dispatch(changeAmount(store.id, productId, amount));
+  function handleRemoveAmount(product) {
+    const quantityToRemove = getQuantityToChange(product);
+    const newAmount = product.amount - quantityToRemove;
+    dispatch(changeAmount(store.id, product.id, newAmount.toFixed(2)));
   }
-  function handleAddAmount(productId, amount) {
-    dispatch(changeAmount(store.id, productId, amount));
+  function handleAddAmount(product) {
+    const quantityToAdd = getQuantityToChange(product);
+    const newAmount = product.amount + quantityToAdd;
+    dispatch(changeAmount(store.id, product.id, Number(newAmount.toFixed(2))));
   }
   async function handleSend() {
     let buyList = await cart.reduce((list, product, index) => {
@@ -186,10 +204,7 @@ function Cart({ match }) {
                           <div className={classes.amountArea}>
                             <IconButton
                               onClick={() => {
-                                handleRemoveAmount(
-                                  product.id,
-                                  product.amount - 1
-                                );
+                                handleRemoveAmount(product);
                               }}
                             >
                               <Remove />
@@ -198,13 +213,13 @@ function Cart({ match }) {
                               type="number"
                               className={classes.productAmount}
                               value={product.amount}
-                              min={1}
+                              min={product.fractionedQuantity ? 0.1 : 1}
                               max={500}
                               readOnly
                             />
                             <IconButton
                               onClick={() => {
-                                handleAddAmount(product.id, product.amount + 1);
+                                handleAddAmount(product);
                               }}
                             >
                               <Add />

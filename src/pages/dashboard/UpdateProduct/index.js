@@ -105,6 +105,7 @@ function UpdateProduct({ match }) {
             .required('O preço é obrigatório'),
         }),
         featured: Yup.boolean(),
+        fractionedQuantity: Yup.boolean(),
         categoryId: Yup.number().positive().nullable(true),
       });
       await schema.validate(data, {
@@ -184,12 +185,22 @@ function UpdateProduct({ match }) {
             label="Imagem:"
             readOnly={userNotAdmin}
           />
-          <CheckboxInput
-            name="featured"
-            label="Destaque"
-            readOnly={userNotAdmin}
-          />
-
+          <Grid container>
+            <Grid item>
+              <CheckboxInput
+                name="featured"
+                label="Destaque"
+                readOnly={userNotAdmin}
+              />
+            </Grid>
+            <Grid item>
+              <CheckboxInput
+                name="fractionedQuantity"
+                label="Quantidade fracionada"
+                readOnly={userNotAdmin}
+              />
+            </Grid>
+          </Grid>
           <Input
             name="name"
             placeholder="Insira o nome do produto"
