@@ -21,6 +21,11 @@ import { addProduct } from '../../../store/modules/cart/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
 import useStyles from './styles';
 
+import {
+  getQuantityToAdd,
+  getQuantityToRemove,
+} from '../../../helpers/productQuantityCalculationHelper';
+
 function Product({ match }) {
   const dispatch = useDispatch();
   const { url } = match.params;
@@ -86,12 +91,14 @@ function Product({ match }) {
     history.push(`/loja/${url}/carrinho`);
   }
   async function decreaseAmount() {
-    if (amount > 1) {
-      await setAmount(amount - 1);
+    if (amount > 0.1) {
+      const newAmount = getQuantityToRemove(product.fractionedQuantity, amount);
+      await setAmount(newAmount);
     }
   }
   async function increaseAmount() {
-    await setAmount(amount + 1, () => {});
+    const newAmount = getQuantityToAdd(product.fractionedQuantity, amount);
+    await setAmount(newAmount);
   }
   async function handleAmountChange(e) {
     if (e.target.value >= 0 && e.target.value <= 500) {

@@ -41,6 +41,11 @@ import LoadingIcon from '../../../components/LoadingIcon';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 
+import {
+  getQuantityToAdd,
+  getQuantityToRemove,
+} from '../../../helpers/productQuantityCalculationHelper';
+
 function Cart({ match }) {
   const dispatch = useDispatch();
   const [clearCartModalVisible, setClearCartModalVisible] = useState(false);
@@ -67,33 +72,27 @@ function Cart({ match }) {
     }
     getStore();
   }, [dispatch, url]);
-  function getQuantityToChange(product) {
-    if (!product.fractionedQuantity) {
-      return 1;
-    } else {
-      switch (true) {
-        case product.amount > 10:
-          return 1;
-        case product.amount > 5:
-          return 0.5;
-        default:
-          return 0.1;
-      }
-    }
-  }
+
   function handleRemove(productId) {
     dispatch(removeProduct(store.id, productId));
   }
+
   function handleRemoveAmount(product) {
-    const quantityToRemove = getQuantityToChange(product);
-    const newAmount = product.amount - quantityToRemove;
-    dispatch(changeAmount(store.id, product.id, Number(newAmount.toFixed(2))));
+    const newAmount = getQuantityToRemove(
+      product.fractionedQuantity,
+      product.amount
+    );
+    dispatch(changeAmount(store.id, product.id, newAmount));
   }
+
   function handleAddAmount(product) {
-    const quantityToAdd = getQuantityToChange(product);
-    const newAmount = product.amount + quantityToAdd;
-    dispatch(changeAmount(store.id, product.id, Number(newAmount.toFixed(2))));
+    const newAmount = getQuantityToAdd(
+      product.fractionedQuantity,
+      product.amount
+    );
+    dispatch(changeAmount(store.id, product.id, newAmount));
   }
+
   async function handleSend() {
     let buyList = await cart.reduce((list, product, index) => {
       let text = `${list} %0A%0A ${index + 1}: Id ${product.id} `;
