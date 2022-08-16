@@ -30,6 +30,7 @@ export default function Stores() {
   const [stateCity, setStateCity] = useState([]);
   const [storeCategory, setStoreCategory] = useState([]);
 
+  const [search, setSearch] = useState('');
   const [hasError, setHasError] = useState('');
   const [filterLocation, setFilterLocation] = useState('TODOS');
   const [categoryInput, setCategoryInput] = useState('TODOS');
@@ -51,11 +52,20 @@ export default function Stores() {
     });
   }, []);
 
+  const handleFilterOnlyCategory = (value) => {
+    var storesData = stores.filter((store) => store.storeCategoryId === value);
+    if(storesData.length) {
+      setHasError('');
+      setFilteredStores(storesData);
+    }
+  }
+
   function handleSearch(e) {
+    setSearch(e.target.value);
     if(e.target.value.length === 0 && categoryInput !== 'TODOS' && filterLocation !== 'TODOS') {
       handleFilterStoresByCity(filterLocation)
-    } else if (e.target.value.length === 0 && categoryInput !== 'TODOS') {
-      handleFilterStoresByCategory(categoryInput)
+    } else if (e.target.value.length === 0 && categoryInput !== 'TODOS' && filterLocation === 'TODOS') {
+      handleFilterOnlyCategory(categoryInput);
     } else if (e.target.value.length === 0 && filterLocation !== 'TODOS') {
       handleFilterStoresByCity(filterLocation)
     } else if (e.target.value.length === 0) {
@@ -122,13 +132,13 @@ export default function Stores() {
       handleFilterStoresByCity(filterLocation)
       return
     } 
-    
 
     var hasCityToFilter = filterLocation !== 'TODOS' ? (stores.filter(store => store.cityId === filterLocation)).length > 0 : false
     var storesData = (filteredStores.length > 0 && !hasCityToFilter && filterLocation !== 'TODOS' ? filteredStores : stores)
     // eslint-disable-next-line
     .filter((store) => {
-      if(filterLocation !== 'TODOS' ? store.cityId === filterLocation && store.storeCategoryId === value 
+      if(filterLocation !== 'TODOS' ? 
+      store.cityId === filterLocation && store.storeCategoryId === value 
       : store.storeCategoryId === value) {
         return store
       } 
@@ -148,6 +158,19 @@ export default function Stores() {
       setHasError('Nenhuma loja encontrada') 
     }
   };
+
+  const handleFilterByCategoryAndSearch = (category, search) => {
+    var storesData = stores.filter((store) => store.storeCategoryId === category && 
+    store.name.toUpperCase().includes(search.toUpperCase()));
+    setHasError('')
+    if(storesData.length) {
+      setHasError('')
+      setFilteredStores(storesData)
+    } else {
+      handleFilterStoresByCategory(category)
+      setHasError('Nenhuma loja encontrada pela barra de pesquisa.')
+    }
+  }
 
   return isLoading ? (
     <LoadingIcon />
@@ -173,6 +196,45 @@ export default function Stores() {
                   ),
                 }}
               />
+
+              <div className={classes.filterLocationInput}>
+                <FormControl
+                  variant="standard"
+                  sx={{ m: 1 }}
+                  className={classes.selectInputLocation}
+                >
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Filtrar por categoria <HiOutlineLocationMarker />
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={categoryInput}
+                    variant="standard"
+                    onChange={(event) => {
+                      setCategoryInput(event.target.value);
+                      if(search != '') {
+                        handleFilterByCategoryAndSearch(event.target.value, search);
+                        return
+                      }
+                      handleFilterStoresByCategory(event.target.value);
+                    }}
+                  >
+                    <MenuItem value="" hidden>
+                      <em>Selecione a categoria</em>
+                    </MenuItem>
+                    <MenuItem value="TODOS">TODOS</MenuItem>
+                    {storeCategory.map((item) => {
+                      return (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </div>
+
               <div className={classes.filterLocationInput}>
                 <FormControl
                   variant="standard"
@@ -200,41 +262,6 @@ export default function Stores() {
                       return (
                         <MenuItem key={item.cityId} value={item.cityId}>
                           {item.city.name} - {item.city.state.uf}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className={classes.filterLocationInput}>
-                <FormControl
-                  variant="standard"
-                  sx={{ m: 1 }}
-                  className={classes.selectInputLocation}
-                >
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Filtrar por categoria <HiOutlineLocationMarker />
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    value={categoryInput}
-                    variant="standard"
-                    onChange={(event) => {
-                      setCategoryInput(event.target.value);
-                      // handleFilter(search, filterLocation,event.target.value);
-                      handleFilterStoresByCategory(event.target.value);
-                    }}
-                  >
-                    <MenuItem value="" hidden>
-                      <em>Selecione a categoria</em>
-                    </MenuItem>
-                    <MenuItem value="TODOS">TODOS</MenuItem>
-                    {storeCategory.map((item) => {
-                      return (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.name}
                         </MenuItem>
                       );
                     })}
