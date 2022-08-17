@@ -113,7 +113,7 @@ export default function Stores() {
   }
 
   const handleFilterStoresByCity = (value, category) => {
-    if(value != 'TODOS' && category === 'TODOS') {
+    if(value !== 'TODOS' && category === 'TODOS') {
       var storesData = stores.filter(store => store.cityId === value);
       setCityId(value);
       if(storesData.length > 0) {
@@ -136,7 +136,7 @@ export default function Stores() {
     var storesData = stores.filter(store => {
       if((categoryInput !== 'TODOS') && (store.storeCategoryId === categoryInput) && (store.cityId === value)) {
         return store
-      } else if (categoryInput === 'TODOS' && store.cityId === value && search != '' && store.name.toUpperCase().includes(search.toLocaleUpperCase())) {
+      } else if (categoryInput === 'TODOS' && store.cityId === value && search !== '' && store.name.toUpperCase().includes(search.toLocaleUpperCase())) {
         return store
       }else if(categoryInput === 'TODOS' && store.cityId === value) {
         return store
@@ -272,7 +272,7 @@ export default function Stores() {
                     variant="standard"
                     onChange={(event) => {
                       setCategoryInput(event.target.value);
-                      if(search != '') {
+                      if(search !== '') {
                         handleFilterByCategoryAndSearch(event.target.value, search);
                         return
                       }
@@ -315,7 +315,7 @@ export default function Stores() {
                     variant="standard"
                     onChange={(event) => {
                       setFilterLocation(event.target.value);
-                      if(search != '' && categoryInput == 'TODOS') {
+                      if(search !== '' && categoryInput === 'TODOS') {
                         handleFilterByCityAndSearch(event.target.value, search);
                         return
                       }
