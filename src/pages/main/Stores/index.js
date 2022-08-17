@@ -68,6 +68,17 @@ export default function Stores() {
       handleFilterOnlyCategory(categoryInput);
     } else if (e.target.value.length === 0 && filterLocation !== 'TODOS') {
       handleFilterStoresByCity(filterLocation)
+    } else if (e.target.value.length === 0 && categoryInput === 'TODOS' && filterLocation === 'TODOS') {
+      const storeSearch = slugify(e.target.value).toUpperCase();
+      const strs = filterStores(
+        stores,
+        storeSearch
+      );
+      if (strs.length) {
+        setFilteredStores(strs);
+      } else {
+        setHasError('Nenhuma loja encontrada pela pesquisa informada.')
+      }
     } else if (e.target.value.length === 0) {
       handleFilterStoresByCity(cityId);
       if (filterLocation === 'TODOS') {
@@ -101,7 +112,18 @@ export default function Stores() {
     setFilteredStores(filtered)
   }
 
-  const handleFilterStoresByCity = (value) => {
+  const handleFilterStoresByCity = (value, category) => {
+    if(value != 'TODOS' && category === 'TODOS') {
+      var storesData = stores.filter(store => store.cityId === value);
+      setCityId(value);
+      if(storesData.length > 0) {
+        setFilteredStores(storesData);
+        setHasError('')
+      } else {
+        setHasError('Nenhuma loja encontrada') 
+      }
+      return
+    }
     if(value === 'TODOS' && categoryInput !== 'TODOS') {
       filterStoresByCategoryRegardlessOfCity(categoryInput)
       return
@@ -114,7 +136,9 @@ export default function Stores() {
     var storesData = stores.filter(store => {
       if((categoryInput !== 'TODOS') && (store.storeCategoryId === categoryInput) && (store.cityId === value)) {
         return store
-      } else if(categoryInput === 'TODOS' && store.cityId === value) {
+      } else if (categoryInput === 'TODOS' && store.cityId === value && search != '' && store.name.toUpperCase().includes(search.toLocaleUpperCase())) {
+        return store
+      }else if(categoryInput === 'TODOS' && store.cityId === value) {
         return store
       }
     });
@@ -127,11 +151,27 @@ export default function Stores() {
     }
   };
 
+  const filterStoreByLocationAndCategory = (categoryId, cityId) => {
+    var storesData = stores.filter((store) => 
+    store.cityId === cityId && store.storeCategoryId === categoryId);
+    if(storesData.length) {
+      setFilteredStores(storesData)
+      setHasError('')
+    } else {
+      setHasError('Nenhuma loja encontrada por essa categoria.');
+    }
+  }
+
   const handleFilterStoresByCategory = (value) => {
-    if(value === 'TODOS' && filterLocation !== 'TODOS') {
-      handleFilterStoresByCity(filterLocation)
+    if(search === '' && value === 'TODOS' && filterLocation === 'TODOS') {
+      setFilteredStores([])
+      setHasError('')
+      return 
+    }
+    if(filterLocation !== 'TODOS') {
+      filterStoreByLocationAndCategory(value, filterLocation)
       return
-    } 
+    }
 
     var hasCityToFilter = filterLocation !== 'TODOS' ? (stores.filter(store => store.cityId === filterLocation)).length > 0 : false
     var storesData = (filteredStores.length > 0 && !hasCityToFilter && filterLocation !== 'TODOS' ? filteredStores : stores)
@@ -141,8 +181,7 @@ export default function Stores() {
       store.cityId === filterLocation && store.storeCategoryId === value 
       : store.storeCategoryId === value) {
         return store
-      } 
-      else if (filterLocation === 'TODOS' && store.storeCategoryId === value){
+      } else if (filterLocation === 'TODOS' && store.storeCategoryId === value){
         return store
       } 
       else if (store.storeCategoryId === value){
@@ -168,6 +207,26 @@ export default function Stores() {
       setFilteredStores(storesData)
     } else {
       handleFilterStoresByCategory(category)
+      setHasError('Nenhuma loja encontrada pela barra de pesquisa.')
+    }
+  }
+
+  const handleFilterByCityAndSearch = (city, search) => {
+    var storesData = [];
+    if(city === 'TODOS') {
+      storesData = stores.filter((store) => store.cityId === city && 
+      store.name.toUpperCase().includes(search.toUpperCase()));
+      return
+    }
+    storesData = stores.filter((store) => store.cityId === city && 
+    store.name.toUpperCase().includes(search.toUpperCase()));
+
+    setHasError('')
+    if(storesData.length) {
+      setHasError('')
+      setFilteredStores(storesData)
+    } else {
+      // handleFilterStoresByCity(city);
       setHasError('Nenhuma loja encontrada pela barra de pesquisa.')
     }
   }
@@ -217,6 +276,11 @@ export default function Stores() {
                         handleFilterByCategoryAndSearch(event.target.value, search);
                         return
                       }
+                      if(event.target.value === 'TODOS' && filterLocation !== 'TODOS') {
+                        setCategoryInput(event.target.value);
+                        handleFilterStoresByCity(filterLocation, event.target.value)
+                        return
+                      }
                       handleFilterStoresByCategory(event.target.value);
                     }}
                   >
@@ -251,7 +315,13 @@ export default function Stores() {
                     variant="standard"
                     onChange={(event) => {
                       setFilterLocation(event.target.value);
-                      handleFilterStoresByCity(event.target.value);
+                      if(search != '' && categoryInput == 'TODOS') {
+                        handleFilterByCityAndSearch(event.target.value, search);
+                        return
+                      }
+                      if(search === '') {
+                        handleFilterStoresByCity(event.target.value);
+                      }
                     }}
                   >
                     <MenuItem value="" hidden>
