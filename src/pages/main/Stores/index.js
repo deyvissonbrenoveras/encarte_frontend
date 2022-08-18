@@ -37,19 +37,19 @@ export default function Stores() {
   const [filteredStores, setFilteredStores] = useState([]);
   const [cityId, setCityId] = useState('');
 
-  useState(() => {
+  useState(async () => {
     Promise.all([
       api.get('/locations/active-cities'), 
       api.get('/stores'),
-      api.get('/store-categories')
+      api.get('/store-categories/active')
     ]).then(res => {
       const resolve = res[0].data.filter((item) => item.city != null);
       setStateCity(resolve);  
 
       setStores(res[1].data);
-      setStoreCategory(res[2].data);
+      setStoreCategory(res[2].data.filter(category => category.storeCategoryId !== null));
       setIsLoading(false);
-    });
+    }).catch(err => console.log('error request', err));
   }, []);
 
   const handleFilterOnlyCategory = (value) => {
@@ -289,9 +289,10 @@ export default function Stores() {
                     </MenuItem>
                     <MenuItem value="TODOS">TODOS</MenuItem>
                     {storeCategory.map((item) => {
+                      console.log('item category',item)
                       return (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.name}
+                        <MenuItem key={item.storeCategoryId} value={item.storeCategoryId}>
+                          {item.storeCategory.name}
                         </MenuItem>
                       );
                     })}
