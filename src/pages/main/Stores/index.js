@@ -130,8 +130,8 @@ export default function Stores() {
     } else if (value === '' || value === 'TODOS') {
       setFilterLocation('TODOS');
       setFilteredStores([]);
+      return
     }
-    
     // eslint-disable-next-line
     var storesData = stores.filter(store => {
       if((categoryInput !== 'TODOS') && (store.storeCategoryId === categoryInput) && (store.cityId === value)) {
@@ -147,7 +147,7 @@ export default function Stores() {
       setFilteredStores(storesData);
       setHasError('')
     } else {
-      setHasError('Nenhuma loja encontrada') 
+      setHasError('Nenhuma loja encontrada finalll') 
     }
   };
 
@@ -289,7 +289,6 @@ export default function Stores() {
                     </MenuItem>
                     <MenuItem value="TODOS">TODOS</MenuItem>
                     {storeCategory.map((item) => {
-                      console.log('item category',item)
                       return (
                         <MenuItem key={item.storeCategoryId} value={item.storeCategoryId}>
                           {item.storeCategory.name}
