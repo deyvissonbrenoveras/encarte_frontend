@@ -3,9 +3,9 @@ function getQuantityToChange(fractionedQuantity, currentAmount) {
     return 1;
   } else {
     switch (true) {
-      case currentAmount > 10:
+      case currentAmount > 9.9:
         return 1;
-      case currentAmount > 5:
+      case currentAmount > 4.4:
         return 0.5;
       default:
         return 0.1;
