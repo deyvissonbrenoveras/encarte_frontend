@@ -156,6 +156,7 @@ function Product({ match }) {
                   type="number"
                   className={classes.productAmount}
                   value={amount}
+                  readOnly
                   min={1}
                   max={500}
                   onChange={handleAmountChange}
