@@ -91,7 +91,8 @@ function Product({ match }) {
     history.push(`/loja/${url}/carrinho`);
   }
   async function decreaseAmount() {
-    if (amount > 0.1) {
+    const minimumValue = product.fractionedQuantity ? 0.1 : 1;
+    if (amount > minimumValue) {
       const newAmount = getQuantityToRemove(product.fractionedQuantity, amount);
       await setAmount(newAmount);
     }
@@ -99,11 +100,6 @@ function Product({ match }) {
   async function increaseAmount() {
     const newAmount = getQuantityToAdd(product.fractionedQuantity, amount);
     await setAmount(newAmount);
-  }
-  async function handleAmountChange(e) {
-    if (e.target.value >= 0 && e.target.value <= 500) {
-      await setAmount(Number(e.target.value));
-    }
   }
   async function amountFocusOut(e) {
     if (e.target.value < 1 || e.target.value > 500) {
@@ -159,7 +155,6 @@ function Product({ match }) {
                   readOnly
                   min={1}
                   max={500}
-                  onChange={handleAmountChange}
                   onBlur={amountFocusOut}
                 />
                 <IconButton onClick={increaseAmount}>
