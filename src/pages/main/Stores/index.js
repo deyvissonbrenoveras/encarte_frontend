@@ -62,6 +62,7 @@ export default function Stores() {
 
   function handleSearch(e) {
     setSearch(e.target.value);
+    setHasError('');
     if(e.target.value.length === 0 && categoryInput !== 'TODOS' && filterLocation !== 'TODOS') {
       handleFilterStoresByCity(filterLocation)
     } else if (e.target.value.length === 0 && categoryInput !== 'TODOS' && filterLocation === 'TODOS') {
