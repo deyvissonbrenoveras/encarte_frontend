@@ -349,7 +349,7 @@ export default function Stores() {
           {hasError !== '' && <Typography className={classes.subtitle}>
             {hasError}
           </Typography>}
-          <Grid spacing={1} container className={classes.containerStores}>
+          {hasError === '' && <Grid spacing={1} container className={classes.containerStores}>
             {filteredStores.length
               ? filteredStores.map((store) => (
                   <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -362,7 +362,7 @@ export default function Stores() {
                     <StoreCard key={store.id} store={store} />
                   </Grid>
                 ))}
-          </Grid>
+          </Grid>}
         </Grid>
       </Grid>
     </Grid>
