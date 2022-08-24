@@ -136,14 +136,14 @@ export default makeStyles((theme) => ({
     },
   },
   productAmount: {
-    width: 40,
+    width: 50,
     textAlign: 'center',
     outline: 'none',
     border: 'none',
     fontWeight: 'bold',
     [theme.breakpoints.down('xs')]: {
       fontSize: 10,
-      width: 20,
+      width: 40,
     },
   },
   subTotal: {

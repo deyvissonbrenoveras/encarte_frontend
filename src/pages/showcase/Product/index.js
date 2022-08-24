@@ -21,6 +21,11 @@ import { addProduct } from '../../../store/modules/cart/actions';
 import LoadingIcon from '../../../components/LoadingIcon';
 import useStyles from './styles';
 
+import {
+  getQuantityToAdd,
+  getQuantityToRemove,
+} from '../../../helpers/productQuantityCalculationHelper';
+
 function Product({ match }) {
   const dispatch = useDispatch();
   const { url } = match.params;
@@ -86,17 +91,15 @@ function Product({ match }) {
     history.push(`/loja/${url}/carrinho`);
   }
   async function decreaseAmount() {
-    if (amount > 1) {
-      await setAmount(amount - 1);
+    const minimumValue = product.fractionedQuantity ? 0.1 : 1;
+    if (amount > minimumValue) {
+      const newAmount = getQuantityToRemove(product.fractionedQuantity, amount);
+      await setAmount(newAmount);
     }
   }
   async function increaseAmount() {
-    await setAmount(amount + 1, () => {});
-  }
-  async function handleAmountChange(e) {
-    if (e.target.value >= 0 && e.target.value <= 500) {
-      await setAmount(Number(e.target.value));
-    }
+    const newAmount = getQuantityToAdd(product.fractionedQuantity, amount);
+    await setAmount(newAmount);
   }
   async function amountFocusOut(e) {
     if (e.target.value < 1 || e.target.value > 500) {
@@ -149,9 +152,9 @@ function Product({ match }) {
                   type="number"
                   className={classes.productAmount}
                   value={amount}
+                  readOnly
                   min={1}
                   max={500}
-                  onChange={handleAmountChange}
                   onBlur={amountFocusOut}
                 />
                 <IconButton onClick={increaseAmount}>
