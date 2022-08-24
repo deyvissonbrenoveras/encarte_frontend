@@ -49,7 +49,7 @@ export default function Stores() {
       setStores(res[1].data);
       setStoreCategory(res[2].data.filter(category => category.storeCategoryId !== null));
       setIsLoading(false);
-    }).catch(err => console.log('error request', err));
+    }).catch(err => console.log('error request', err))
   }, []);
 
   const handleFilterOnlyCategory = (value) => {
@@ -147,7 +147,7 @@ export default function Stores() {
       setFilteredStores(storesData);
       setHasError('')
     } else {
-      setHasError('Nenhuma loja encontrada finalll') 
+      setHasError('Nenhuma loja encontrada') 
     }
   };
 
@@ -271,6 +271,9 @@ export default function Stores() {
                     value={categoryInput}
                     variant="standard"
                     onChange={(event) => {
+                      if(event.target.value === '') {
+                        return;
+                      }
                       setCategoryInput(event.target.value);
                       if(search !== '') {
                         handleFilterByCategoryAndSearch(event.target.value, search);
