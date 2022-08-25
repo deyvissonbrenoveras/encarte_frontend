@@ -88,6 +88,7 @@ function NewProduct() {
             .required('O preço é obrigatório'),
         }),
         featured: Yup.boolean(),
+        fractionedQuantity: Yup.boolean(),
         stores: Yup.array().notRequired(),
         categoryId: Yup.number().positive().nullable(true),
       });
@@ -126,7 +127,18 @@ function NewProduct() {
         <Grid container justify="space-around">
           <Grid item xs={12} md={4}>
             <Img name="image" submitName="fileId" label="Imagem:" />
-            <CheckboxInput name="featured" label="Destaque" />
+
+            <Grid container>
+              <Grid item>
+                <CheckboxInput name="featured" label="Destaque" />
+              </Grid>
+              <Grid item>
+                <CheckboxInput
+                  name="fractionedQuantity"
+                  label="Quantidade fracionada"
+                />
+              </Grid>
+            </Grid>
 
             <Input
               name="name"

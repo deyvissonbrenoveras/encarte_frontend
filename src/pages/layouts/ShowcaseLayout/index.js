@@ -30,18 +30,15 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
 
   useEffect(() => {
     const count = cart.reduce(
-      (previous, current) => previous + current.amount,
+      (previous, current) =>
+        previous + (current.fractionedQuantity ? 1 : current.amount),
       0
     );
     setCartItemsCount(count);
   }, [cart]);
 
-  const {
-    primaryColor,
-    secondaryColor,
-    tertiaryColor,
-    quaternaryColor,
-  } = showcase;
+  const { primaryColor, secondaryColor, tertiaryColor, quaternaryColor } =
+    showcase;
 
   const classes = useStyles({
     primaryColor,
@@ -97,7 +94,6 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
               </Button>
 
               <div className={classes.iconButtons}>
-                
                 <IconButton
                   onClick={() => {
                     history.push(`/loja/${url}`);

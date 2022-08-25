@@ -41,6 +41,11 @@ import LoadingIcon from '../../../components/LoadingIcon';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 
+import {
+  getQuantityToAdd,
+  getQuantityToRemove,
+} from '../../../helpers/productQuantityCalculationHelper';
+
 function Cart({ match }) {
   const dispatch = useDispatch();
   const [clearCartModalVisible, setClearCartModalVisible] = useState(false);
@@ -67,15 +72,27 @@ function Cart({ match }) {
     }
     getStore();
   }, [dispatch, url]);
+
   function handleRemove(productId) {
     dispatch(removeProduct(store.id, productId));
   }
-  function handleRemoveAmount(productId, amount) {
-    dispatch(changeAmount(store.id, productId, amount));
+
+  function handleRemoveAmount(product) {
+    const newAmount = getQuantityToRemove(
+      product.fractionedQuantity,
+      product.amount
+    );
+    dispatch(changeAmount(store.id, product.id, newAmount));
   }
-  function handleAddAmount(productId, amount) {
-    dispatch(changeAmount(store.id, productId, amount));
+
+  function handleAddAmount(product) {
+    const newAmount = getQuantityToAdd(
+      product.fractionedQuantity,
+      product.amount
+    );
+    dispatch(changeAmount(store.id, product.id, newAmount));
   }
+
   async function handleSend() {
     let buyList = await cart.reduce((list, product, index) => {
       let text = `${list} %0A%0A ${index + 1}: Id ${product.id} `;
@@ -186,10 +203,7 @@ function Cart({ match }) {
                           <div className={classes.amountArea}>
                             <IconButton
                               onClick={() => {
-                                handleRemoveAmount(
-                                  product.id,
-                                  product.amount - 1
-                                );
+                                handleRemoveAmount(product);
                               }}
                             >
                               <Remove />
@@ -198,13 +212,13 @@ function Cart({ match }) {
                               type="number"
                               className={classes.productAmount}
                               value={product.amount}
-                              min={1}
+                              min={product.fractionedQuantity ? 0.1 : 1}
                               max={500}
                               readOnly
                             />
                             <IconButton
                               onClick={() => {
-                                handleAddAmount(product.id, product.amount + 1);
+                                handleAddAmount(product);
                               }}
                             >
                               <Add />
