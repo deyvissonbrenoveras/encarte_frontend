@@ -273,20 +273,20 @@ export default function Stores() {
                     value={categoryInput}
                     variant="standard"
                     onChange={(event) => {
-                      if(event.target.value === '') {
-                        return;
-                      }
-                      setCategoryInput(event.target.value);
+                      var categoryValue = event.target.value;
+                      if(event.target.value === '') categoryValue = 'TODOS'
+                      
+                      setCategoryInput(categoryValue);
                       if(search !== '') {
-                        handleFilterByCategoryAndSearch(event.target.value, search);
+                        handleFilterByCategoryAndSearch(categoryValue, search);
                         return
                       }
-                      if(event.target.value === 'TODOS' && filterLocation !== 'TODOS') {
-                        setCategoryInput(event.target.value);
-                        handleFilterStoresByCity(filterLocation, event.target.value)
+                      if(categoryValue === 'TODOS' && filterLocation !== 'TODOS') {
+                        setCategoryInput(categoryValue);
+                        handleFilterStoresByCity(filterLocation, categoryValue)
                         return
                       }
-                      handleFilterStoresByCategory(event.target.value);
+                      handleFilterStoresByCategory(categoryValue);
                     }}
                   >
                     <MenuItem value="" hidden>
