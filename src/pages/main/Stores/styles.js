@@ -38,6 +38,7 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
+      gap: '.7rem'
     },
   },
   searchInput: {
