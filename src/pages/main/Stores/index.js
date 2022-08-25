@@ -111,6 +111,7 @@ export default function Stores() {
   const filterStoresByCategoryRegardlessOfCity = (categoryId) => {
     var filtered = stores.filter(store => store.storeCategoryId === categoryId);
     setFilteredStores(filtered)
+    setHasError('')
   }
 
   const handleFilterStoresByCity = (value, category) => {
