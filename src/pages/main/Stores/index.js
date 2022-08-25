@@ -319,7 +319,7 @@ export default function Stores() {
                     value={filterLocation}
                     variant="standard"
                     onChange={(event) => {
-                      setFilterLocation(event.target.value == '' ? 'TODOS': event.target.value);
+                      setFilterLocation(event.target.value === '' ? 'TODOS': event.target.value);
                       if(search !== '' && categoryInput === 'TODOS') {
                         handleFilterByCityAndSearch(event.target.value, search);
                         return
