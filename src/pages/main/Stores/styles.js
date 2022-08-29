@@ -38,6 +38,7 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
+      gap: '.7rem'
     },
   },
   searchInput: {
@@ -48,6 +49,7 @@ export default makeStyles((theme) => ({
   },
   filterLocationInput: {
     width: '35%',
+    marginRight: '0.25rem',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       margin: '0px !important',
