@@ -10,16 +10,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useSelector, useDispatch } from 'react-redux';
 import { StoreCard } from './components/StoreCard';
 //icons
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 
 import { Search } from '@material-ui/icons';
 import LoadingIcon from '../../../components/LoadingIcon';
-import { loadStoresRequest } from '../../../store/modules/store/actions';
-import { loadCitiesActiveRequest } from '../../../store/modules/city/actions';
-
+import api from '../../../services/api';
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
 
@@ -27,33 +24,77 @@ import logo from '../../../assets/logo.webp';
 
 export default function Stores() {
   const classes = useStyle();
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { stores, loading } = useSelector((state) => state.store);
-  const stateCity = useSelector((state) => state.city);
+  const [stores, setStores] = useState(true);
+  const [stateCity, setStateCity] = useState([]);
+  const [storeCategory, setStoreCategory] = useState([]);
+
+  const [search, setSearch] = useState('');
+  const [hasError, setHasError] = useState('');
   const [filterLocation, setFilterLocation] = useState('TODOS');
+  const [categoryInput, setCategoryInput] = useState('TODOS');
   const [filteredStores, setFilteredStores] = useState([]);
   const [cityId, setCityId] = useState('');
 
-  useState(() => {
-    dispatch(loadCitiesActiveRequest());
-    dispatch(loadStoresRequest());
+  useState(async () => {
+    Promise.all([
+      api.get('/locations/active-cities'), 
+      api.get('/stores'),
+      api.get('/store-categories/active')
+    ]).then(res => {
+      const resolve = res[0].data.filter((item) => item.city != null);
+      setStateCity(resolve);  
+
+      setStores(res[1].data);
+      setStoreCategory(res[2].data.filter(category => category.storeCategoryId !== null));
+      setIsLoading(false);
+    }).catch(err => console.log('error request', err))
   }, []);
 
+  const handleFilterOnlyCategory = (value) => {
+    var storesData = stores.filter((store) => store.storeCategoryId === value);
+    if(storesData.length) {
+      setHasError('');
+      setFilteredStores(storesData);
+    }
+  }
+
   function handleSearch(e) {
-    if (e.target.value.length === 0) {
-      handleFilterStores(cityId);
+    setSearch(e.target.value);
+    setHasError('');
+    if(e.target.value.length === 0 && categoryInput !== 'TODOS' && filterLocation !== 'TODOS') {
+      handleFilterStoresByCity(filterLocation)
+    } else if (e.target.value.length === 0 && categoryInput !== 'TODOS' && filterLocation === 'TODOS') {
+      handleFilterOnlyCategory(categoryInput);
+    } else if (e.target.value.length === 0 && filterLocation !== 'TODOS') {
+      handleFilterStoresByCity(filterLocation)
+    } else if (e.target.value.length === 0 && categoryInput === 'TODOS' && filterLocation === 'TODOS') {
+      const storeSearch = slugify(e.target.value).toUpperCase();
+      const strs = filterStores(
+        stores,
+        storeSearch
+      );
+      if (strs.length) {
+        setFilteredStores(strs);
+      } else {
+        setHasError('Nenhuma loja encontrada pela pesquisa informada.')
+      }
+    } else if (e.target.value.length === 0) {
+      handleFilterStoresByCity(cityId);
       if (filterLocation === 'TODOS') {
         setFilteredStores([]);
       }
     } else {
       const storeSearch = slugify(e.target.value).toUpperCase();
       const strs = filterStores(
-        filterLocation !== 'TODOS' ? filteredStores : stores,
+        filteredStores.length ? filteredStores : stores,
         storeSearch
       );
       if (strs.length) {
         setFilteredStores(strs);
+      } else {
+        setHasError('Nenhuma loja encontrada pela pesquisa informada.')
       }
     }
   }
@@ -61,23 +102,138 @@ export default function Stores() {
   const filterStores = (storesToFilter, storeSearch) => {
     return storesToFilter.filter((store) => {
       return (
-        slugify(store.name).toUpperCase().includes(storeSearch) ||
-        slugify(store.url).toUpperCase().includes(storeSearch)
+        slugify(store.name).toUpperCase().includes(storeSearch) || slugify(store.url).toUpperCase().includes(storeSearch)
       );
     });
   };
+  
+  // filtrar lojas por categoria independente da cidade
+  const filterStoresByCategoryRegardlessOfCity = (categoryId) => {
+    var filtered = stores.filter(store => store.storeCategoryId === categoryId);
+    setFilteredStores(filtered)
+    setHasError('')
+  }
 
-  const handleFilterStores = (value) => {
-    if (value === '') {
+  const handleFilterStoresByCity = (value, category) => {
+    if(value !== 'TODOS' && category === 'TODOS') {
+      var storesData = stores.filter(store => store.cityId === value);
+      setCityId(value);
+      if(storesData.length > 0) {
+        setFilteredStores(storesData);
+        setHasError('')
+      } else {
+        setHasError('Nenhuma loja encontrada') 
+      }
+      return
+    }
+    if(value === 'TODOS' && categoryInput !== 'TODOS') {
+      filterStoresByCategoryRegardlessOfCity(categoryInput)
+      return
+    } else if (value === '' || value === 'TODOS') {
       setFilterLocation('TODOS');
       setFilteredStores([]);
+      return
     }
-    var storesData = stores.filter((store) => store.cityId === value);
+    // eslint-disable-next-line
+    var storesData = stores.filter(store => {
+      if((categoryInput !== 'TODOS') && (store.storeCategoryId === categoryInput) && (store.cityId === value)) {
+        return store
+      } else if (categoryInput === 'TODOS' && store.cityId === value && search !== '' && store.name.toUpperCase().includes(search.toLocaleUpperCase())) {
+        return store
+      }else if(categoryInput === 'TODOS' && store.cityId === value) {
+        return store
+      }
+    });
     setCityId(value);
-    setFilteredStores(storesData);
+    if(storesData.length > 0) {
+      setFilteredStores(storesData);
+      setHasError('')
+    } else {
+      setHasError('Nenhuma loja encontrada') 
+    }
   };
 
-  return loading ? (
+  const filterStoreByLocationAndCategory = (categoryId, cityId) => {
+    var storesData = stores.filter((store) => 
+    store.cityId === cityId && store.storeCategoryId === categoryId);
+    if(storesData.length) {
+      setFilteredStores(storesData)
+      setHasError('')
+    } else {
+      setHasError('Nenhuma loja encontrada por essa categoria.');
+    }
+  }
+
+  const handleFilterStoresByCategory = (value) => {
+    if(search === '' && value === 'TODOS' && filterLocation === 'TODOS') {
+      setFilteredStores([])
+      setHasError('')
+      return 
+    }
+    if(filterLocation !== 'TODOS') {
+      filterStoreByLocationAndCategory(value, filterLocation)
+      return
+    }
+
+    var hasCityToFilter = filterLocation !== 'TODOS' ? (stores.filter(store => store.cityId === filterLocation)).length > 0 : false
+    var storesData = (filteredStores.length > 0 && !hasCityToFilter && filterLocation !== 'TODOS' ? filteredStores : stores)
+    // eslint-disable-next-line
+    .filter((store) => {
+      if(filterLocation !== 'TODOS' ? 
+      store.cityId === filterLocation && store.storeCategoryId === value 
+      : store.storeCategoryId === value) {
+        return store
+      } else if (filterLocation === 'TODOS' && store.storeCategoryId === value){
+        return store
+      } 
+      else if (store.storeCategoryId === value){
+        return store
+      }
+    });
+    setCityId(value);
+    
+    if(storesData.length > 0) {
+      setHasError('')
+      setFilteredStores(storesData)
+    } else {
+      setHasError('Nenhuma loja encontrada') 
+    }
+  };
+
+  const handleFilterByCategoryAndSearch = (category, search) => {
+    var storesData = stores.filter((store) => store.storeCategoryId === category && 
+    store.name.toUpperCase().includes(search.toUpperCase()));
+    setHasError('')
+    if(storesData.length) {
+      setHasError('')
+      setFilteredStores(storesData)
+    } else {
+      handleFilterStoresByCategory(category)
+      setHasError('Nenhuma loja encontrada pela barra de pesquisa.')
+    }
+  }
+
+  const handleFilterByCityAndSearch = (city, search) => {
+    var storesData = [];
+    if(city === 'TODOS') {
+      storesData = stores.filter((store) => store.cityId === city && 
+      store.name.toUpperCase().includes(search.toUpperCase()));
+      return
+    }
+    storesData = stores.filter((store) => store.cityId === city && 
+    store.name.toUpperCase().includes(search.toUpperCase()));
+
+    setHasError('')
+    if(storesData.length) {
+      setHasError('')
+      setFilteredStores(storesData)
+    } else {
+      // handleFilterStoresByCity(city);
+      setHasError('Nenhuma loja encontrada pela barra de pesquisa.')
+    }
+  }
+
+  return isLoading ? (
     <LoadingIcon />
   ) : (
     <Grid container justifyContent="center" className={classes.container}>
@@ -101,6 +257,53 @@ export default function Stores() {
                   ),
                 }}
               />
+
+              <div className={classes.filterLocationInput}>
+                <FormControl
+                  variant="standard"
+                  sx={{ m: 1 }}
+                  className={classes.selectInputLocation}
+                >
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Filtrar por categoria <HiOutlineLocationMarker />
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={categoryInput}
+                    variant="standard"
+                    onChange={(event) => {
+                      var categoryValue = event.target.value;
+                      if(event.target.value === '') categoryValue = 'TODOS'
+                      
+                      setCategoryInput(categoryValue);
+                      if(search !== '') {
+                        handleFilterByCategoryAndSearch(categoryValue, search);
+                        return
+                      }
+                      if(categoryValue === 'TODOS' && filterLocation !== 'TODOS') {
+                        setCategoryInput(categoryValue);
+                        handleFilterStoresByCity(filterLocation, categoryValue)
+                        return
+                      }
+                      handleFilterStoresByCategory(categoryValue);
+                    }}
+                  >
+                    <MenuItem value="" hidden>
+                      <em>Selecione a categoria</em>
+                    </MenuItem>
+                    <MenuItem value="TODOS">TODOS</MenuItem>
+                    {storeCategory.map((item) => {
+                      return (
+                        <MenuItem key={item.storeCategoryId} value={item.storeCategoryId}>
+                          {item.storeCategory.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </div>
+
               <div className={classes.filterLocationInput}>
                 <FormControl
                   variant="standard"
@@ -116,15 +319,21 @@ export default function Stores() {
                     value={filterLocation}
                     variant="standard"
                     onChange={(event) => {
-                      setFilterLocation(event.target.value);
-                      handleFilterStores(event.target.value);
+                      setFilterLocation(event.target.value === '' ? 'TODOS': event.target.value);
+                      if(search !== '' && categoryInput === 'TODOS') {
+                        handleFilterByCityAndSearch(event.target.value, search);
+                        return
+                      }
+                      if(search === '') {
+                        handleFilterStoresByCity(event.target.value);
+                      }
                     }}
                   >
                     <MenuItem value="" hidden>
                       <em>Selecione a cidade</em>
                     </MenuItem>
                     <MenuItem value="TODOS">TODOS</MenuItem>
-                    {stateCity.cities.map((item) => {
+                    {stateCity.map((item) => {
                       return (
                         <MenuItem key={item.cityId} value={item.cityId}>
                           {item.city.name} - {item.city.state.uf}
@@ -139,7 +348,10 @@ export default function Stores() {
           <Typography className={classes.subtitle}>
             Estabelecimentos encontrados:
           </Typography>
-          <Grid spacing={1} container className={classes.containerStores}>
+          {hasError !== '' && <Typography className={classes.subtitle}>
+            {hasError}
+          </Typography>}
+          {hasError === '' && <Grid spacing={1} container className={classes.containerStores}>
             {filteredStores.length
               ? filteredStores.map((store) => (
                   <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -152,7 +364,7 @@ export default function Stores() {
                     <StoreCard key={store.id} store={store} />
                   </Grid>
                 ))}
-          </Grid>
+          </Grid>}
         </Grid>
       </Grid>
     </Grid>
