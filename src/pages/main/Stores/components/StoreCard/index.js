@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import useStyle from './styles';
+import Box from '@mui/material/Box';
 import { BsArrowRightShort } from 'react-icons/bs';
 
 export function StoreCard({ store }) {
@@ -22,9 +23,11 @@ export function StoreCard({ store }) {
             {store.city.name} - {store.city.state.uf}
           </div>
         )}
-        <button>
-          Visitar <BsArrowRightShort />
-        </button>
+        <Box sx={{justifyContent: 'flex-end', display: 'flex', width: '100%'}}>
+          <button>
+            <BsArrowRightShort />
+          </button>
+        </Box>
       </div>
     </Link>
   );

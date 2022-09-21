@@ -4,8 +4,9 @@ import { darken } from 'polished';
 export default makeStyles((theme) => ({
   storeCard: {
     height: 400,
-    width: '100%',
-    boxShadow: '3px 5px 14px -2px rgba(0,0,0,0.46)',
+    width: '90%',
+    border: '.5px solid #000',
+    borderRadius: '2rem',
     background: '#FFF',
     padding: 15,
     margin: 5,
@@ -14,7 +15,6 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     cursor: 'pointer',
-    borderRadius: '5px',
     color: '#000',
     transition: 'all  .2s',
     backgroundColor: darken(0.02, '#fff'),
@@ -32,25 +32,21 @@ export default makeStyles((theme) => ({
       fontSize: 14,
     },
     '& button': {
+      width: '45%',
+      height: '90%',
+      borderRadius: '2rem',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
-
+      justifyContent: 'flex-end',
+      paddingRight: '1rem',
+      border: 'none',
       '& svg': {
-        fontSize: '2rem',
+        fontSize: '2.5rem',
+        color: '#fff'
       },
 
-      background: '#fff',
-      border: '2px solid #4d4d4d',
-      padding: '0.8rem 1.4rem',
-      color: '#4d4d4d',
-      borderRadius: '4px',
+      background: '#ED2F56',
       marginTop: 20,
-
-      fontSize: '1rem',
-      lineHeight: '1rem',
-      letterSpacing: '2px',
-      fontWeight: '600',
     },
   },
   bodyCard: {

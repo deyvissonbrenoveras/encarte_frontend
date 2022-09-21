@@ -4,7 +4,20 @@ export default makeStyles((theme) => ({
   logo: {
     height: 50,
   },
+  containerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
   stickyTop: {
+    backgroundColor: '#ED2F56',
+    borderBottom: '1rem solid #FC6B89',
+    height: '6rem',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '10px',
+
     [theme.breakpoints.down('sm')]: {
       padding: '.7rem',
     },
@@ -14,14 +27,13 @@ export default makeStyles((theme) => ({
     textAlign: 'left',
     letterSpacing: 1,
     fontWeight: 600,
-    marginLeft: '15px',
     display: 'block',
-    width: '100%',
+    width: '90%',
     color: '#383838',
-    marginBottom: '1.7rem',
+    marginBottom: '1.2rem',
   },
   container: {
-    background: '#F2F3F4',
+    background: '#fff',
     height: '100vh',
     width: '100vw',
     overflowX: 'hidden',
@@ -30,10 +42,10 @@ export default makeStyles((theme) => ({
   search: {
     margin: theme.spacing(2),
     display: 'flex',
-    justifyContent: ' center',
+    width: '90%',
   },
   ContainerButtons: {
-    width: '100%',
+    width: '100vw',
     display: 'flex',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
@@ -63,6 +75,6 @@ export default makeStyles((theme) => ({
     },
   },
   containerStores: {
-    padding: 10,
+    maxWidth: '90%',
   },
 }));

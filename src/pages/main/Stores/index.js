@@ -6,6 +6,7 @@ import {
   Typography,
   Box,
 } from '@material-ui/core';
+
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -21,6 +22,7 @@ import useStyle from './styles';
 import slugify from '../../../util/slugify';
 
 import logo from '../../../assets/logo.webp';
+import Elogo from '../../../assets/e-logo.svg';
 
 export default function Stores() {
   const classes = useStyle();
@@ -237,14 +239,16 @@ export default function Stores() {
     <LoadingIcon />
   ) : (
     <Grid container justifyContent="center" className={classes.container}>
-      <Grid item xs={12} lg={8} style={{ height: '100vh' }}>
+      <Grid style={{ height: '100vh' }}>
         <Box className={classes.stickyTop} width="100%" textAlign="left">
-          <img src={logo} alt="e-ncarte" className={classes.logo} />
+          <img src={Elogo} alt="e-ncarte" className={classes.logo} />
         </Box>
-        <Grid container>
-          <Grid item xs={12} className={classes.search}>
+        <Grid container className={classes.containerContent}>
+          <Grid className={classes.search}>
             <div className={classes.ContainerButtons}>
+            
               <TextField
+                variant="standard"
                 onChange={handleSearch}
                 className={classes.searchInput}
                 label="Buscar"
