@@ -24,13 +24,15 @@ import LoadingIcon from '../../../components/LoadingIcon';
 import { formatPrice } from '../../../util/format';
 import { loadRequest } from '../../../store/modules/showcase/actions';
 import history from '../../../services/history';
-
 import useStyles from './styles';
 import PriceTypeEnum from '../../../util/PriceTypeEnum';
 
 import { addProduct } from '../../../store/modules/cart/actions';
 import SocialNetworks from '../../../components/SocialNetworks';
-
+import CardsCategory from './components/CardsCategory';
+// icons
+import { HiOutlineShoppingCart } from 'react-icons/hi'
+// import shoppingCart from '../../../assets/shoppingCart.svg'
 function Store({ match }) {
   const { url } = match.params;
   const dispatch = useDispatch();
@@ -310,6 +312,7 @@ function Store({ match }) {
       </Carousel>
     );
   }
+
   return loading ? (
     <LoadingIcon />
   ) : (
@@ -329,9 +332,9 @@ function Store({ match }) {
           <NotFound />
         ) : (
           <>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <h1 className={classes.showcaseName}>{showcase.name}</h1>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} /*md={8}*/>
               <Grid
                 container
@@ -391,6 +394,40 @@ function Store({ match }) {
                   </Grid>
                 </Grid>
               )}
+              <Grid container className={classes.containerCards} justify="center" flexDirection='row'>
+                <Grid container className={classes.cardsWrapper} justify="center" flexDirection='row'>
+                    <CardsCategory 
+                      Icon={<HiOutlineShoppingCart  />}
+                      active={true}
+                      label='Ver tudo'
+                    />
+                    <CardsCategory 
+                      Icon={<HiOutlineShoppingCart  />}
+                      active={false}
+                      label='Ver tudo'
+                    />
+                    <CardsCategory 
+                      Icon={<HiOutlineShoppingCart  />}
+                      active={false}
+                      label='Ver tudo'
+                    />
+                    <CardsCategory 
+                      Icon={<HiOutlineShoppingCart  />}
+                      active={false}
+                      label='Ver tudo'
+                    />
+                    <CardsCategory 
+                      Icon={<HiOutlineShoppingCart  />}
+                      active={false}
+                      label='Ver tudo'
+                    />
+                    <CardsCategory 
+                      Icon={<HiOutlineShoppingCart  />}
+                      active={false}
+                      label='Ver tudo'
+                    />
+                  </Grid>
+              </Grid>
               <Grid container justify="center">
                 <Grid item xs={12} sm={10} lg={8}>
                   {store.partners &&

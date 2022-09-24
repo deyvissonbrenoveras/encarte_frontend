@@ -449,4 +449,27 @@ export default makeStyles((theme) => ({
     maxHeight: 200,
     margin: '15px 0',
   },
+  containerCards: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',	
+    gap: 2,
+    overflowX: 'auto',
+    padding: '5px 0px',
+    height: '200px',
+    width: '100%',
+  },
+  cardsWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+    gap: 2,
+    width: '100%',
+    height: '100%',
+    overflowX: 'auto !important',
+    padding: '0px 1rem',
+  }
 }));

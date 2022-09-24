@@ -21,7 +21,6 @@ import api from '../../../services/api';
 import useStyle from './styles';
 import slugify from '../../../util/slugify';
 
-import logo from '../../../assets/logo.webp';
 import Elogo from '../../../assets/e-logo.svg';
 
 export default function Stores() {
@@ -39,7 +38,7 @@ export default function Stores() {
   const [filteredStores, setFilteredStores] = useState([]);
   const [cityId, setCityId] = useState('');
 
-  useState(async () => {
+  useState(async () => { 
     Promise.all([
       api.get('/locations/active-cities'), 
       api.get('/stores'),
@@ -47,7 +46,6 @@ export default function Stores() {
     ]).then(res => {
       const resolve = res[0].data.filter((item) => item.city != null);
       setStateCity(resolve);  
-
       setStores(res[1].data);
       setStoreCategory(res[2].data.filter(category => category.storeCategoryId !== null));
       setIsLoading(false);
