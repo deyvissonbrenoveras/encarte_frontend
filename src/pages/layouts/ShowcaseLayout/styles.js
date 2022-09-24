@@ -5,11 +5,13 @@ export const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appBar: {
-    background: (props) => {
-      const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
-      return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
-    },
-    minHeight: 60,
+    // background: (props) => {
+    //   const gradientColor = lighten(props.primaryColor || '#efefef', 0.3);
+    //   return `linear-gradient(90deg, ${gradientColor} 11%, ${props.primaryColor} 77%)`;
+    // },
+    background: (props) => props.primaryColor ,
+    padding: '1rem',
+    minHeight: 80,
   },
   logoButton: {
     margin: 10,
@@ -39,38 +41,37 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   icon: {
-    width: 24,
-    height: 24,
-    color: (props) => props.secondaryColor || theme.palette.encarte,
+    width: 32,
+    height: 32,
+    color: '#3E3939',//(props) => props.secondaryColor || theme.palette.encarte,
     padding: 0,
     margin: 0,
     [theme.breakpoints.down('sm')]: {
-      width: 18,
-      height: 18,
+      width: 22,
+      height: 22,
     },
   },
   searchInput: {
     width: '100%',
     maxWidth: 600,
-    background: '#fff',
     margin: '4px 20px',
     '& .MuiFormControl-root': {
       fontSize: '11',
-      height: 10,
+      height: 15,
     },
     '& .MuiInputBase-root': {
-      height: 30,
-      backgroundColor: '#fff',
+      height: 40,
+      backgroundColor: '#F1F1F1',
     },
     '& .MuiFormLabel-root': {
       fontSize: 12,
     },
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: (props) => props.secondaryColor || '#fff',
-    },
-    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: (props) => props.secondaryColor || '#fff',
-    },
+    // '& .MuiOutlinedInput-notchedOutline': {
+    //   borderColor: (props) => props.secondaryColor || '#fff',
+    // },
+    // '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    //   borderColor: (props) => props.secondaryColor || '#fff',
+    // },
     [theme.breakpoints.down('xs')]: {
       order: 2,
     },
@@ -85,12 +86,15 @@ export const useStyles = makeStyles((theme) => ({
   },
   iconButtons: {
     display: 'flex',
+    color: 'red !important'
   },
   toolbar: {
     margin: '0 auto',
     width: '100%',
-    maxWidth: 1000,
-    minHeight: 50,
+    // maxWidth: 1000,
+    minHeight: 60,
+    backgroundColor: 'white',
+    borderRadius: '.55rem',
     [theme.breakpoints.down('xs')]: {
       minHeight: 35,
       flexDirection: 'column',

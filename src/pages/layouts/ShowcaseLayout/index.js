@@ -59,27 +59,7 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
       {!loading && (
         <AppBar elevation={0} className={classes.appBar} position="sticky">
           <Toolbar className={classes.toolbar} variant="dense">
-            {showSearchBar && (
-              <TextField
-                size="small"
-                variant="outlined"
-                onChange={(e) => {
-                  dispatch(updateSearch(e.target.value));
-                }}
-                className={classes.searchInput}
-                placeholder="Busque por produtos"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <Search />
-                    </InputAdornment>
-                  ),
-                }}
-                style={{ backgroundColor: primaryColor }}
-              />
-            )}
-            <div className={classes.actionContainer}>
-              <Button
+            <Button
                 className={classes.logoButton}
                 onClick={() => {
                   dispatch(updateSearch(''));
@@ -91,8 +71,26 @@ function ShowcaseLayout({ children, match, showSearchBar }) {
                   src={showcase.logo && showcase.logo.url}
                   alt="logo"
                 />
-              </Button>
-
+            </Button>
+            {showSearchBar && (
+              <TextField
+                size="small"
+                variant="outlined"
+                onChange={(e) => {
+                  dispatch(updateSearch(e.target.value));
+                }}
+                className={classes.searchInput}
+                placeholder="Busque por produtos aqui..."
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <Search />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
+            <div className={classes.actionContainer}>
               <div className={classes.iconButtons}>
                 <IconButton
                   onClick={() => {
