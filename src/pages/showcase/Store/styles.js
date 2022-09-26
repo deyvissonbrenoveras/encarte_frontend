@@ -256,13 +256,12 @@ export default makeStyles((theme) => ({
     },
   },
   categoryName: {
-    color: (props) => props.tertiaryColor || '#616161',
-    background: (props) => lighten(props.secondaryColor || '#fff', 0.75),
+    color: '#3F3E3E',//(props) => props.tertiaryColor || '#616161',
     display: 'inline-block',
     justifySelf: 'center',
     textAlign: 'center',
     letterSpacing: 3,
-
+    fontSize: '2rem',
     padding: theme.spacing(1),
     borderRadius: 6,
     fontWeight: 'bold',
@@ -275,21 +274,40 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(0.5),
     marginBottom: theme.spacing(2),
   },
+  productContentOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: '80%',
+    borderRadius: '1rem',
+    zIndex: 999,
+    transition: 'all 0.2s ease-in-out',
+  },
   productCard: {
     height: 400,
     display: 'flex',
     flexDirection: 'column',
     padding: 20,
     alignItems: 'center',
-    paddingLeft: theme.spacing(0.5),
     cursor: 'default',
-    borderRadius: 0,
+    borderRadius: '1rem',
+    background: '#F2F2F2', 
     border: (props) =>
       `1px solid ${lighten(props.secondaryColor || '#fff', 0.8)}`,
     '&:hover': {
+      padding: 0,
+      paddingLeft: 0,
+      color: '#fff',
       borderColor: (props) => lighten(props.secondaryColor || '#fff', 0.5),
+      '& #productContentOverlay': {
+        // backgroundColor: 'orange',
+      },
+      '& #productContent a, #productPrice': {
+        color: '#fff',
+      }
     },
   },
+  
   productImage: {
     padding: theme.spacing(1),
     height: '50%',
@@ -312,6 +330,8 @@ export default makeStyles((theme) => ({
       fontWeight: 100,
       textOverflow: 'ellipsis',
       display: '-webkit-box',
+      textAlign: 'center',
+      margin: '0 auto',
       '-webkit-line-clamp': 3,
       '-webkit-box-orient': 'vertical',
       '&:hover': {
@@ -326,24 +346,38 @@ export default makeStyles((theme) => ({
     },
   },
   buyProductButton: {
+    display: 'flex',
+    gap: '2rem',
     width: '100%',
     fontSize: 17,
-    backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.3),
-    color: (props) => props.tertiaryColor || '#000',
+    backgroundColor: 'transparent',
+    border: 'none',
+    boxShadow: 'none',
+    color:  '#6D6D6D',
     fontWeight: 'bold',
+    // position: 'absolute',
+    // bottom: 0,
+    // left: 0,
+    "&:hover": {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+    },
+    '& .iconPlus': {
+      marginLeft: '1rem'
+    }
+  },
+  footerCardProduct: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
     position: 'absolute',
     bottom: 0,
     left: 0,
-    '&:hover': {
-      backgroundColor: (props) => lighten(props.primaryColor || '#fff', 0.5),
-    },
-    '& .MuiSvgIcon-root': {
-      fontSize: 26,
-      color: (props) => props.tertiaryColor || '#000',
-    },
   },
   productPrice: {
-    color: (props) => props.tertiaryColor || theme.palette.encarte,
+    color: '#545454',//(props) => props.tertiaryColor || theme.palette.encarte,
     fontSize: 19,
     fontWeight: 'bold',
   },

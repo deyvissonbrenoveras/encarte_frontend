@@ -32,6 +32,7 @@ import SocialNetworks from '../../../components/SocialNetworks';
 import CardsCategory from './components/CardsCategory';
 // icons
 import { HiOutlineShoppingCart } from 'react-icons/hi'
+import { FcPlus } from 'react-icons/fc'
 // import shoppingCart from '../../../assets/shoppingCart.svg'
 function Store({ match }) {
   const { url } = match.params;
@@ -143,7 +144,7 @@ function Store({ match }) {
     switch (product.priceType) {
       case PriceTypeEnum.DEFAULT:
         return (
-          <div className={classes.productPrice}>{product.formattedPrice}</div>
+          <div id='productPrice' className={classes.productPrice}>{product.formattedPrice}</div>
         );
       case PriceTypeEnum.SPECIAL_OFFER:
         return (
@@ -188,45 +189,39 @@ function Store({ match }) {
 
     return (
       <CardActionArea className={classes.productCard}>
-        <CardMedia
-          className={classes.productImage}
-          component="img"
-          alt={product.name}
-          image={product.image && product.image.url}
-          title={product.name}
-          onClick={() => {
-            productClick(product);
-          }}
-        />
-
-        <div className={classes.productContent}>
-          <a href={`/loja/${store.url}/produto/${product.id}`}>
-            {product.name}
-          </a>
-          <ProductItemPrice product={product} />
-          {/* <IconButton
+        <div className={classes.productContentOverlay} id='productContentOverlay'>
+          <CardMedia
+            className={classes.productImage}
+            component="img"
+            alt={product.name}
+            image={product.image && product.image.url}
+            title={product.name}
             onClick={() => {
-              toast.success('O produto foi adicionado ao carrinho.');
-              dispatch(addProduct(showcase.id, product, 1));
+              productClick(product);
             }}
-            className={classes.addCartButton}
-          >
-            <AddShoppingCart color="primary" />
-          </IconButton> */}
+          />
+
+          <div className={classes.footerCardProduct}>
+            <div className={classes.productContent} id='productContent'>
+              <a href={`/loja/${store.url}/produto/${product.id}`}>
+                {product.name}
+              </a>
+            </div>
+            <Button
+              variant="contained"
+              color="#000"
+              size="small"
+              onClick={() => {
+                toast.success('O produto foi adicionado ao carrinho.');
+                dispatch(addProduct(showcase.id, product, 1));
+              }}
+              // startIcon={<AddShoppingCart />}
+              className={classes.buyProductButton}
+            >
+              <ProductItemPrice product={product} /> <FcPlus size={'2rem'} style={{marginLeft: '1rem'}} />
+            </Button>
+          </div>
         </div>
-        <Button
-          variant="contained"
-          color="#000"
-          size="small"
-          onClick={() => {
-            toast.success('O produto foi adicionado ao carrinho.');
-            dispatch(addProduct(showcase.id, product, 1));
-          }}
-          startIcon={<AddShoppingCart />}
-          className={classes.buyProductButton}
-        >
-          Carrinho
-        </Button>
       </CardActionArea>
     );
   }
@@ -464,6 +459,7 @@ function Store({ match }) {
                           </li>
                         ))}
                   </ul>
+                  aaasdasd
                   <ShelfLife
                     align="center"
                     shelfLifeStart={store.shelfLifeStart}
@@ -501,7 +497,7 @@ function Store({ match }) {
                                       variant="h5"
                                       className={classes.categoryName}
                                     >
-                                      {category.name.toUpperCase()}
+                                      {category.name}
                                     </Typography>
                                   </Grid>
                                 </Grid>
