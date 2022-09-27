@@ -273,6 +273,9 @@ export default makeStyles((theme) => ({
   cardGrid: {
     padding: theme.spacing(0.5),
     marginBottom: theme.spacing(2),
+    '& .MuiPaper-elevation1': {
+      boxShadow: 'none',
+    }
   },
   productContentOverlay: {
     position: 'absolute',
@@ -300,11 +303,10 @@ export default makeStyles((theme) => ({
       color: '#fff',
       borderColor: (props) => lighten(props.secondaryColor || '#fff', 0.5),
       '& #productContentOverlay': {
-        // backgroundColor: 'orange',
       },
-      '& #productContent a, #productPrice': {
-        color: '#fff',
-      }
+      // '& #productContent a, #productPrice': {
+      //   color: '#fff',
+      // }
     },
   },
   
