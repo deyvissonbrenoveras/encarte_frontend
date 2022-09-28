@@ -421,7 +421,6 @@ export default makeStyles((theme) => ({
     padding: '1rem 0',
     marginTop: '12rem',
     color: '#fff',
-    width: '100%',
     backgroundColor: '#2e2e2e',
   },
   footerWrapper: {

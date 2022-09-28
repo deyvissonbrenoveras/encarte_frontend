@@ -459,7 +459,6 @@ function Store({ match }) {
                           </li>
                         ))}
                   </ul>
-                  aaasdasd
                   <ShelfLife
                     align="center"
                     shelfLifeStart={store.shelfLifeStart}
