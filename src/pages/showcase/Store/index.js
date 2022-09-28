@@ -525,9 +525,50 @@ function Store({ match }) {
                 </Grid>
               </Grid>
               <footer className={classes.footer}>
+                <div className={classes.footerTop}>
+
+                </div>
+                <div className={classes.footerWrapper}>
+                  <div className={classes.footerItem}>
+                    <label>Redes sociais</label>
+                    <SocialNetworks
+                      facebook="agenciaencarte"
+                      instagram="e_ncarte"
+                      whatsapp="558393609556"
+                    />
+                  </div>
+
+                  <div className={classes.footerItem}>
+                    <label>Contato</label>
+                    {store.phone && <div>{store.phone}</div>}
+                  </div>
+
+                  <div className={classes.footerItem}>
+                    <label>Endereço</label>
+                    {store.address && store.city && (
+                      <>
+                        <div>{store.address}</div>
+                        <div>
+                          {store.city.name} - {store.city.state.uf}
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  <div className={classes.footerItem}>
+                    <label>Página desenvolvida por:</label>
+                    <img
+                      src={logo}
+                      alt="e-ncarte logo"
+                      className={classes.encarteFooterLogo}
+                    />
+                  </div>
+                </div>
+                <div className={classes.footerBottom}>© {YEAR} e-ncarte publicidade digital</div>
+              </footer>
+
+              {/* <footer className={classes.footer}>
                 <Grid
-                  container
-                  justify="center"
                   className={classes.showcaseFooter}
                 >
                   <Grid item xs={12} className={classes.footerStoreContainer}>
@@ -546,11 +587,6 @@ function Store({ match }) {
                           />
                         </div>
                       )}
-                      <SocialNetworks
-                        facebook={showcase.facebook}
-                        instagram={showcase.instagram}
-                        whatsapp={showcase.whatsapp}
-                      />
                     </div>
                   </Grid>
                   <Grid item xs={12} className={classes.footerInfo}>
@@ -562,38 +598,8 @@ function Store({ match }) {
                       color="#2e2e2e"
                     />
                   </Grid>
-                  <Grid item xs={12} md={6} className={classes.footerInfo}>
-                    {store.address && store.city && (
-                      <>
-                        <div>Endereço: {store.address}</div>
-                        <div>
-                          {store.city.name} - {store.city.state.uf}
-                        </div>
-                      </>
-                    )}
-                  </Grid>
-                  <Grid item xs={12} md={6} className={classes.footerInfo}>
-                    {store.phone && <div>Contato: {store.phone}</div>}
-                  </Grid>
                 </Grid>
-                <Grid container justify="center">
-                  <Grid item xs={12} className={classes.encarteFooter}>
-                    <div>Página desenvolvida por:</div>
-                    <img
-                      src={logo}
-                      alt="e-ncarte logo"
-                      className={classes.encarteFooterLogo}
-                    />
-                    <SocialNetworks
-                      facebook="agenciaencarte"
-                      instagram="e_ncarte"
-                      whatsapp="558393609556"
-                    />
-                    <div>© {YEAR} e-ncarte publicidade digital</div>
-                    <div></div>
-                  </Grid>
-                </Grid>
-              </footer>
+              </footer> */}
             </Grid>
           </>
         )}

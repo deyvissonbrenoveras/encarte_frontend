@@ -414,17 +414,46 @@ export default makeStyles((theme) => ({
     },
   },
   footer: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    padding: '1rem 0',
+    marginTop: '12rem',
     color: '#fff',
     width: '100%',
-    height: 400,
-    marginTop: 300,
-    borderTop: (props) =>
-      `2px solid ${darken(props.secondaryColor || theme.palette.encarte, 0.4)}`,
-    '& .MuiCardContent-root': {
-      display: 'flex',
-      justifyContent: 'center',
-      padding: 0,
-    },
+    backgroundColor: '#2e2e2e',
+  },
+  footerWrapper: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  footerTop: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  footerBottom: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  footerItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    width: '25%',
+    height: '100%',
+    '& label': {
+      fontSize: '1.2rem',
+      fontWeight: 'bold',
+    }
   },
   showcaseFooter: {
     backgroundColor: '#2e2e2e',
@@ -432,12 +461,15 @@ export default makeStyles((theme) => ({
       const gradientColor = lighten('#2e2e2e', 0.15);
       return `linear-gradient(90deg, ${gradientColor} 11%, #2e2e2e 77%)`;
     },
-    paddingBottom: theme.spacing(4),
+    // paddingBottom: theme.spacing(4),
+    display: 'flex',
+    alignItems: 'center',
   },
   footerStoreContainer: {
     display: 'flex',
     justifyContent: 'center',
     paddingTop: theme.spacing(1),
+    backgroundColor: 'purple'
   },
   footerStoreCard: {
     padding: theme.spacing(2),
