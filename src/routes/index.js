@@ -13,6 +13,7 @@ const ShowcaseLayout = lazy(() => import('../pages/layouts/ShowcaseLayout'));
 // MAIN
 const IndexMain = lazy(() => import('../pages/main/Index'));
 const StoresMain = lazy(() => import('../pages/main/Stores'));
+const PrivacyPolicy = lazy(() => import('../pages/privacyPolicy'));
 // AUTH
 const Login = lazy(() => import('../pages/Login'));
 const Signup = lazy(() => import('../pages/Signup'));
@@ -21,8 +22,12 @@ const Signup = lazy(() => import('../pages/Signup'));
 const Dashboard = lazy(() => import('../pages/dashboard/DashboardIndex'));
 const Stores = lazy(() => import('../pages/dashboard/Stores'));
 const StoreCategory = lazy(() => import('../pages/dashboard/StoreCategory'));
-const NewStoreCategory = lazy(() => import('../pages/dashboard/NewStoreCategory'));
-const UpdateStoreCategory = lazy(() => import('../pages/dashboard/UpdateStoreCategory'));
+const NewStoreCategory = lazy(() =>
+  import('../pages/dashboard/NewStoreCategory')
+);
+const UpdateStoreCategory = lazy(() =>
+  import('../pages/dashboard/UpdateStoreCategory')
+);
 const NewStore = lazy(() => import('../pages/dashboard/NewStore'));
 const UpdateStore = lazy(() => import('../pages/dashboard/UpdateStore'));
 const Users = lazy(() => import('../pages/dashboard/Users'));
@@ -53,6 +58,11 @@ function Routes() {
         {/* MAIN */}
         <Route exact path="/" component={IndexMain} layout={MainLayout} />
         <Route exact path="/lojas" component={StoresMain} layout={MainLayout} />
+        <Route
+          path="/politica-de-privacidade"
+          component={PrivacyPolicy}
+          layout={MainLayout}
+        />
         {/* AUTH */}
         <Route path="/login" component={Login} layout={AuthLayout} />
         <Route path="/signup" component={Signup} layout={AuthLayout} />
@@ -220,7 +230,7 @@ function Routes() {
           component={Logs}
           layout={DashboardLayout}
         />
-        <Route path="*" component={NotFound} layout={MainLayout}  />
+        <Route path="*" component={NotFound} layout={MainLayout} />
       </Switch>
     </Suspense>
   );
