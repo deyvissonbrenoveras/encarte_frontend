@@ -109,6 +109,7 @@ function Cart({ match }) {
       return text;
     }, 'Lista de compras e-ncarte:');
     buyList += `%0A%0ATotal: ${total}`;
+    buyList += `%0A%0AData de geração do pedido: ${new Date().toLocaleString()}`;
     window.open(
       `https://api.whatsapp.com/send?phone=${store.whatsapp}&text=${buyList}`
     );

@@ -437,7 +437,7 @@ function UpdateStore({ match }) {
                   price: formatPrice(product.price),
                   customPrice: product.Products_Stores.customPrice
                     ? formatPrice(product.Products_Stores.customPrice)
-                    : null,
+                    : '',
                   featured: product.featured,
                   category: product.category
                     ? product.category.name
